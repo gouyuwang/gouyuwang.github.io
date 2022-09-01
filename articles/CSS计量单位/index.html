@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="我们很容易无法摆脱的使用我们所熟悉的CSS技术，当新的问题出现，这样会使我们处于不利的地位。 随着Web继续的发展，对新的解决方案的需求也会继续增大。因此，作为网页设计师和前端开发人员，我们别无选择，只有去了解我们的工具集并且熟悉它。 这意味着我们还要了解一些特殊的工具-那些不经常使用的，但是当需要它们的时候，它们恰恰是最正确的工具。 今天，我将要向你介绍一些你以前可能不知道的CSS工具。这些工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS计量单位">
+<meta property="og:url" content="https://ya2.top/articles/CSS计量单位/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="我们很容易无法摆脱的使用我们所熟悉的CSS技术，当新的问题出现，这样会使我们处于不利的地位。 随着Web继续的发展，对新的解决方案的需求也会继续增大。因此，作为网页设计师和前端开发人员，我们别无选择，只有去了解我们的工具集并且熟悉它。 这意味着我们还要了解一些特殊的工具-那些不经常使用的，但是当需要它们的时候，它们恰恰是最正确的工具。 今天，我将要向你介绍一些你以前可能不知道的CSS工具。这些工具">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ya2.top/articles/CSS计量单位/vmin.png">
+<meta property="og:image" content="https://ya2.top/articles/CSS计量单位/vmax.png">
+<meta property="og:image" content="https://ya2.top/articles/CSS计量单位/x2.png">
+<meta property="og:updated_time" content="2022-07-27T16:13:31.833Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS计量单位">
+<meta name="twitter:description" content="我们很容易无法摆脱的使用我们所熟悉的CSS技术，当新的问题出现，这样会使我们处于不利的地位。 随着Web继续的发展，对新的解决方案的需求也会继续增大。因此，作为网页设计师和前端开发人员，我们别无选择，只有去了解我们的工具集并且熟悉它。 这意味着我们还要了解一些特殊的工具-那些不经常使用的，但是当需要它们的时候，它们恰恰是最正确的工具。 今天，我将要向你介绍一些你以前可能不知道的CSS工具。这些工具">
+<meta name="twitter:image" content="https://ya2.top/articles/CSS计量单位/vmin.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CSS计量单位 | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/CSS计量单位/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">CSS计量单位
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-31 14:57:22" itemprop="dateCreated datePublished" datetime="2020-03-31T14:57:22Z">2020-03-31</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <p>我们很容易无法摆脱的使用我们所熟悉的CSS技术，当新的问题出现，这样会使我们处于不利的地位。</p>
+<p>随着Web继续的发展，对新的解决方案的需求也会继续增大。因此，作为网页设计师和前端开发人员，我们别无选择，只有去了解我们的工具集并且熟悉它。</p>
+<p>这意味着我们还要了解一些特殊的工具-那些不经常使用的，但是当需要它们的时候，它们恰恰是最正确的工具。</p>
+<p>今天，我将要向你介绍一些你以前可能不知道的CSS工具。这些工具都是计量单位，就像像素或者相对单位,但是很可能你从来没听说过它们！让我们一探究竟吧。</p>
+<h3 id="rem"><a href="#rem" class="headerlink" title="rem"></a>rem</h3><p>我们将从你已经熟悉的东西开始。<code>em</code>单位被定义为当前字体大小。例如，如果你在<code>body</code>元素上设置一个字体大小，那么在<code>body</code>元素内的任何子元素的<code>em</code>值都等于这个字体大小。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"test"</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">body &#123;</span><br><span class="line">    font-size: 14px;</span><br><span class="line">&#125;</span><br><span class="line">div &#123;</span><br><span class="line">    font-size: 1.2em; // calculated at 14px * 1.2, or 16.8px</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们说这个<code>div</code>将有一个<code>1.2em</code>的<code>font-size</code>。它是所继承的字体大小的<code>1.2</code>倍，在这个例子中为<code>14px</code>。结果为<code>16.8px</code>.</p>
+<p>但是，当你在每个元素内都级联<code>em</code>定义的字体大小将会发生什么？在下面的代码片段中我们应用和上面一模一样的CSS.每个<code>div</code>从它们的父节点继承字体大小，带给我们逐渐增加的字体大小。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        Test <span class="comment">&lt;!-- 14 * 1.2 = 16.8px --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">            Test <span class="comment">&lt;!-- 16.8 * 1.2 = 20.16px --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                Test <span class="comment">&lt;!-- 20.16 * 1.2 = 24.192px --&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<iframe src="https://codepen.io/tutsplus/embed/xbZQRQ/" style="width:100%; height:30vh;" frameborder="no" allowfullscreen="true" scrolling="no">
+</iframe>    
+
+<p>虽然在某些情况下可能需要这个，但是通常你可能想基于一个唯一的度量标准来按比例缩放。在这种情况下，你应该用<code>rem</code>。<code>rem</code>中的”<code>r</code>“代表”<code>root</code>“；这等同于<code>font-size</code>基于根元素进行设置；在大多数情况下根元素为<code>html</code>元素。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">14px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1.2rem</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上一个示例中三个嵌套的<code>div</code>的字体大小计算结果都为<code>16.8px</code>。</p>
+<p><strong>对网格布局的好处</strong></p>
+<p><code>rem</code>不是只对定义字体大小有用。比如，你可以使用<code>rem</code>把<a href="https://webdesign.tutsplus.com/tutorials/a-simple-mixin-alternative-to-standard-css-grids--webdesign-16958" target="_blank" rel="noopener">整个网格系统</a>或者UI样式库基于HTML根元素的字体大小上,然后在特定的地方使用<code>em</code>比例缩放。这将带给你更加可预测的字体大小和比例缩放。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    width: 70rem; // 70 * 14px = 980px</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从概念上讲，像这样一个策略背后的想法是为了允许你的界面随着你的内容按比例缩放。然而，这可能不一定对每个案例都有意义。</p>
+<p><a href="http://caniuse.com/#feat=rem" target="_blank" rel="noopener">“rem(root em)单位”</a>的兼容性列表。</p>
+<h3 id="vh-和-vw"><a href="#vh-和-vw" class="headerlink" title="vh 和 vw"></a>vh 和 vw</h3><p>响应式网页设计技术很大程度上依赖于比例规则。然而，CSS比例不总是每个问题的最佳解决方案。CSS宽度是相对于最近的包含父元素。如果你想使用显示窗口的宽度或高度而不是父元素的宽度将会怎么样？这正是<code>vh</code>和<code>vw</code>单位所提供的。</p>
+<p><code>vh</code>等于viewport高度的<code>1/100</code>.例如，如果浏览器的高是<code>900px</code>,<code>1vh</code>求得的值为<code>9px</code>。同理，如果显示窗口宽度为<code>750px</code>,<code>1vw</code>求得的值为<code>7.5px</code>。</p>
+<p>这些规则表面上看起来有无尽的用途。例如，做一个占满高度的或者接近占满高度的幻灯片，可以用一个非常简单的方法实现，只要用一行CSS：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.slide</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100vh</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设想你想要一个占满屏幕宽度的标题。为做到这一点，你将会用<code>vw</code>来设置一个字体大小。这个大小将会随着浏览器的宽度按比例缩放。</p>
+<iframe src="https://codepen.io/tutsplus/embed/gbPQga/" style="width:100%;height:30vh;" frameborder="no" allowfullscreen="true" scrolling="no">
+</iframe>
+
+<p><a href="http://caniuse.com/#feat=viewport-units" target="_blank" rel="noopener">视窗单位: <code>vw</code>, <code>vh</code></a>的兼容性列表。</p>
+<h3 id="vmin-和-vmax"><a href="#vmin-和-vmax" class="headerlink" title="vmin 和 vmax"></a>vmin 和 vmax</h3><p><code>vh</code>和<code>vm</code>总是与视口的高度和宽度有关，与之不同的，<code>vmin</code>和<code>vmax</code>是与这次宽度和高度的最大值或最小值有关，取决于哪个更大和更小。例如，如果浏览器设置为<code>1100px</code>宽、<code>700px</code>高，<code>1vmin</code>会是<code>7px</code>,<code>1vmax</code>为<code>11px</code>。然而，如果宽度设置为<code>800px</code>，高度设置为<code>1080px</code>，<code>1vmin</code>将会等于<code>8px</code>而<code>1vmax</code>将会是<code>10.8px</code>。</p>
+<p>所以你什么时候可能用到这些值？</p>
+<p>设想你需要一个总是在屏幕上可见的元素。使用高度和宽度设置为低于<code>100</code>的<code>vmin</code>值将可以实现这个效果。例如，一个正方形的元素总是至少接触屏幕的两条边可能是这样定义的：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100vmin</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100vmin</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/articles/CSS计量单位/vmin.png" alt="vmin"></p>
+<p>如果你需要一个总是覆盖可视窗口的正方形(一直接触屏幕的四条边),使用相同的规则只是把单位换成<code>vmax</code>。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100vmax</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100vmax</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/articles/CSS计量单位/vmax.png" alt="vmax"></p>
+<p>这些规则的组合提供了一个非常灵活的方式，用新的、令人兴奋的方式利用你的可视窗口的大小。</p>
+<p><a href="http://caniuse.com/#feat=viewport-units" target="_blank" rel="noopener">Viewport units: vmin, vmax</a>兼容列表。</p>
+<h3 id="ex-和-ch"><a href="#ex-和-ch" class="headerlink" title="ex 和 ch"></a>ex 和 ch</h3><p><code>ex</code>和<code>ch</code>单位，与<code>em</code>和<code>rem</code>相似，依赖于当前字体和字体大小。然而，与<code>em</code>和<code>rem</code>不同的是，这两个单位只也依赖于<code>font-family</code>，因为它们被定为基于特殊字体的法案。</p>
+<p><code>ch</code>单位，或者字符单位被定义为<code>0</code>字符的宽度的“先进的尺寸”。在<a href="http://meyerweb.com/eric/thoughts/2012/05/15/defining-ch/" target="_blank" rel="noopener">“Eric Meyer’s的博客”</a>中可以找到一些非常有趣的讨论关于这意味着什么，但是基本的概念是，给定一个等宽字体的字体，一个N个字符单位宽的盒子，比如<code>width：40ch;</code>,可以一直容纳一个有<code>40</code>个字符的应用那个特定字体的字符串。虽然这个特殊规则的传统用途与列出盲文有关，但是这里创造性的可行性一定会超越这些简单的用途。</p>
+<p><code>ex</code>单位被定义为”当前字体的<code>x-height</code>或者一个<code>em</code>的一半”。给定的字体的<code>x-height</code>是指那个字体的小写<code>x</code>的高度。通常，这是这个字体的中间的标志。</p>
+<p><img src="/articles/CSS计量单位/x2.png" alt="ex"></p>
+<p>x-height: 小写字母x的高度(阅读更多关于<a href="http://webdesign.tutsplus.com/articles/the-anatomy-of-web-typography--webdesign-10533" target="_blank" rel="noopener">The Anatomy of Web Typography</a>)</p>
+<p>对于这种单位有很多的用途，大多数是用于排版的微调。例如，<code>sup</code>元素,代表_上标_，可以用相对定位和一个<code>1ex</code>的底部值在行内被推高。类似地，你可以拉低一个下标元素。浏览器默认支持这些利用上标和下标特性的<code>vertical-align</code>规则，但是如果你想要更精细的控制，你可以像这样更明确的处理样式：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">sup</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">1ex</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">sub</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">bottom</span>: -<span class="number">1ex</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ex</code>单位在<a href="http://www.w3.org/TR/REC-CSS1/#length-units" target="_blank" rel="noopener">CSS1</a>中已经存在，但是你不会找到对<code>ch</code>单位有像这样坚实的支持。具体支持，在Eric Meyer’s 的博客中查看<a href="http://www.quirksmode.org/css/units-values/" target="_blank" rel="noopener">CSS单位和值</a>。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>密切关注CSS的持续发展和扩张是非常重要的，一边在你的工具集里知道所有的工具。也许你会遇到一个特殊的问题需要一个意想不到的解决方案，利用这些更隐蔽的计量单位之一。花时间去阅读新规范，记录来自好的资源的新闻资讯！</p>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ul>
+<li><a href="https://webdesign.tutsplus.com/articles/taking-the-erm-out-of-ems--webdesign-12321" target="_blank" rel="noopener">Taking the “Erm..” Out of Ems</a></li>
+<li><a href="https://webdesign.tutsplus.com/articles/taking-ems-even-further--webdesign-12543" target="_blank" rel="noopener">Taking Ems Even Further</a></li>
+<li><a href="http://caniuse.com/#feat=viewport-units" target="_blank" rel="noopener">Caniuse Viewport units</a></li>
+<li><a href="http://www.w3cplus.com/css/css-font-sizing.html" target="_blank" rel="noopener">CSS的font-size属性</a></li>
+<li><a href="http://www.w3cplus.com/css/r-i-p-rem-viva-css-reference-pixel.html" target="_blank" rel="noopener">Rem VS Px</a></li>
+<li><a href="http://www.w3cplus.com/css/the-lengths-of-css.html" target="_blank" rel="noopener">CSS的长度单位</a></li>
+<li><a href="http://www.w3cplus.com/css3/define-font-size-with-css3-rem" target="_blank" rel="noopener">CSS3的REM设置字体大小</a></li>
+<li><a href="http://www.w3cplus.com/css/px-to-em" target="_blank" rel="noopener">CSS中强大的EM</a></li>
+</ul>
+<blockquote>
+<p>本文根据<a href="http://tutsplus.com/authors/jonathan-cutrell" target="_blank" rel="noopener">@Jonathan Cutrell</a>的《<a href="http://webdesign.tutsplus.com/articles/7-css-units-you-might-not-know-about--cms-22573" target="_blank" rel="noopener">7 CSS Units You Might Not Know About</a>》所译。</p>
+</blockquote>
+
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/CSS计量单位/" title="CSS计量单位">https://ya2.top/articles/CSS计量单位/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/四川移动掌厅APP接口分析/" rel="prev" title="四川移动掌厅APP接口分析">
+                <i class="fa fa-chevron-left"></i> 四川移动掌厅APP接口分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/Grid布局/" rel="next" title="Grid布局">
+                Grid布局 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+              
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#rem"><span class="nav-number">1.</span> <span class="nav-text">rem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vh-和-vw"><span class="nav-number">2.</span> <span class="nav-text">vh 和 vw</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vmin-和-vmax"><span class="nav-number">3.</span> <span class="nav-text">vmin 和 vmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ex-和-ch"><span class="nav-number">4.</span> <span class="nav-text">ex 和 ch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">5.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展"><span class="nav-number">6.</span> <span class="nav-text">扩展</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

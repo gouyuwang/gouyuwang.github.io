@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="全文检索是人们每天都在使用的工具之一。如果你曾经在google上搜索过“golang使用情况”或试图在电子商务网站上找到“室内无线摄像头”，你都会使用某种全文检索。 全文检索（FTS）是一种在文档集合中搜索文本的技术。文档可以引用网页、报纸文章、电子邮件或其他任何结构文本。 今天我们要建造我们自己的FTS引擎。在这篇文章的最后，我们将能够在不到一毫秒的时间内搜索数百万个文档。我们将从简单的搜索查询">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现一个简单的全文检索引擎">
+<meta property="og:url" content="https://ya2.top/articles/实现一个简单的全文检索引擎/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="全文检索是人们每天都在使用的工具之一。如果你曾经在google上搜索过“golang使用情况”或试图在电子商务网站上找到“室内无线摄像头”，你都会使用某种全文检索。 全文检索（FTS）是一种在文档集合中搜索文本的技术。文档可以引用网页、报纸文章、电子邮件或其他任何结构文本。 今天我们要建造我们自己的FTS引擎。在这篇文章的最后，我们将能够在不到一毫秒的时间内搜索数百万个文档。我们将从简单的搜索查询">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ya2.top/articles/实现一个简单的全文检索引擎/book-index.png">
+<meta property="og:image" content="https://ya2.top/articles/实现一个简单的全文检索引擎/text-analysis.png">
+<meta property="og:image" content="https://ya2.top/articles/实现一个简单的全文检索引擎/venn.png">
+<meta property="og:updated_time" content="2022-07-27T16:11:44.630Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实现一个简单的全文检索引擎">
+<meta name="twitter:description" content="全文检索是人们每天都在使用的工具之一。如果你曾经在google上搜索过“golang使用情况”或试图在电子商务网站上找到“室内无线摄像头”，你都会使用某种全文检索。 全文检索（FTS）是一种在文档集合中搜索文本的技术。文档可以引用网页、报纸文章、电子邮件或其他任何结构文本。 今天我们要建造我们自己的FTS引擎。在这篇文章的最后，我们将能够在不到一毫秒的时间内搜索数百万个文档。我们将从简单的搜索查询">
+<meta name="twitter:image" content="https://ya2.top/articles/实现一个简单的全文检索引擎/book-index.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>实现一个简单的全文检索引擎 | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/实现一个简单的全文检索引擎/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">实现一个简单的全文检索引擎
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-08-18 11:02:43" itemprop="dateCreated datePublished" datetime="2020-08-18T11:02:43Z">2020-08-18</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <p>全文检索是人们每天都在使用的工具之一。如果你曾经在google上搜索过“golang使用情况”或试图在电子商务网站上找到“室内无线摄像头”，你都会使用某种全文检索。</p>
+<p>全文检索（FTS）是一种在文档集合中搜索文本的技术。文档可以引用网页、报纸文章、电子邮件或其他任何结构文本。</p>
+<p>今天我们要建造我们自己的FTS引擎。在这篇文章的最后，我们将能够在不到一毫秒的时间内搜索数百万个文档。我们将从简单的搜索查询开始，比如“给我包含单词cat的所有文档”，然后扩展引擎以支持更复杂的布尔查询。</p>
+<blockquote>
+<p>注：最著名的FTS引擎是<a href="https://lucene.apache.org/" target="_blank" rel="noopener">Lucene</a>（以及在此基础上构建的 <a href="https://www.elastic.co/cn/" target="_blank" rel="noopener">Elasticsearch</a> 和 <a href="https://lucene.apache.org/solr/" target="_blank" rel="noopener">Solr</a> ）。</p>
+</blockquote>
+<h3 id="为什么选择FTS"><a href="#为什么选择FTS" class="headerlink" title="为什么选择FTS"></a>为什么选择FTS</h3><p>在我们开始编写代码之前，您可能会问：“我们不能只使用grep，或者使用一个循环来检查每个文档是否包含我要查找的单词？” 是的，我们可以，但这并不是最好的方式。</p>
+<h3 id="语料库"><a href="#语料库" class="headerlink" title="语料库"></a>语料库</h3><p>点击下载 <a href="https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-abstract1.xml.gz" target="_blank" rel="noopener">dumps.wikimedia.org</a> 语料。</p>
+<p>语料的格式如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Wikipedia: Kit-Cat Klock<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">url</span>&gt;</span>https://en.wikipedia.org/wiki/Kit-Cat_Klock<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">abstract</span>&gt;</span>The Kit-Cat Klock is an art deco novelty wall clock shaped like a grinning cat with cartoon eyes that swivel in time with its pendulum tail.<span class="tag">&lt;/<span class="name">abstract</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="加载文档"><a href="#加载文档" class="headerlink" title="加载文档"></a>加载文档</h3><p>首先，我们需要加载上一步下载的文档。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"encoding/xml"</span></span><br><span class="line">    <span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> document <span class="keyword">struct</span> &#123;</span><br><span class="line">    Title <span class="keyword">string</span> <span class="string">`xml:"title"`</span></span><br><span class="line">    URL   <span class="keyword">string</span> <span class="string">`xml:"url"`</span></span><br><span class="line">    Text  <span class="keyword">string</span> <span class="string">`xml:"abstract"`</span></span><br><span class="line">    ID    <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">loadDocuments</span><span class="params">(path <span class="keyword">string</span>)</span> <span class="params">([]document, error)</span></span> &#123;</span><br><span class="line">    f, err := os.Open(path)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> f.Close()</span><br><span class="line"></span><br><span class="line">    dec := xml.NewDecoder(f)</span><br><span class="line">    dump := <span class="keyword">struct</span> &#123;</span><br><span class="line">        Documents []document <span class="string">`xml:"doc"`</span></span><br><span class="line">    &#125;&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> err := dec.Decode(&amp;dump); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    docs := dump.Documents</span><br><span class="line">    <span class="keyword">for</span> i := <span class="keyword">range</span> docs &#123;</span><br><span class="line">        docs[i].ID = i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> docs, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每个加载的文档都会被分配一个唯一的标识符。为了简单起见，第一个加载的文档分配ID=0，第二个ID=1，依此类推。</p>
+<h3 id="常规搜索测试"><a href="#常规搜索测试" class="headerlink" title="常规搜索测试"></a>常规搜索测试</h3><p><strong>关键词搜索</strong></p>
+<p>现在我们已经将所有文档加载到内存中，我们可以尝试找到关于猫的文档。首先，让我们遍历所有文档并检查它们是否包含子字符串cat：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">search</span><span class="params">(docs []document, term <span class="keyword">string</span>)</span> []<span class="title">document</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> r []document</span><br><span class="line">    <span class="keyword">for</span> _, doc := <span class="keyword">range</span> docs &#123;</span><br><span class="line">        <span class="keyword">if</span> strings.Contains(doc.Text, term) &#123;</span><br><span class="line">            r = <span class="built_in">append</span>(r, doc)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在我的笔记本电脑上，搜索需要 103ms, 还不错。 如果您抽查了输出中的一些文档， 您可能会注意到该函数与caterpillar和category匹配，但cat与大写字母C不匹配。这不是我想要的。</p>
+<p>在继续之前，我们需要解决两个问题：</p>
+<ul>
+<li><p>使搜索不区分大小写（因此Cat也匹配）。</p>
+</li>
+<li><p>匹配单词边界而不是子字符串（因此caterpiller和communication不匹配）。</p>
+</li>
+</ul>
+<p><strong>正则表达式搜索</strong></p>
+<p>一个快速想到并允许实现这两个需求的解决方案是正则表达式。</p>
+<p>例如：<code>(?i)\bcat\b</code></p>
+<ul>
+<li><p><code>(?i)</code> 大小写不敏感</p>
+</li>
+<li><p><code>\b</code> 匹配单词边界（一边是单词字符，另一边不是单词字符的位置）</p>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">search</span><span class="params">(docs []document, term <span class="keyword">string</span>)</span> []<span class="title">document</span></span> &#123;</span><br><span class="line">    re := regexp.MustCompile(<span class="string">`(?i)\b`</span> + term + <span class="string">`\b`</span>) <span class="comment">// Don't do this in production, it's a security risk. term needs to be sanitized.</span></span><br><span class="line">    <span class="keyword">var</span> r []document</span><br><span class="line">    <span class="keyword">for</span> _, doc := <span class="keyword">range</span> docs &#123;</span><br><span class="line">        <span class="keyword">if</span> re.MatchString(doc.Text) &#123;</span><br><span class="line">            r = <span class="built_in">append</span>(r, doc)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>呃，搜索花了2秒多。如您所见，即使有60万个文档，事情也开始变得缓慢。虽然该方法易于实现，但它的扩展性并不好。随着数据集越来越大，我们需要扫描越来越多的文档。该算法的时间复杂度是线性的, 需要扫描的文档数等于文档总数。如果我们有600万份文档，而不是60万份，搜索需要20秒。所以我们还需要优化。</p>
+<h3 id="反向索引"><a href="#反向索引" class="headerlink" title="反向索引"></a>反向索引</h3><p>为了使搜索查询更快，我们将对文本进行预处理并预先建立索引。</p>
+<p>FTS的核心是一种称为反向索引的数据结构, 将文档中的每个单词与包含该单词的文档相关联。</p>
+<p>例如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">documents = &#123;</span><br><span class="line">    <span class="number">1</span>: <span class="string">"a donut on a glass plate"</span>,</span><br><span class="line">    <span class="number">2</span>: <span class="string">"only the donut"</span>,</span><br><span class="line">    <span class="number">3</span>: <span class="string">"listen to the drum machine"</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">index = &#123;</span><br><span class="line">    <span class="string">"a"</span>: [<span class="number">1</span>],</span><br><span class="line">    <span class="string">"donut"</span>: [<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">    <span class="string">"on"</span>: [<span class="number">1</span>],</span><br><span class="line">    <span class="string">"glass"</span>: [<span class="number">1</span>],</span><br><span class="line">    <span class="string">"plate"</span>: [<span class="number">1</span>],</span><br><span class="line">    <span class="string">"only"</span>: [<span class="number">2</span>],</span><br><span class="line">    <span class="string">"the"</span>: [<span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">    <span class="string">"listen"</span>: [<span class="number">3</span>],</span><br><span class="line">    <span class="string">"to"</span>: [<span class="number">3</span>],</span><br><span class="line">    <span class="string">"drum"</span>: [<span class="number">3</span>],</span><br><span class="line">    <span class="string">"machine"</span>: [<span class="number">3</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个倒排索引的真实例子。书名索引书中一个术语引用页码的索引：</p>
+<p><img src="/articles/实现一个简单的全文检索引擎/book-index.png" alt="Book Index"></p>
+<h3 id="文本分析"><a href="#文本分析" class="headerlink" title="文本分析"></a>文本分析</h3><p>在开始构建索引之前，我们需要将原始文本分解为一个适合索引和搜索的单词（标记）列表。</p>
+<p>文本分析器由一个分词器器和多个过滤器组成。</p>
+<p><img src="/articles/实现一个简单的全文检索引擎/text-analysis.png" alt></p>
+<h4 id="分词器"><a href="#分词器" class="headerlink" title="分词器"></a>分词器</h4><p>分词器是文本分析的第一步。它的工作是将文本转换为标记列表。我们的实现在单词边界上拆分文本并删除标点符号：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tokenize</span><span class="params">(text <span class="keyword">string</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> strings.FieldsFunc(text, <span class="function"><span class="keyword">func</span><span class="params">(r <span class="keyword">rune</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        <span class="comment">// Split on any character that is not a letter or a number.</span></span><br><span class="line">        <span class="keyword">return</span> !unicode.IsLetter(r) &amp;&amp; !unicode.IsNumber(r)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; tokenize(<span class="string">"A donut on a glass plate. Only the donuts."</span>)</span><br><span class="line"></span><br><span class="line">[<span class="string">"A"</span>, <span class="string">"donut"</span>, <span class="string">"on"</span>, <span class="string">"a"</span>, <span class="string">"glass"</span>, <span class="string">"plate"</span>, <span class="string">"Only"</span>, <span class="string">"the"</span>, <span class="string">"donuts"</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h4><p>在大多数情况下，仅仅将文本转换为标记列表是不够的。为了使文本更易于索引和搜索，我们需要进行额外的规范化。</p>
+<h5 id="大小写过滤"><a href="#大小写过滤" class="headerlink" title="大小写过滤"></a>大小写过滤</h5><p>为了使搜索不区分大小写，小写过滤器将标记转换为小写。cAt、Cat和caT规范化为cat。 稍后，当我们查询索引时，我们也会降低搜索词的大小写。这将使搜索词cAt能与文本cAt匹配。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">lowercaseFilter</span><span class="params">(tokens []<span class="keyword">string</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    r := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="built_in">len</span>(tokens))</span><br><span class="line">    <span class="keyword">for</span> i, token := <span class="keyword">range</span> tokens &#123;</span><br><span class="line">        r[i] = strings.ToLower(token)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; lowercaseFilter([]<span class="keyword">string</span>&#123;<span class="string">"A"</span>, <span class="string">"donut"</span>, <span class="string">"on"</span>, <span class="string">"a"</span>, <span class="string">"glass"</span>, <span class="string">"plate"</span>, <span class="string">"Only"</span>, <span class="string">"the"</span>, <span class="string">"donuts"</span>&#125;)</span><br><span class="line"></span><br><span class="line">[<span class="string">"a"</span>, <span class="string">"donut"</span>, <span class="string">"on"</span>, <span class="string">"a"</span>, <span class="string">"glass"</span>, <span class="string">"plate"</span>, <span class="string">"only"</span>, <span class="string">"the"</span>, <span class="string">"donuts"</span>]</span><br></pre></td></tr></table></figure>
+
+<h5 id="去除停止语"><a href="#去除停止语" class="headerlink" title="去除停止语"></a>去除停止语</h5><p>几乎所有的英语文本都包含了像a，I，the或be这样的常用词。这样的话叫做停止语。我们将删除它们，因为几乎所有文档都会匹配停止字。<br>没有“官方”的停止语列表。我们把<a href="https://en.wikipedia.org/wiki/Most_common_words_in_English" target="_blank" rel="noopener">OEC rank</a>前10名排除在外。请根据需要添加：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> stopwords = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">struct</span>&#123;&#125;&#123; <span class="comment">// I wish Go had built-in sets.</span></span><br><span class="line">    <span class="string">"a"</span>: &#123;&#125;, <span class="string">"and"</span>: &#123;&#125;, <span class="string">"be"</span>: &#123;&#125;, <span class="string">"have"</span>: &#123;&#125;, <span class="string">"i"</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">"in"</span>: &#123;&#125;, <span class="string">"of"</span>: &#123;&#125;, <span class="string">"that"</span>: &#123;&#125;, <span class="string">"the"</span>: &#123;&#125;, <span class="string">"to"</span>: &#123;&#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">stopwordFilter</span><span class="params">(tokens []<span class="keyword">string</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    r := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>, <span class="built_in">len</span>(tokens))</span><br><span class="line">    <span class="keyword">for</span> _, token := <span class="keyword">range</span> tokens &#123;</span><br><span class="line">        <span class="keyword">if</span> _, ok := stopwords[token]; !ok &#123;</span><br><span class="line">            r = <span class="built_in">append</span>(r, token)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; stopwordFilter([]<span class="keyword">string</span>&#123;<span class="string">"a"</span>, <span class="string">"donut"</span>, <span class="string">"on"</span>, <span class="string">"a"</span>, <span class="string">"glass"</span>, <span class="string">"plate"</span>, <span class="string">"only"</span>, <span class="string">"the"</span>, <span class="string">"donuts"</span>&#125;)</span><br><span class="line"></span><br><span class="line">[<span class="string">"donut"</span>, <span class="string">"on"</span>, <span class="string">"glass"</span>, <span class="string">"plate"</span>, <span class="string">"only"</span>, <span class="string">"donuts"</span>]</span><br></pre></td></tr></table></figure>
+
+<h5 id="去除多形词"><a href="#去除多形词" class="headerlink" title="去除多形词"></a>去除多形词</h5><p>由于语法规则，文档可能包含同一单词的不同形式。词干分析将单词简化为基本形式。例如，fishing、fished和fisher 可以简化为 fish 。</p>
+<p>实现词干分析器是一项非常重要的任务，这篇文章不讨论它。我们将使用现有的模块之一</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> snowballeng <span class="string">"github.com/kljensen/snowball/english"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">stemmerFilter</span><span class="params">(tokens []<span class="keyword">string</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    r := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="built_in">len</span>(tokens))</span><br><span class="line">    <span class="keyword">for</span> i, token := <span class="keyword">range</span> tokens &#123;</span><br><span class="line">        r[i] = snowballeng.Stem(token, <span class="literal">false</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; stemmerFilter([]<span class="keyword">string</span>&#123;<span class="string">"donut"</span>, <span class="string">"on"</span>, <span class="string">"glass"</span>, <span class="string">"plate"</span>, <span class="string">"only"</span>, <span class="string">"donuts"</span>&#125;)</span><br><span class="line"></span><br><span class="line">[<span class="string">"donut"</span>, <span class="string">"on"</span>, <span class="string">"glass"</span>, <span class="string">"plate"</span>, <span class="string">"only"</span>, <span class="string">"donut"</span>]</span><br></pre></td></tr></table></figure>
+
+<p>注: 词干并不总是一个有效的词。例如，airline 和 airlin。</p>
+<h5 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">analyze</span><span class="params">(text <span class="keyword">string</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    tokens := tokenize(text)</span><br><span class="line">    tokens = lowercaseFilter(tokens)</span><br><span class="line">    tokens = stopwordFilter(tokens)</span><br><span class="line">    tokens = stemmerFilter(tokens)</span><br><span class="line">    <span class="keyword">return</span> tokens</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分词器和过滤器将句子转换成一个标记列表：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; analyze(<span class="string">"A donut on a glass plate. Only the donuts."</span>)</span><br><span class="line"></span><br><span class="line">[<span class="string">"donut"</span>, <span class="string">"on"</span>, <span class="string">"glass"</span>, <span class="string">"plate"</span>, <span class="string">"only"</span>, <span class="string">"donut"</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><p>回到反向索引, 它将文档中的每个单词映射到文档id。map是存储映射的一个很好选择。map中的键是一个令牌（字符串），值是一个文档ID列表：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> index <span class="keyword">map</span>[<span class="keyword">string</span>][]<span class="keyword">int</span></span><br></pre></td></tr></table></figure>
+
+<p>建立索引包括分析文档并将其ID添加到映射关系中：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(idx index)</span> <span class="title">add</span><span class="params">(docs []document)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> _, doc := <span class="keyword">range</span> docs &#123;</span><br><span class="line">        <span class="keyword">for</span> _, token := <span class="keyword">range</span> analyze(doc.Text) &#123;</span><br><span class="line">            ids := idx[token]</span><br><span class="line">            <span class="keyword">if</span> ids != <span class="literal">nil</span> &amp;&amp; ids[<span class="built_in">len</span>(ids)<span class="number">-1</span>] == doc.ID &#123;</span><br><span class="line">                <span class="comment">// Don't add same ID twice.</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            &#125;</span><br><span class="line">            idx[token] = <span class="built_in">append</span>(ids, doc.ID)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    idx := <span class="built_in">make</span>(index)</span><br><span class="line">    idx.add([]document&#123;&#123;ID: <span class="number">1</span>, Text: <span class="string">"A donut on a glass plate. Only the donuts."</span>&#125;&#125;)</span><br><span class="line">    idx.add([]document&#123;&#123;ID: <span class="number">2</span>, Text: <span class="string">"donut is a donut"</span>&#125;&#125;)</span><br><span class="line">    fmt.Println(idx)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">map</span>[donut:[<span class="number">1</span> <span class="number">2</span>] glass:[<span class="number">1</span>] is:[<span class="number">2</span>] on:[<span class="number">1</span>] only:[<span class="number">1</span>] plate:[<span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
+
+<h3 id="索引检索"><a href="#索引检索" class="headerlink" title="索引检索"></a>索引检索</h3><p>要查询索引，我们将应用用于索引的相同标记器和过滤器：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(idx index)</span> <span class="title">search</span><span class="params">(text <span class="keyword">string</span>)</span> [][]<span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> r [][]<span class="keyword">int</span></span><br><span class="line">    <span class="keyword">for</span> _, token := <span class="keyword">range</span> analyze(text) &#123;</span><br><span class="line">        <span class="keyword">if</span> ids, ok := idx[token]; ok &#123;</span><br><span class="line">            r = <span class="built_in">append</span>(r, ids)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; idx.search(<span class="string">"Small wild cat"</span>)</span><br><span class="line"></span><br><span class="line">[[<span class="number">24</span>, <span class="number">173</span>, <span class="number">303</span>, ...], [<span class="number">98</span>, <span class="number">173</span>, <span class="number">765</span>, ...], [[<span class="number">24</span>, <span class="number">51</span>, <span class="number">173</span>, ...]]</span><br></pre></td></tr></table></figure>
+
+<p>最后，我们可以找到所有提到猫的文件。搜索60万个文档所用时间不到1毫秒（18微秒）！</p>
+<p>使用反向索引时，搜索查询的时间复杂度与搜索词的数量成线性关系。在上面的示例查询中，除了分析输入文本外，search只需执行三次map查找。</p>
+<h3 id="Boolean检索"><a href="#Boolean检索" class="headerlink" title="Boolean检索"></a>Boolean检索</h3><p>上一节中的查询为每个令牌返回一个分离的文档列表。当我们在搜索框中输入small wild cat时，我们通常期望找到的是同时包含small、wild和cat的结果列表。下一步是计算列表之间的集合交集。这样我们将得到一个匹配所有令牌的文档列表。</p>
+<p><img src="/articles/实现一个简单的全文检索引擎/venn.png" alt></p>
+<p>幸运的是，反向索引中的id是按升序插入的。由于ID是排序的，所以可以在线性时间内计算两个列表之间的交集。intersection函数同时迭代两个列表，并收集两个列表中存在的ID：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">intersection</span><span class="params">(a []<span class="keyword">int</span>, b []<span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    maxLen := <span class="built_in">len</span>(a)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(b) &gt; maxLen &#123;</span><br><span class="line">        maxLen = <span class="built_in">len</span>(b)</span><br><span class="line">    &#125;</span><br><span class="line">    r := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>, maxLen)</span><br><span class="line">    <span class="keyword">var</span> i, j <span class="keyword">int</span></span><br><span class="line">    <span class="keyword">for</span> i &lt; <span class="built_in">len</span>(a) &amp;&amp; j &lt; <span class="built_in">len</span>(b) &#123;</span><br><span class="line">        <span class="keyword">if</span> a[i] &lt; b[j] &#123;</span><br><span class="line">            i++</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> a[i] &gt; b[j] &#123;</span><br><span class="line">            j++</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            r = <span class="built_in">append</span>(r, a[i])</span><br><span class="line">            i++</span><br><span class="line">            j++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>更新的文本分析给定的查询文本、查找标记并计算ID列表之间的集合交集：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(idx index)</span> <span class="title">search</span><span class="params">(text <span class="keyword">string</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> r []<span class="keyword">int</span></span><br><span class="line">    <span class="keyword">for</span> _, token := <span class="keyword">range</span> analyze(text) &#123;</span><br><span class="line">        <span class="keyword">if</span> ids, ok := idx[token]; ok &#123;</span><br><span class="line">            <span class="keyword">if</span> r == <span class="literal">nil</span> &#123;</span><br><span class="line">                r = ids</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = intersection(r, ids)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Token doesn't exist.</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>wikipedia dump 同时包含匹配 small、wild和cat的两个文档：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; idx.search(<span class="string">"Small wild cat"</span>)</span><br><span class="line"></span><br><span class="line"><span class="number">130764</span>  The wildcat is a species <span class="built_in">complex</span> comprising two small wild cat species, the European wildcat (Felis silvestris) and the African wildcat (F. lybica).</span><br><span class="line"><span class="number">131692</span>  Catopuma is a genus containing two Asian small wild cat species, the Asian golden cat (C. temminckii) and the bay cat.</span><br></pre></td></tr></table></figure>
+
+<p>搜索顺利完成。  </p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>我们刚刚建立了一个全文搜索引擎。尽管它简单，它可以为更先进的项目奠定坚实的基础。</p>
+<p>文中没有提到很多可以显著提高性能和使搜索引擎更人性化的东西。以下是一些进一步改进的想法：</p>
+<ul>
+<li><p>扩展布尔查询以支持 <em>OR</em> 和 <em>NOT</em> ;</p>
+</li>
+<li><p>在磁盘上存储索引：</p>
+<ul>
+<li><p>每次重新启动应用程序时重建索引可能需要一段时间;</p>
+</li>
+<li><p>大索引可能无法放入内存;</p>
+</li>
+</ul>
+</li>
+<li><p>尝试使用内存和CPU高效的数据格式来存储文档ID集;</p>
+</li>
+<li><p>支持索引多个文档字段;</p>
+</li>
+<li><p>按相关性对结果排序;</p>
+</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://artem.krylysov.com/blog/2020/07/28/lets-build-a-full-text-search-engine/" target="_blank" rel="noopener">lets-build-a-full-text-search-engine - krylysov </a></p>
+
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/实现一个简单的全文检索引擎/" title="实现一个简单的全文检索引擎">https://ya2.top/articles/实现一个简单的全文检索引擎/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/Redis如何存储和计算一亿用户的活跃度/" rel="prev" title="Redis如何存储和计算一亿用户的活跃度">
+                <i class="fa fa-chevron-left"></i> Redis如何存储和计算一亿用户的活跃度
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/平滑升级PHP版本/" rel="next" title="平滑升级PHP版本">
+                平滑升级PHP版本 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+              
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么选择FTS"><span class="nav-number">1.</span> <span class="nav-text">为什么选择FTS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语料库"><span class="nav-number">2.</span> <span class="nav-text">语料库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载文档"><span class="nav-number">3.</span> <span class="nav-text">加载文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常规搜索测试"><span class="nav-number">4.</span> <span class="nav-text">常规搜索测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向索引"><span class="nav-number">5.</span> <span class="nav-text">反向索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本分析"><span class="nav-number">6.</span> <span class="nav-text">文本分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分词器"><span class="nav-number">6.1.</span> <span class="nav-text">分词器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过滤器"><span class="nav-number">6.2.</span> <span class="nav-text">过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#大小写过滤"><span class="nav-number">6.2.1.</span> <span class="nav-text">大小写过滤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#去除停止语"><span class="nav-number">6.2.2.</span> <span class="nav-text">去除停止语</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#去除多形词"><span class="nav-number">6.2.3.</span> <span class="nav-text">去除多形词</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#合并"><span class="nav-number">6.2.4.</span> <span class="nav-text">合并</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建索引"><span class="nav-number">7.</span> <span class="nav-text">创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引检索"><span class="nav-number">8.</span> <span class="nav-text">索引检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boolean检索"><span class="nav-number">9.</span> <span class="nav-text">Boolean检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">10.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">11.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

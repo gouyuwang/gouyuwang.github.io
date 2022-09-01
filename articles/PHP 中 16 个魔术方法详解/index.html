@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="前言PHP中把以两个下划线__开头的方法称为魔术方法，这些方法在PHP中充当了举足轻重的作用。 魔术方法包括： __construct(): 类的构造函数 __destruct(): 类的析构函数 __call(): 在对象中调用一个不可访问方法时调用 __callStatic(): 用静态方式中调用一个不可访问方法时调用 __get(): 获得一个类的成员变量时调用 __set(): 设置一个类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 中 16 个魔术方法详解">
+<meta property="og:url" content="https://ya2.top/articles/PHP 中 16 个魔术方法详解/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="前言PHP中把以两个下划线__开头的方法称为魔术方法，这些方法在PHP中充当了举足轻重的作用。 魔术方法包括： __construct(): 类的构造函数 __destruct(): 类的析构函数 __call(): 在对象中调用一个不可访问方法时调用 __callStatic(): 用静态方式中调用一个不可访问方法时调用 __get(): 获得一个类的成员变量时调用 __set(): 设置一个类">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-07-27T16:11:44.396Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP 中 16 个魔术方法详解">
+<meta name="twitter:description" content="前言PHP中把以两个下划线__开头的方法称为魔术方法，这些方法在PHP中充当了举足轻重的作用。 魔术方法包括： __construct(): 类的构造函数 __destruct(): 类的析构函数 __call(): 在对象中调用一个不可访问方法时调用 __callStatic(): 用静态方式中调用一个不可访问方法时调用 __get(): 获得一个类的成员变量时调用 __set(): 设置一个类">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>PHP 中 16 个魔术方法详解 | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/PHP 中 16 个魔术方法详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">PHP 中 16 个魔术方法详解
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-09 10:44:38" itemprop="dateCreated datePublished" datetime="2016-11-09T10:44:38Z">2016-11-09</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>PHP中把以两个下划线__开头的方法称为魔术方法，这些方法在PHP中充当了举足轻重的作用。 魔术方法包括：</p>
+<p><code>__construct()</code>: 类的构造函数</p>
+<p><code>__destruct()</code>: 类的析构函数</p>
+<p><code>__call()</code>: 在对象中调用一个不可访问方法时调用</p>
+<p><code>__callStatic()</code>: 用静态方式中调用一个不可访问方法时调用</p>
+<p><code>__get()</code>: 获得一个类的成员变量时调用</p>
+<p><code>__set()</code>: 设置一个类的成员变量时调用</p>
+<p><code>__isset()</code>: 当对不可访问属性调用isset()或empty()时调用</p>
+<p><code>__unset()</code>: 当对不可访问属性调用unset()时被调用。</p>
+<p><code>__sleep()</code>: 执行serialize()时，先会调用这个函数</p>
+<p><code>__wakeup()</code>: 执行unserialize()时，先会调用这个函数</p>
+<p><code>__toString()</code>: 类被当成字符串时的回应方法</p>
+<p><code>__invoke()</code>: 调用函数的方式调用一个对象时的回应方法</p>
+<p><code>__set_state()</code>: 调用var_export()导出类时，此静态方法会被调用。</p>
+<p><code>__clone()</code>: 当对象复制完成时调用</p>
+<p><code>__autoload()</code>: 尝试加载未定义的类</p>
+<p><code>__debugInfo()</code>: 打印所需调试信息范例</p>
+<p>下面让我们以实例的形式向大家讲解下这几个魔术方法时如何使用的。</p>
+<h4 id="construct"><a href="#construct" class="headerlink" title="__construct"></a>__construct</h4><p>php中构造方法是对象创建完成后第一个被对象自动调用的方法。在每个类中都有一个构造方法，如果没有显示地声明它，那么类中都会默认存在一个没有参数且内容为空的构造方法。</p>
+<p>作用:</p>
+<p>通常构造方法被用来执行一些有用的初始化任务，如对成员属性在创建对象时赋予初始值。</p>
+<p>声明格式:</p>
+<blockquote>
+<p>function __constrct([参数列表]){    方法体 //通常用来对成员属性进行初始化赋值}</p>
+</blockquote>
+<p>注意的事项:</p>
+<ul>
+<li><p>在同一个类中只能声明一个构造方法，原因是，PHP不支持构造函数重载。</p>
+</li>
+<li><p>构造方法名称是以两个下画线开始的__construct()</p>
+</li>
+</ul>
+<p>下面是它的例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="comment">/*** 显示声明一个构造方法且带参数  ***/</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $sex = <span class="string">"男"</span>, $age = <span class="number">22</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*** say 方法   ***/</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"我叫："</span> . <span class="keyword">$this</span>-&gt;name . <span class="string">"，性别："</span> . <span class="keyword">$this</span>-&gt;sex . <span class="string">"，年龄："</span> . <span class="keyword">$this</span>-&gt;age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建对象 $Person1 且不带任参数</span></span><br><span class="line">$Person1 = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="keyword">echo</span> $Person1-&gt;say(); <span class="comment">//输出:我叫：，性别：男，年龄：27</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建对象$Person2且带参数“小明”</span></span><br><span class="line">$Person2 = <span class="keyword">new</span> Person(<span class="string">"小明"</span>);</span><br><span class="line"><span class="keyword">echo</span> $Person2-&gt;say(); <span class="comment">//输出：我叫：张三，性别：男，年龄：27</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建对象$Person3且带三个参数</span></span><br><span class="line">$Person3 = <span class="keyword">new</span> Person(<span class="string">"李四"</span>,<span class="string">"男"</span>,<span class="number">25</span>);</span><br><span class="line"><span class="keyword">echo</span> $Person3-&gt;say(); <span class="comment">//输出：我叫：李四，性别：男，年龄：25</span></span><br></pre></td></tr></table></figure>
+
+<p>通过上面的讲解，现在我们已经知道了什么叫构造方法。那么与构造方法对应的就是析构方法。</p>
+<h4 id="destruct"><a href="#destruct" class="headerlink" title="_destruct()"></a>_destruct()</h4><p>析构方法允许在销毁一个类之前执行的一些操作或完成一些功能，比如说关闭文件、释放结果集等。</p>
+<p>析构方法是PHP5才引进的新内容。</p>
+<p>析造方法的声明格式与构造方法 __construct() 比较类似，也是以两个下划线开始的方法 __destruct() ，这种析构方法名称也是固定的。</p>
+<p>声明格式:</p>
+<blockquote>
+<p>function __destruct(){ //方法体}</p>
+</blockquote>
+<p>注意：析构函数不能带有任何参数。</p>
+<p>作用:</p>
+<p>一般来说，析构方法在PHP中并不是很常用，它属类中可选择的一部分，通常用来完成一些在对象销毁前的清理任务。</p>
+<p>举例演示，如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $sex = <span class="string">"男"</span>, $age = <span class="number">22</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * say 说话方法     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"我叫："</span> . <span class="keyword">$this</span>-&gt;name . <span class="string">"，性别："</span> . <span class="keyword">$this</span>-&gt;sex . <span class="string">"，年龄："</span> . <span class="keyword">$this</span>-&gt;age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * 声明一个析构方法     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"我觉得我还可以再抢救一下，我的名字叫"</span> . <span class="keyword">$this</span>-&gt;name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$Person = <span class="keyword">new</span> Person(<span class="string">"小明"</span>);</span><br><span class="line"><span class="keyword">unset</span>($Person); <span class="comment">//销毁上面创建的对象$Person</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">上面的程序运行时输出：</span><br><span class="line"></span><br><span class="line">我觉得我还可以再抢救一下，我的名字叫小明三</span><br></pre></td></tr></table></figure>
+
+<h4 id="call"><a href="#call" class="headerlink" title="__call()"></a>__call()</h4><p>__call()在对象中调用一个不可访问方法时调用。 该方法有两个参数，第一个参数 $function_name 会自动接收不存在的方法名，第二个 $arguments 则以数组的方式接收不存在方法的多个参数。</p>
+<p>格式：</p>
+<blockquote>
+<p>function __call(string $function_name, array $arguments){    // 方法体}</p>
+</blockquote>
+<p>作用：</p>
+<p>为了避免当调用的方法不存在时产生错误，而意外的导致程序中止，可以使用 __call() 方法来避免。</p>
+<p>该方法在调用的方法不存在时会自动调用，程序仍会继续执行下去。</p>
+<p>请参考如下代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Hello, world!&lt;br&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * 声明此方法用来处理调用对象中不存在的方法     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__call</span><span class="params">($funName, $arguments)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"你所调用的函数："</span> . $funName . <span class="string">"(参数："</span>; <span class="comment">// 输出调用不存在的方法名</span></span><br><span class="line">        print_r($arguments); <span class="comment">// 输出调用不存在的方法时的参数列表</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">")不存在！&lt;br&gt;\n"</span>; <span class="comment">// 结束换行</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$Person = <span class="keyword">new</span> Person();</span><br><span class="line">$Person-&gt;run(<span class="string">"teacher"</span>); <span class="comment">// 调用对象中不存在的方法，则自动调用了对象中的__call()方法</span></span><br><span class="line">$Person-&gt;eat(<span class="string">"小明"</span>, <span class="string">"苹果"</span>);</span><br><span class="line">$Person-&gt;say();</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line"></span><br><span class="line">你所调用的函数：run(参数：<span class="keyword">Array</span> ( [<span class="number">0</span>] =&gt; teacher ) )不存在！</span><br><span class="line">你所调用的函数：eat(参数：<span class="keyword">Array</span> ( [<span class="number">0</span>] =&gt; 小明 [<span class="number">1</span>] =&gt; 苹果 ) )不存在！</span><br><span class="line">Hello, world!</span><br></pre></td></tr></table></figure>
+
+<h4 id="callStatic"><a href="#callStatic" class="headerlink" title="__callStatic()"></a>__callStatic()</h4><p>__callStatic()，用静态方式中调用一个不可访问方法时调用，此方法与上面所说的 __call() 功能除了 __callStatic() 是未静态方法准备的之外，其它都是一样的。</p>
+<p>请看下面代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Hello, world!&lt;br&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * 声明此方法用来处理调用对象中不存在的方法     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">__callStatic</span><span class="params">($funName, $arguments)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"你所调用的静态方法："</span> . $funName . <span class="string">"(参数："</span>; <span class="comment">// 输出调用不存在的方法名</span></span><br><span class="line">        print_r($arguments); <span class="comment">// 输出调用不存在的方法时的参数列表</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">")不存在！&lt;br&gt;\n"</span>; <span class="comment">// 结束换行</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$Person = <span class="keyword">new</span> Person();</span><br><span class="line">$Person::run(<span class="string">"teacher"</span>); <span class="comment">// 调用对象中不存在的方法，则自动调用了对象中的__call()方法</span></span><br><span class="line">$Person::eat(<span class="string">"小明"</span>, <span class="string">"苹果"</span>);</span><br><span class="line">$Person-&gt;say();</span><br><span class="line"></span><br><span class="line">运行结果如下：</span><br><span class="line"></span><br><span class="line">你所调用的静态方法：run(参数：<span class="keyword">Array</span> ( [<span class="number">0</span>] =&gt; teacher ) )不存在！</span><br><span class="line">你所调用的静态方法：eat(参数：<span class="keyword">Array</span> ( [<span class="number">0</span>] =&gt; 小明 [<span class="number">1</span>] =&gt; 苹果 ) )不存在！</span><br><span class="line">Hello, world!</span><br></pre></td></tr></table></figure>
+
+<h4 id="get"><a href="#get" class="headerlink" title="__get()"></a>__get()</h4><p>__get()，获得一个类的成员变量时调用。 在 php 面向对象编程中，类的成员属性被设定为 private 后，如果我们试图在外面调用它则会出现 <code>不能访问某个私有属性</code> 的错误。那么为了解决这个问题，我们可以使用魔术方法 __get()。</p>
+<p>魔术方法__get()的作用</p>
+<p>在程序运行过程中，通过它可以在对象的外部获取私有成员属性的值。</p>
+<p>我们通过下面的 __get() 的实例来更进一步的连接它吧：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $name;</span><br><span class="line">    <span class="keyword">private</span> $age;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">1</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * 在类中添加__get()方法，在直接获取属性值时自动调用一次，以属性名作为参数传入并处理     * <span class="doctag">@param</span> $propertyName     *     * <span class="doctag">@return</span> int     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span><span class="params">($propertyName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($propertyName == <span class="string">"age"</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;age &gt; <span class="number">30</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;age - <span class="number">10</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;$propertyName;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;$propertyName;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$Person = <span class="keyword">new</span> Person(<span class="string">"小明"</span>, <span class="number">60</span>); <span class="comment">// 通过Person类实例化的对象，并通过构造方法为属性赋初值</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"姓名："</span> . $Person-&gt;name . <span class="string">"&lt;br&gt;"</span>;   <span class="comment">// 直接访问私有属性name，自动调用了__get()方法可以间接获取</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"年龄："</span> . $Person-&gt;age . <span class="string">"&lt;br&gt;"</span>;    <span class="comment">// 自动调用了__get()方法，根据对象本身的情况会返回不同的值</span></span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line"></span><br><span class="line">姓名：小明年龄：<span class="number">50</span>六、 __set()，设置一个类的成员变量时调用</span><br></pre></td></tr></table></figure>
+
+<h4 id="set"><a href="#set" class="headerlink" title="__set()"></a>__set()</h4><p>__set( $property, $value )` 方法用来设置私有属性， 给一个未定义的属性赋值时，此方法会被触发，传递的参数是被设置的属性名和值。</p>
+<p>请看下面的演示代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $name;</span><br><span class="line">    <span class="keyword">private</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * 声明魔术方法需要两个参数，真接为私有属性赋值时自动调用，并可以屏蔽一些非法赋值     * <span class="doctag">@param</span> $property     * <span class="doctag">@param</span> $value     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__set</span><span class="params">($property, $value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($property == <span class="string">"age"</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> ($value &gt; <span class="number">150</span> || $value &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;$property = $value;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * 在类中声明说话的方法，将所有的私有属性说出     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"我叫"</span> . <span class="keyword">$this</span>-&gt;name . <span class="string">"，今年"</span> . <span class="keyword">$this</span>-&gt;age . <span class="string">"岁了"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$Person = <span class="keyword">new</span> Person(<span class="string">"小明"</span>, <span class="number">25</span>); <span class="comment">//注意，初始值将被下面所改变</span></span><br><span class="line"><span class="comment">//自动调用了__set()函数，将属性名name传给第一个参数，将属性值”李四”传给第二个参数</span></span><br><span class="line">$Person-&gt;name = <span class="string">"小红"</span>;     <span class="comment">//赋值成功。如果没有__set()，则出错。</span></span><br><span class="line"><span class="comment">//自动调用了__set()函数，将属性名age传给第一个参数，将属性值26传给第二个参数$Person-&gt;age = 16; // 赋值成功</span></span><br><span class="line">$Person-&gt;age = <span class="number">160</span>; <span class="comment">//160是一个非法值，赋值失效</span></span><br><span class="line">$Person-&gt;say();  <span class="comment">// 输出：我叫小红，今年16岁了</span></span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line"></span><br><span class="line">我叫小红，今年<span class="number">16</span>岁了</span><br></pre></td></tr></table></figure>
+
+<h4 id="isset"><a href="#isset" class="headerlink" title="__isset()"></a>__isset()</h4><p>__isset()，当对不可访问属性调用isset()或empty()时调用。在看这个方法之前我们看一下isset()函数的应用，isset()是测定变量是否设定用的函数，传入一个变量作为参数，如果传入的变量存在则传回true，否则传回false。</p>
+<p>那么如果在一个对象外面使用isset()这个函数去测定对象里面的成员是否被设定可不可以用它呢？</p>
+<p>分两种情况：</p>
+<ul>
+<li><p>如果对象里面成员是公有的，我们就可以使用这个函数来测定成员属性</p>
+</li>
+<li><p>如果是私有的成员属性，这个函数就不起作用了，原因就是因为私有的被封装了，在外部不可见。</p>
+</li>
+</ul>
+<p>那么我们就不可以在对象的外部使用isset()函数来测定私有成员属性是否被设定了呢？ 当然是可以的，但不是一成不变。你只要在类里面加上一个<strong>isset()方法就可以了，当在类外部使用isset()函数来测定对象里面的私有成员是否被设定时，就会自动调用类里面的</strong>isset()方法了帮我们完成这样的操作。</p>
+<blockquote>
+<p><strong>isset()的作用：当对不可访问属性调用 isset() 或 empty() 时，</strong>isset() 会被调用。</p>
+</blockquote>
+<p>请看下面代码演示：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">private</span> $name;</span><br><span class="line">    <span class="keyword">private</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * <span class="doctag">@param</span> $content     *     * <span class="doctag">@return</span> bool     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__isset</span><span class="params">($content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"当在类外部使用isset()函数测定私有成员&#123;$content&#125;时，自动调用&lt;br&gt;"</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;$content);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">"小明"</span>, <span class="number">25</span>); <span class="comment">// 初始赋值</span></span><br><span class="line"><span class="keyword">echo</span> <span class="keyword">isset</span>($person-&gt;sex),<span class="string">"&lt;br&gt;"</span>; <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">echo</span> <span class="keyword">isset</span>($person-&gt;name),<span class="string">"&lt;br&gt;"</span>;<span class="comment">// 当在类外部使用isset()函数测定私有成员name时，自动调用</span></span><br><span class="line"><span class="keyword">echo</span> <span class="keyword">isset</span>($person-&gt;age),<span class="string">"&lt;br&gt;"</span>; <span class="comment">// 当在类外部使用isset()函数测定私有成员age时，自动调用</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="unset"><a href="#unset" class="headerlink" title="__unset()"></a>__unset()</h4><p>看这个方法之前呢，我们也先来看一下 unset() 函数，unset()这个函数的作用是删除指定的变量且传回true，参数为要删除的变量。</p>
+<p>那么如果在一个对象外部去删除对象内部的成员属性用unset()函数可以吗？</p>
+<p>这里自然也是分两种情况：</p>
+<ul>
+<li><p>如果一个对象里面的成员属性是公有的，就可以使用这个函数在对象外面删除对象的公有属性。</p>
+</li>
+<li><p>如果对象的成员属性是私有的，这个函数就没有权限去删除。</p>
+</li>
+</ul>
+<p>虽然有以上两种情况，但我想说的是同样如果你在一个对象里面加上<strong>unset()这个方法，就可以在对象的外部去删除对象的私有成员属性了。在对象里面加上了</strong>unset()这个方法之后，在对象外部使用“unset()”函数删除对象内部的私有成员属性时，对象会自动调用__unset()函数来帮我们删除对象内部的私有成员属性。</p>
+<p>请看如下代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">private</span> $name;</span><br><span class="line">    <span class="keyword">private</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * <span class="doctag">@param</span> $content     *     * <span class="doctag">@return</span> bool     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__unset</span><span class="params">($content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"当在类外部使用unset()函数来删除私有成员时自动调用的&lt;br&gt;"</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;$content);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">"小明"</span>, <span class="number">25</span>); <span class="comment">// 初始赋值</span></span><br><span class="line"><span class="keyword">unset</span>($person-&gt;sex);<span class="comment">// 成功删除</span></span><br><span class="line"><span class="keyword">unset</span>($person-&gt;name);<span class="comment">// 当在类外部使用unset()函数来删除私有成员时自动调用的&lt;br&gt;</span></span><br><span class="line"><span class="keyword">unset</span>($person-&gt;age);<span class="comment">// 当在类外部使用unset()函数来删除私有成员时自动调用的&lt;br&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="sleep"><a href="#sleep" class="headerlink" title="__sleep()"></a>__sleep()</h4><blockquote>
+<p>执行serialize()时，先会调用这个函数. serialize() 函数会检查类中是否存在一个魔术方法 __sleep()。如果存在，则该方法会优先被调用，然后才执行序列化操作。</p>
+</blockquote>
+<p>此功能可以用于清理对象，并返回一个包含对象中所有应被序列化的变量名称的数组。</p>
+<p>如果该方法未返回任何内容，则 NULL 被序列化，并产生一个 E_NOTICE 级别的错误。</p>
+<p>注意：</p>
+<ul>
+<li>__sleep() 不能返回父类的私有成员的名字。这样做会产生一个 E_NOTICE 级别的错误。可以用 Serializable 接口来替代。</li>
+</ul>
+<p>作用：</p>
+<ul>
+<li>__sleep() 方法常用于提交未提交的数据，或类似的清理操作。同时，如果有一些很大的对象，但不需要全部保存，这个功能就很好用。</li>
+</ul>
+<p>具体请参考如下代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * <span class="doctag">@return</span> array     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__sleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"当在类外部使用serialize()时会调用这里的__sleep()方法&lt;br&gt;"</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = base64_encode(<span class="keyword">$this</span>-&gt;name);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'name'</span>,</span><br><span class="line">            <span class="string">'age'</span></span><br><span class="line">        ); <span class="comment">// 这里必须返回一个数值，里边的元素表示返回的属性名称    </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">'小明'</span>); <span class="comment">// 初始赋值</span></span><br><span class="line"><span class="keyword">echo</span> serialize($person);<span class="comment">// 当在类外部使用serialize()时会调用这里的__sleep()方法O:6:"Person":2:&#123;s:4:"name";s:8:"5bCP5piO";s:3:"age";i:25;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="wakeup"><a href="#wakeup" class="headerlink" title="__wakeup()"></a>__wakeup()</h4><p>执行unserialize()时，先会调用这个函数。如果说 __sleep() 是白的，那么 __wakeup() 就是黑的了。 那么为什么呢？</p>
+<p>因为与之相反，<code>unserialize()</code> 会检查是否存在一个 <code>__wakeup()</code> 方法。如果存在，则会先调用 <code>__wakeup</code> 方法，预先准备对象需要的资源。</p>
+<p>作用：</p>
+<p>__wakeup() 经常用在反序列化操作中，例如重新建立数据库连接，或执行其它初始化操作。</p>
+<p>还是看代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * <span class="doctag">@return</span> array     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__sleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"当在类外部使用serialize()时会调用这里的__sleep()方法&lt;br&gt;"</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = base64_encode(<span class="keyword">$this</span>-&gt;name);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'name'</span>,</span><br><span class="line">            <span class="string">'age'</span></span><br><span class="line">        ); <span class="comment">// 这里必须返回一个数值，里边的元素表示返回的属性名称    </span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * __wakeup     */</span>    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span><span class="params">()</span> </span>&#123;   </span><br><span class="line">             <span class="keyword">echo</span> <span class="string">"当在类外部使用unserialize()时会调用这里的__wakeup()方法&lt;br&gt;"</span>;  <span class="keyword">$this</span>-&gt;name = <span class="number">2</span>;        </span><br><span class="line">             <span class="keyword">$this</span>-&gt;sex = <span class="string">'男'</span>;        <span class="comment">// 这里不需要返回数组</span></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">'小明'</span>); <span class="comment">// 初始赋值</span></span><br><span class="line">var_dump(serialize($person));<span class="comment">// 当在类外部使用serialize()时会调用这里的__sleep()方法string(58) "O:6:"Person":2:&#123;s:4:"name";s:8:"5bCP5piO";s:3:"age";i:25;&#125;" </span></span><br><span class="line">var_dump(unserialize(serialize($person)));<span class="comment">// 当在类外部使用serialize()时会调用这里的__sleep()方法当在类外部使用unserialize()时会调用这里的__wakeup()方法object(Person)#2 (3) &#123; ["sex"]=&gt; string(3) "男" ["name"]=&gt; int(2) ["age"]=&gt; int(25) &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="__toString()"></a>__toString()</h4><p>类被当成字符串时的回应方法</p>
+<p>作用：</p>
+<p>__toString() 方法用于一个类被当成字符串时应怎样回应。例如 <code>echo $obj;</code> 应该显示些什么。</p>
+<p>注意：</p>
+<p>此方法必须返回一个字符串，否则将发出一条 <code>E_RECOVERABLE_ERROR</code> 级别的致命错误。</p>
+<p>警告：</p>
+<p>不能在 __toString() 方法中抛出异常。这么做会导致致命错误。</p>
+<p>代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'go go go'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">'小明'</span>); <span class="comment">// 初始赋值</span></span><br><span class="line"><span class="keyword">echo</span> $person;<span class="comment">// go go go</span></span><br></pre></td></tr></table></figure>
+
+<p>那么如果类中没有 __toString() 这个魔术方法运行会发生什么呢？让我们来测试下：</p>
+<p>代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">'小明'</span>); <span class="comment">// 初始赋值</span></span><br><span class="line"><span class="keyword">echo</span> $person;</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line"></span><br><span class="line">Catchable fatal error: Object of class Person could not be converted to string in D:\www\test.php on line 12</span><br></pre></td></tr></table></figure>
+
+<p>很明显，页面报了一个致命错误，这是语法所不允许的。</p>
+<h4 id="invoke"><a href="#invoke" class="headerlink" title="__invoke()"></a>__invoke()</h4><p>作用：</p>
+<p>当尝试以调用函数的方式调用一个对象时，__invoke() 方法会被自动调用。</p>
+<p>注意：</p>
+<p>本特性只在 PHP 5.3.0 及以上版本有效。</p>
+<p>直接上代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'这可是一个对象哦'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">'小明'</span>); <span class="comment">// 初始赋值</span></span><br><span class="line">$person(); <span class="comment">// 这可是一个对象哦</span></span><br></pre></td></tr></table></figure>
+
+<p>当然，如果你执意要将对象当函数方法使用，那么会得到下面结果：</p>
+<p>Fatal error: Function name must be a string in D:\www\test.php on line 12</p>
+<h4 id="set-state"><a href="#set-state" class="headerlink" title="__set_state()"></a>__set_state()</h4><p>作用：</p>
+<p>自 PHP 5.1.0 起，当调用 var_export() 导出类时，此静态方法会被自动调用。</p>
+<p>参数：</p>
+<p>本方法的唯一参数是一个数组，其中包含按 array(‘property’ =&gt; value, …) 格式排列的类属性。</p>
+<p>下面我们先来看看在没有加 __set_state() 情况按下，代码及运行结果如何：</p>
+<p>上代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">'小明'</span>); <span class="comment">// 初始赋值</span></span><br><span class="line">var_export($person);</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line"></span><br><span class="line">Person::__set_state(<span class="keyword">array</span>( <span class="string">'sex'</span> =&gt; <span class="string">'男'</span>, <span class="string">'name'</span> =&gt; <span class="string">'小明'</span>, <span class="string">'age'</span> =&gt; <span class="number">25</span>, ))</span><br></pre></td></tr></table></figure>
+
+<p>很明显，将对象中的属性都打印出来了</p>
+<p>加了 __set_state() 之后：</p>
+<p>继续上代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">__set_state</span><span class="params">($an_array)</span> </span>&#123;</span><br><span class="line">        $a = <span class="keyword">new</span> Person();</span><br><span class="line">        $a-&gt;name = $an_array[<span class="string">'name'</span>];</span><br><span class="line">        <span class="keyword">return</span> $a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">'小明'</span>); <span class="comment">// 初始赋值</span></span><br><span class="line">$person-&gt;name = <span class="string">'小红'</span>;</span><br><span class="line">var_export($person);</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line"></span><br><span class="line">Person::__set_state(<span class="keyword">array</span>( <span class="string">'sex'</span> =&gt; <span class="string">'男'</span>, <span class="string">'name'</span> =&gt; <span class="string">'小红'</span>, <span class="string">'age'</span> =&gt; <span class="number">25</span>, ))</span><br></pre></td></tr></table></figure>
+
+<h4 id="clone"><a href="#clone" class="headerlink" title="__clone()"></a>__clone()</h4><p>在多数情况下，我们并不需要完全复制一个对象来获得其中属性。但有一个情况下确实需要：如果你有一个 GTK 窗口对象，该对象持有窗口相关的资源。你可能会想复制一个新的窗口，保持所有属性与原来的窗口相同，但必须是一个新的对象（因为如果不是新的对象，那么一个窗口中的改变就会影响到另一个窗口）。还有一种情况：如果对象 A 中保存着对象 B 的引用，当你复制对象 A 时，你想其中使用的对象不再是对象 B 而是 B 的一个副本，那么你必须得到对象 A 的一个副本。</p>
+<p>作用：</p>
+<p>对象复制可以通过 clone 关键字来完成（如果可能，这将调用对象的 __clone() 方法）。对象中的 __clone() 方法不能被直接调用。</p>
+<p>语法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$copy_of_object = <span class="keyword">clone</span> $object;</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p>当对象被复制后，PHP 5 会对对象的所有属性执行一个浅复制（shallow copy）。所有的引用属性 仍然会是一个指向原来的变量的引用。</p>
+<p>当复制完成时，如果定义了 __clone() 方法，则新创建的对象（复制生成的对象）中的 __clone() 方法会被调用，可用于修改属性的值（如果有必要的话）。</p>
+<p>看代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $sex;</span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name = <span class="string">""</span>, $age = <span class="number">25</span>, $sex = <span class="string">'男'</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">__METHOD__</span> . <span class="string">"你正在克隆对象&lt;br&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$person = <span class="keyword">new</span> Person(<span class="string">'小明'</span>); <span class="comment">// 初始赋值</span></span><br><span class="line">$person2 = <span class="keyword">clone</span> $person;</span><br><span class="line">var_dump(<span class="string">'persion1:'</span>);</span><br><span class="line">var_dump($person);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">'&lt;br&gt;'</span>;</span><br><span class="line">var_dump(<span class="string">'persion2:'</span>);</span><br><span class="line">var_dump($person2);</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">Person::__clone你正在克隆对象string(<span class="number">9</span>) <span class="string">"persion1:"</span> object(Person)<span class="comment">#1 (3) &#123;</span></span><br><span class="line">     [<span class="string">"sex"</span>]=&gt; string(<span class="number">3</span>) <span class="string">"男"</span> </span><br><span class="line">     [<span class="string">"name"</span>]=&gt; string(<span class="number">6</span>) <span class="string">"小明"</span></span><br><span class="line">     [<span class="string">"age"</span>]=&gt; int(<span class="number">25</span>) &#125; </span><br><span class="line">     string(<span class="number">9</span>) <span class="string">"persion2:"</span> </span><br><span class="line">     object(Person)<span class="comment">#2 (3) &#123;</span></span><br><span class="line">          [<span class="string">"sex"</span>]=&gt; string(<span class="number">3</span>) <span class="string">"男"</span> </span><br><span class="line">          [<span class="string">"name"</span>]=&gt; string(<span class="number">6</span>) <span class="string">"小明"</span></span><br><span class="line">          [<span class="string">"age"</span>]=&gt; int(<span class="number">25</span>)</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+<p>克隆成功。</p>
+<h4 id="autoload"><a href="#autoload" class="headerlink" title="__autoload()"></a>__autoload()</h4><p>作用：</p>
+<p>你可以通过定义这个函数来启用类的自动加载。</p>
+<p>在魔术函数 __autoload() 方法出现以前，如果你要在一个程序文件中实例化100个对象，那么你必须用include或者require包含进来100个类文件，或者你把这100个类定义在同一个类文件中 —— 相信这个文件一定会非常大，然后你就痛苦了。</p>
+<p>但是有了 __autoload() 方法，以后就不必为此大伤脑筋了，这个类会在你实例化对象之前自动加载制定的文件。</p>
+<p>还是通过例子来看看吧：</p>
+<p>先看看以往的方式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**  * 文件non_autoload.php  */</span> </span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'project/class/A.php'</span>);  </span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'project/class/B.php'</span>);  </span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">'project/class/C.php'</span>);  </span><br><span class="line"><span class="keyword">if</span> (条件A) &#123;    </span><br><span class="line">      $a = <span class="keyword">new</span> A();</span><br><span class="line">      $b = <span class="keyword">new</span> B();</span><br><span class="line">      $c = <span class="keyword">new</span> C();</span><br><span class="line">      <span class="comment">// … 业务逻辑  </span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (条件B) &#123;</span><br><span class="line">      $a = newA();</span><br><span class="line">      $b = <span class="keyword">new</span> B();</span><br><span class="line">      <span class="comment">// … 业务逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到了吗？不用100个，只是3个看起来就有点烦了。而且这样就会有一个问题：如果脚本执行“条件B”这个分支时，C.php这个文件其实没有必要包含。因为，任何一个被包含的文件，无论是否使用，均会被php引擎编译。如果不使用，却被编译，这样可以被视作一种资源浪费。更进一步，如果C.php包含了D.php，D.php包含了E.php。并且大部分情况都执行“条件B”分支，那么就会浪费一部分资源去编译C.php,D.php,E.php三个“无用”的文件。</p>
+<p>那么如果使用 __autoload() 方式呢？</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**  * 文件autoload_demo.php  */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">__autoload</span><span class="params">($className)</span> </span>&#123;</span><br><span class="line">    $filePath = <span class="string">"project/class/&#123;$className&#125;.php"</span>;</span><br><span class="line">    <span class="keyword">if</span> (is_readable($filePath)) &#123;</span><br><span class="line">        <span class="keyword">require</span> ($filePath);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (条件A) &#123;</span><br><span class="line">    $a = <span class="keyword">new</span> A();</span><br><span class="line">    $b = <span class="keyword">new</span> B();</span><br><span class="line">    $c = <span class="keyword">new</span> C();</span><br><span class="line">    <span class="comment">// … 业务逻辑</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (条件B) &#123;</span><br><span class="line">    $a = newA();</span><br><span class="line">    $b = <span class="keyword">new</span> B();</span><br><span class="line">    <span class="comment">// … 业务逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ok,不论效率怎么用，最起码界面看起来舒服多了，没有太多冗余的代。</p>
+<p>再来看看这里的效率如何，我们分析下：</p>
+<p>当php引擎第一次使用类A，但是找不到时，会自动调用 __autoload 方法，并将类名“A”作为参数传入。所以，我们在 __autoload() 中需要的做的就是根据类名，找到相应的文件，并包含进来，如果我们的方法也找不到，那么php引擎就会报错了。</p>
+<p>注意：</p>
+<p>这里可以只用require，因为一旦包含进来后，php引擎再遇到类A时，将不会调用__autoload，而是直接使用内存中的类A，不会导致多次包含。</p>
+<p>扩展：</p>
+<p>其实php发展到今天，已经有将 <code>spl_autoload_register</code> — 注册给定的函数作为 __autoload 的实现了，但是这个不在本文讲解之内，有兴趣可以自行看手册。</p>
+<h4 id="debugInfo"><a href="#debugInfo" class="headerlink" title="__debugInfo()"></a>__debugInfo()</h4><p>注意：</p>
+<p>该方法在PHP 5.6.0及其以上版本才可以用，如果你发现使用无效或者报错，请查看啊你的版本。</p>
+<p>看代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $prop;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($val)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;prop = $val;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**     * <span class="doctag">@return</span> array     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__debugInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">'propSquared'</span> =&gt; <span class="keyword">$this</span>-&gt;prop**<span class="number">2</span>, ];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">var_dump(<span class="keyword">new</span> C(<span class="number">42</span>));</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line"></span><br><span class="line">object(C)<span class="comment">#1 (1) &#123; ["propSquared"]=&gt; int(1764) &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>再次注意：</p>
+<p>这里的 <code>**</code> 是乘方的意思，也是在PHP5.6.0及其以上才可以使用，详情请查看<a href="https://www.php.net/" target="_blank" rel="noopener">PHP手册</a></p>
+
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/PHP 中 16 个魔术方法详解/" title="PHP 中 16 个魔术方法详解">https://ya2.top/articles/PHP 中 16 个魔术方法详解/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/一分钟了解负载均衡的一切/" rel="prev" title="一分钟了解负载均衡的一切">
+                <i class="fa fa-chevron-left"></i> 一分钟了解负载均衡的一切
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/了解MySQL索引与优化/" rel="next" title="了解MySQL索引与优化">
+                了解MySQL索引与优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#construct"><span class="nav-number">2.</span> <span class="nav-text">__construct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#destruct"><span class="nav-number">3.</span> <span class="nav-text">_destruct()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#call"><span class="nav-number">4.</span> <span class="nav-text">__call()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#callStatic"><span class="nav-number">5.</span> <span class="nav-text">__callStatic()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#get"><span class="nav-number">6.</span> <span class="nav-text">__get()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set"><span class="nav-number">7.</span> <span class="nav-text">__set()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#isset"><span class="nav-number">8.</span> <span class="nav-text">__isset()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unset"><span class="nav-number">9.</span> <span class="nav-text">__unset()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleep"><span class="nav-number">10.</span> <span class="nav-text">__sleep()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wakeup"><span class="nav-number">11.</span> <span class="nav-text">__wakeup()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toString-NaN"><span class="nav-number">12.</span> <span class="nav-text">__toString()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#invoke"><span class="nav-number">13.</span> <span class="nav-text">__invoke()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-state"><span class="nav-number">14.</span> <span class="nav-text">__set_state()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clone"><span class="nav-number">15.</span> <span class="nav-text">__clone()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#autoload"><span class="nav-number">16.</span> <span class="nav-text">__autoload()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#debugInfo"><span class="nav-number">17.</span> <span class="nav-text">__debugInfo()</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

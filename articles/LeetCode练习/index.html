@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="本文记录LeetCode练习。 算法两数之和1234567891011121314151617181920class Solution &amp;#123;    /**     * @param Integer[] $nums     * @param Integer $target     * @return Integer[]     */    function twoSum($nums, $ta">
+<meta name="keywords" content="随笔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode练习">
+<meta property="og:url" content="https://ya2.top/articles/LeetCode练习/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="本文记录LeetCode练习。 算法两数之和1234567891011121314151617181920class Solution &amp;#123;    /**     * @param Integer[] $nums     * @param Integer $target     * @return Integer[]     */    function twoSum($nums, $ta">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-07-27T16:12:00.125Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode练习">
+<meta name="twitter:description" content="本文记录LeetCode练习。 算法两数之和1234567891011121314151617181920class Solution &amp;#123;    /**     * @param Integer[] $nums     * @param Integer $target     * @return Integer[]     */    function twoSum($nums, $ta">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>LeetCode练习 | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/LeetCode练习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">LeetCode练习
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-01 15:46:29" itemprop="dateCreated datePublished" datetime="2019-04-01T15:46:29Z">2019-04-01</time>
+            </span>
+          
+
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <p>本文记录LeetCode练习。</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><h4 id="两数之和"><a href="#两数之和" class="headerlink" title="两数之和"></a><a href="https://leetcode-cn.com/problems/two-sum/" target="_blank" rel="noopener">两数之和</a></h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Integer[] $nums</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Integer $target</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Integer[]</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">twoSum</span><span class="params">($nums, $target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(is_array($nums))&#123; </span><br><span class="line">            <span class="keyword">foreach</span>($nums <span class="keyword">as</span> $k1=&gt;$v)&#123;</span><br><span class="line">                $offset = $target-$v;</span><br><span class="line">                $k2 = array_search($offset,$nums);</span><br><span class="line">                <span class="keyword">if</span>(<span class="keyword">false</span> !== $k2 &amp;&amp; $k1!=$k2)&#123;</span><br><span class="line">                    <span class="keyword">return</span> [$k1,$k2];</span><br><span class="line">                &#125; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> [];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="两数相加"><a href="#两数相加" class="headerlink" title="两数相加"></a><a href="https://leetcode-cn.com/problems/add-two-numbers/" target="_blank" rel="noopener">两数相加</a></h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a singly-linked list.</span></span><br><span class="line"><span class="comment"> * class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     public $val = 0;</span></span><br><span class="line"><span class="comment"> *     public $next = null;</span></span><br><span class="line"><span class="comment"> *     function __construct($val) &#123; $this-&gt;val = $val; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ListNode $l1</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ListNode $l2</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> ListNode</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">addTwoNumbers</span><span class="params">($l1, $l2)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        $node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        $out = <span class="number">0</span>;<span class="comment">// 上一次进位</span></span><br><span class="line">        </span><br><span class="line">        $header = $node;<span class="comment">// 头结点</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>($l1 || $l2)&#123;</span><br><span class="line">            </span><br><span class="line">            $x  = $l1-&gt;val ?? <span class="number">0</span>;</span><br><span class="line">            </span><br><span class="line">            $y  = $l2-&gt;val ?? <span class="number">0</span>;</span><br><span class="line">            </span><br><span class="line">            $sum  = $x + $y + $out;</span><br><span class="line">            </span><br><span class="line">            $val = intval($sum % <span class="number">10</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 下一次进位</span></span><br><span class="line">            $out = intval($sum / <span class="number">10</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 构建下一个结点</span></span><br><span class="line">            $node-&gt;next = <span class="keyword">new</span> ListNode($val); </span><br><span class="line">                           </span><br><span class="line">            <span class="comment">// 指针移到下一个结点</span></span><br><span class="line">            $node = $node-&gt;next;</span><br><span class="line">    </span><br><span class="line">            $l1 = $l1-&gt;next ?? <span class="keyword">null</span>;</span><br><span class="line">            $l2 = $l2-&gt;next ?? <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 最后一个计算溢位</span></span><br><span class="line">        <span class="keyword">if</span>($out &gt; <span class="number">0</span>)&#123;</span><br><span class="line">          $node-&gt;next = <span class="keyword">new</span> ListNode($out); </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> $header-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="最大数"><a href="#最大数" class="headerlink" title="最大数"></a><a href="https://leetcode-cn.com/problems/largest-number/" target="_blank" rel="noopener">最大数</a></h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123; </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Integer[] $nums</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> String</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">largestNumber</span><span class="params">($nums)</span> </span>&#123;</span><br><span class="line">     </span><br><span class="line">       <span class="keyword">if</span> (!is_array($nums)) <span class="keyword">return</span> <span class="string">''</span>; </span><br><span class="line">        $len = count($nums);</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $len; $i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> ($j = $i + <span class="number">1</span>; $j &lt; $len; $j++) &#123;</span><br><span class="line">               </span><br><span class="line">                <span class="keyword">if</span> ( $nums[$i] . $nums[$j] &lt;  $nums[$j] . $nums[$i] ) &#123;</span><br><span class="line">                    </span><br><span class="line">                    $_tmp = $nums[$i];</span><br><span class="line">                    $nums[$i] = $nums[$j];</span><br><span class="line">                    $nums[$j] = $_tmp;</span><br><span class="line">                </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        $ret =  implode($nums);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">empty</span>($ret[<span class="number">0</span>]) ? <span class="string">'0'</span> : $ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="无重复字符的最长子串"><a href="#无重复字符的最长子串" class="headerlink" title="无重复字符的最长子串"></a><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">无重复字符的最长子串</a></h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> String $s</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Integer</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span><span class="params">($s)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        $len = strlen($s);</span><br><span class="line">        </span><br><span class="line">        $p = <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        $_tmp = <span class="string">""</span>; </span><br><span class="line">        </span><br><span class="line">        $max = <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>($p &lt; $len)&#123; </span><br><span class="line">           </span><br><span class="line">           $target = $s[$p];</span><br><span class="line">           </span><br><span class="line">           $pos = strpos($_tmp,$target);</span><br><span class="line">            </span><br><span class="line">           <span class="keyword">if</span> (<span class="keyword">false</span> !== $pos) &#123;</span><br><span class="line"></span><br><span class="line">                $c = strlen($_tmp); </span><br><span class="line">               </span><br><span class="line">                $t =  $pos;</span><br><span class="line">               </span><br><span class="line">                $_tmp = substr($_tmp, $t-$c+<span class="number">1</span>,$c-$t<span class="number">-1</span>);  </span><br><span class="line">           &#125;</span><br><span class="line">      </span><br><span class="line">           $_tmp .= $target;</span><br><span class="line">            </span><br><span class="line">           $c = strlen($_tmp); </span><br><span class="line">            </span><br><span class="line">           <span class="keyword">if</span>( $c &gt; $max ) &#123;</span><br><span class="line">                $max = $c;</span><br><span class="line">           &#125; </span><br><span class="line">           $p++;</span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> $max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="寻找两个有序数组的中位数"><a href="#寻找两个有序数组的中位数" class="headerlink" title="寻找两个有序数组的中位数"></a><a href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays/" target="_blank" rel="noopener">寻找两个有序数组的中位数</a></h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Integer[] $nums1</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Integer[] $nums2</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Float</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">findMedianSortedArrays</span><span class="params">($nums1, $nums2)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// define recursive function</span></span><br><span class="line">        $recursive = <span class="function"><span class="keyword">function</span> <span class="params">(array $nums1, int $i, array $nums2, int $j, int $k)</span> <span class="title">use</span> <span class="params">(&amp;$recursive)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">isset</span>($nums1[$i]))</span><br><span class="line">                <span class="keyword">return</span> $nums2[$j + $k - <span class="number">1</span>];<span class="comment">//nums1为空数组</span></span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">isset</span>($nums2[$j]))</span><br><span class="line">                <span class="keyword">return</span> $nums1[$i + $k - <span class="number">1</span>];<span class="comment">//nums2为空数组</span></span><br><span class="line">            <span class="keyword">if</span> ($k == <span class="number">1</span>)<span class="comment">// 最后一次递归</span></span><br><span class="line">                <span class="keyword">return</span> min($nums1[$i], $nums2[$j]);</span><br><span class="line"></span><br><span class="line">            $k2 = intval($k / <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">            $midVal1 = $nums1[$i + $k2 - <span class="number">1</span>] ?? PHP_INT_MAX;</span><br><span class="line">            $midVal2 = $nums2[$j + $k2 - <span class="number">1</span>] ?? PHP_INT_MAX;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> ($midVal1 &lt; $midVal2) &#123;</span><br><span class="line">                <span class="keyword">return</span> $recursive($nums1, $i + $k2, $nums2, $j, $k - $k2);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> $recursive($nums1, $i, $nums2, $j + $k2, $k - $k2);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// calc</span></span><br><span class="line">        $len = count($nums1) + count($nums2);</span><br><span class="line">        $left = $recursive($nums1, <span class="number">0</span>, $nums2, <span class="number">0</span>, intval($len + <span class="number">1</span>) / <span class="number">2</span>);</span><br><span class="line">        $right = $recursive($nums1, <span class="number">0</span>, $nums2, <span class="number">0</span>, intval($len + <span class="number">2</span>) / <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">return</span> ($left + $right) / <span class="number">2.0</span>;</span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="最长回文子串"><a href="#最长回文子串" class="headerlink" title="最长回文子串"></a><a href="https://leetcode-cn.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">最长回文子串</a></h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123; </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> String $s</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> String</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">longestPalindrome</span><span class="params">($str)</span> </span>&#123;</span><br><span class="line">        $len = strlen($str);</span><br><span class="line">        $hlen = <span class="number">1</span>;</span><br><span class="line">        $start = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $len; $i++) &#123;</span><br><span class="line">            $l = $h = $i;</span><br><span class="line">            <span class="comment">// 下面两个while只可能有一个执行</span></span><br><span class="line">            <span class="keyword">while</span> ($h &lt; $len - <span class="number">1</span> &amp;&amp; $str[$l] == $str[$h + <span class="number">1</span>]) &#123;<span class="comment">// 非中心对称</span></span><br><span class="line">                $h++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (</span><br><span class="line">                $l &gt; <span class="number">0</span> &amp;&amp; $h &lt; $len - <span class="number">1</span> <span class="comment">// 边界</span></span><br><span class="line">                &amp;&amp; $str[$l - <span class="number">1</span>] == $str[$h + <span class="number">1</span>]<span class="comment">//  中心对称</span></span><br><span class="line">            ) &#123;</span><br><span class="line">                $l--;</span><br><span class="line">                $h++;</span><br><span class="line">            &#125;</span><br><span class="line">            $max = $h - $l + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> ($hlen &lt; $max) &#123;</span><br><span class="line">                $hlen = $max;</span><br><span class="line">                $start = $l;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> substr($str, $start, $hlen);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Z-字形变换"><a href="#Z-字形变换" class="headerlink" title=" Z 字形变换"></a><a href="https://leetcode-cn.com/problems/zigzag-conversion/" target="_blank" rel="noopener"> Z 字形变换</a></h4><p>思路分析：</p>
+<p>以 row = 5 为例，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1       9        17        25          33</span><br><span class="line">2    8 10     16 18     24 26       32 34</span><br><span class="line">3  7   11   15   19   23   27    31    35</span><br><span class="line">4 6    12 14     20 22     28 30       36</span><br><span class="line">5      13        21        29          37</span><br></pre></td></tr></table></figure>
+
+<p>取出竖列</p>
+<table>
+<thead>
+<tr>
+<th align="left">k(第K行)\i(第i列)</th>
+<th align="left">1</th>
+<th align="left">2</th>
+<th align="left">3</th>
+<th align="left">4</th>
+<th align="left">5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">9</td>
+<td align="left">17</td>
+<td align="left">25</td>
+<td align="left">33</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">10</td>
+<td align="left">18</td>
+<td align="left">26</td>
+<td align="left">34</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">11</td>
+<td align="left">19</td>
+<td align="left">27</td>
+<td align="left">35</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">4</td>
+<td align="left">12</td>
+<td align="left">20</td>
+<td align="left">28</td>
+<td align="left">36</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">5</td>
+<td align="left">13</td>
+<td align="left">21</td>
+<td align="left">29</td>
+<td align="left">37</td>
+</tr>
+</tbody></table>
+<p>可以得到竖列取值的规律:</p>
+<ul>
+<li>当 row != 1 时, m = k+2<em>(i-1)</em>(n-1),</li>
+<li>当 row = 1 时,  m = i.</li>
+</ul>
+<p>其中 k ： 层级， i ： 列数，n ： 行数,  m：对应竖列上的值</p>
+<p>分析每个数列中间值关系</p>
+<table>
+<thead>
+<tr>
+<th align="left">i</th>
+<th align="left">k</th>
+<th align="left">ans</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">m+8</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">m+6</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">m+4</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">4</td>
+<td align="left">m+2</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">5</td>
+<td align="left">m+0</td>
+</tr>
+<tr>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">i’</td>
+<td align="left">n</td>
+<td align="left">m+2(n-k) 中间值ans看着像和i是无关的，事实上是有关的，别忘了m的取值</td>
+</tr>
+</tbody></table>
+<p>得出结论，中间值的规律：</p>
+<ul>
+<li>ans = m+2(n-k)</li>
+</ul>
+<p>算法实现如下 : </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">convert</span><span class="params">($str, $n)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $k = <span class="number">1</span>;</span><br><span class="line">        $tmp = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">if</span> ($n == <span class="number">1</span>) &#123;</span><br><span class="line">            $tmp = $str;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $strlen = strlen($str);</span><br><span class="line">            <span class="keyword">while</span> ($k &lt;= $n) &#123;</span><br><span class="line">                $i = <span class="number">1</span>;</span><br><span class="line">                $f = $n - $k;</span><br><span class="line">                <span class="keyword">while</span> ($i &lt;= $strlen) &#123;</span><br><span class="line">                    $m = $k + <span class="number">2</span> * ($i - <span class="number">1</span>) * ($n - <span class="number">1</span>);</span><br><span class="line">                    $ans = $m + <span class="number">2</span> * $f;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">empty</span>($str[$m - <span class="number">1</span>]))</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    $tmp .= $str[$m - <span class="number">1</span>];</span><br><span class="line">                    <span class="keyword">if</span> ($f &gt; <span class="number">0</span> &amp;&amp; $f &lt; $n - <span class="number">1</span> &amp;&amp; !<span class="keyword">empty</span>($str[$ans - <span class="number">1</span>])) &#123;</span><br><span class="line">                        $tmp .= $str[$ans - <span class="number">1</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                    $i++;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">                $k++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="整数反转"><a href="#整数反转" class="headerlink" title="整数反转"></a><a href="https://leetcode-cn.com/problems/reverse-integer/" target="_blank" rel="noopener">整数反转</a></h4><p>法一: 栈思想</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Integer $x</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Integer</span></span><br><span class="line"><span class="comment">     */</span> </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">reverse</span><span class="params">($x)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $rev = <span class="number">0</span>;</span><br><span class="line">        $max = (<span class="number">1</span> &lt;&lt; <span class="number">31</span>) - <span class="number">1</span>;<span class="comment">// 最大值</span></span><br><span class="line">        $min = <span class="number">-1</span> &lt;&lt; <span class="number">31</span>;<span class="comment">// 最小值</span></span><br><span class="line">        <span class="keyword">if</span> ($x &gt; $max || $x &lt; $min) <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">// 参数是否超出 </span></span><br><span class="line">        <span class="keyword">while</span> ($x != <span class="number">0</span>) &#123;</span><br><span class="line">            </span><br><span class="line">            $pop = $x % <span class="number">10</span>; <span class="comment">// 取最后一位数</span></span><br><span class="line"></span><br><span class="line">            $x = intval($x / <span class="number">10</span>);<span class="comment">// 降位</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 越界判断</span></span><br><span class="line">            <span class="keyword">if</span> ($rev &gt; $max / <span class="number">10</span> || ($rev == $max / <span class="number">10</span> &amp;&amp; $pop &gt; $max % <span class="number">10</span>)) <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// 正数</span></span><br><span class="line">            <span class="keyword">if</span> ($rev &lt; $min / <span class="number">10</span> || ($rev == $min / <span class="number">10</span> &amp;&amp; $pop &lt; $min % <span class="number">10</span>)) <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// 负数</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 逆序升位</span></span><br><span class="line">            $rev = $rev * <span class="number">10</span> + $pop;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $rev;</span><br><span class="line">    &#125; </span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>法二: 字符串反转</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Integer $x</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Integer</span></span><br><span class="line"><span class="comment">     */</span> </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">reverse</span><span class="params">($x)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $max = (<span class="number">1</span> &lt;&lt; <span class="number">31</span>) - <span class="number">1</span>;<span class="comment">// 最大值</span></span><br><span class="line">        $min = <span class="number">-1</span> &lt;&lt; <span class="number">31</span>;<span class="comment">// 最小值</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ($x &gt; $max || $x &lt; $min) <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">// 参数是否超出 </span></span><br><span class="line"></span><br><span class="line">        $is_negative = $x &lt; <span class="number">0</span> ? <span class="keyword">true</span> : <span class="keyword">false</span>; <span class="comment">// 正负判断</span></span><br><span class="line"></span><br><span class="line">        $x = $is_negative ? -$x : $x; <span class="comment">// 转成整数</span></span><br><span class="line"></span><br><span class="line">        $x = <span class="string">''</span> . $x; <span class="comment">// 转换成字符串 </span></span><br><span class="line"></span><br><span class="line">        $rev_str = $is_negative? <span class="string">'-'</span> : <span class="string">''</span> ; <span class="comment">// 保留符号</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> ($len = strlen($x), $i = $len - <span class="number">1</span>; $i &gt;= <span class="number">0</span>; $i--) &#123; <span class="comment">// 逆转字符</span></span><br><span class="line">            $rev_str .= $x[$i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 判断是否越界输出</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span> == <span class="keyword">$this</span>-&gt;int_str_compare($rev_str, $is_negative ? $min : $max) ?  intval($rev_str) : <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 数字字符串大小比较( 虽然 -1 &gt; -2,但是此处不考虑负数，所以 -1 &lt; -2)</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">//  -1 表示 str1 &lt; str2</span></span><br><span class="line">    <span class="comment">//   0 表示 str1 = str2</span></span><br><span class="line">    <span class="comment">//   1 表示 str1 &gt; str2</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">int_str_compare</span><span class="params">($str1, $str2)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $len1 = strlen($str1 = <span class="string">''</span> . $str1);</span><br><span class="line">        $len2 = strlen($str2 = <span class="string">''</span> . $str2);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 长度对齐</span></span><br><span class="line">        <span class="keyword">if</span> ($len1 &gt; $len2) &#123;</span><br><span class="line">            $str2 = str_pad($str2, $len1, <span class="string">'0'</span>, STR_PAD_LEFT);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $str1 = str_pad($str1, $len2, <span class="string">'0'</span>, STR_PAD_LEFT);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $compare = <span class="number">0</span>;<span class="comment">// 大小比较</span></span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>, $len = strlen($str1); $i &lt; $len; $i++) &#123;</span><br><span class="line">            $f = intval($str1[$i]) - intval($str2[$i]); <span class="comment">// 数字的每一位长度肯定不会超出0-9的范围，所以肯定不会超出</span></span><br><span class="line">            <span class="keyword">if</span> ($f &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                $compare = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>;<span class="comment">// 有一个比它大就全部比它大</span></span><br><span class="line">            &#125; <span class="keyword">elseif</span> ($f &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                $compare = <span class="number">-1</span>;</span><br><span class="line">                <span class="keyword">break</span>;<span class="comment">// 有一个比它小就全部比它小</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $compare = <span class="number">0</span>;<span class="comment">// 相等的话就继续比较下一位，直到最后以为相等才能说明str1等于str2</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> $compare;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SQL架构"><a href="#SQL架构" class="headerlink" title="SQL架构"></a>SQL架构</h3><h4 id="第二高的薪水"><a href="#第二高的薪水" class="headerlink" title="第二高的薪水"></a><a href="https://leetcode-cn.com/problems/second-highest-salary/" target="_blank" rel="noopener">第二高的薪水</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> (<span class="keyword">select</span> <span class="keyword">distinct</span>(Salary) <span class="keyword">from</span> Employee <span class="keyword">order</span> <span class="keyword">by</span> Salary <span class="keyword">DESC</span> <span class="keyword">limit</span> <span class="number">1</span> <span class="keyword">offset</span> <span class="number">1</span>) <span class="keyword">as</span> SecondHighestSalary</span><br></pre></td></tr></table></figure>
+
+<h4 id="第N高的薪水"><a href="#第N高的薪水" class="headerlink" title="第N高的薪水"></a><a href="https://leetcode-cn.com/problems/nth-highest-salary/" target="_blank" rel="noopener">第N高的薪水</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> getNthHighestSalary(N <span class="built_in">INT</span>) <span class="keyword">RETURNS</span> <span class="built_in">INT</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SET</span> N=N<span class="number">-1</span>;</span><br><span class="line">  RETURN (</span><br><span class="line">      <span class="keyword">select</span> (<span class="keyword">select</span> <span class="keyword">distinct</span>(Salary) <span class="keyword">from</span> Employee <span class="keyword">order</span> <span class="keyword">by</span> Salary <span class="keyword">DESC</span> <span class="keyword">limit</span> <span class="number">1</span> <span class="keyword">offset</span> N) <span class="keyword">as</span> getNthHighestSalary</span><br><span class="line">  );</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="分数排名"><a href="#分数排名" class="headerlink" title="分数排名"></a><a href="https://leetcode-cn.com/problems/rank-scores/" target="_blank" rel="noopener">分数排名</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> a.Score,(<span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">distinct</span>(b.Score)) <span class="keyword">from</span> Scores <span class="keyword">as</span> b <span class="keyword">where</span> b.Score&gt;a.Score)+<span class="number">1</span> <span class="keyword">as</span> <span class="keyword">Rank</span> <span class="keyword">FROM</span> Scores <span class="keyword">as</span> a <span class="keyword">ORDER</span> <span class="keyword">BY</span> Score <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="连续出现的数字"><a href="#连续出现的数字" class="headerlink" title="连续出现的数字"></a><a href="https://leetcode-cn.com/problems/consecutive-numbers/" target="_blank" rel="noopener">连续出现的数字</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">Num</span> <span class="keyword">as</span> ConsecutiveNums</span><br><span class="line"><span class="keyword">from</span> (</span><br><span class="line">  <span class="keyword">select</span> <span class="keyword">Num</span>, </span><br><span class="line">    <span class="keyword">case</span> </span><br><span class="line">      <span class="keyword">when</span> @prev = <span class="keyword">Num</span> <span class="keyword">then</span> @<span class="keyword">count</span> := @<span class="keyword">count</span> + <span class="number">1</span></span><br><span class="line">      <span class="keyword">when</span> (@prev := <span class="keyword">Num</span>) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">then</span> @<span class="keyword">count</span> := <span class="number">1</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">as</span> CNT</span><br><span class="line">  <span class="keyword">from</span> <span class="keyword">Logs</span>, (<span class="keyword">select</span> @prev := <span class="literal">null</span>,@<span class="keyword">count</span> := <span class="literal">null</span>) <span class="keyword">as</span> t</span><br><span class="line">) <span class="keyword">as</span> temp</span><br><span class="line"><span class="keyword">where</span> temp.CNT &gt;= <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>不懂自定义变量的同学可以参考<a href="/articles/mysql中的用户变量/">mysql中的用户变量</a></p>
+
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/LeetCode练习/" title="LeetCode练习">https://ya2.top/articles/LeetCode练习/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/随笔/" rel="tag"><i class="fa fa-tag"></i> 随笔</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/Composer教程/" rel="prev" title="Composer教程">
+                <i class="fa fa-chevron-left"></i> Composer教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/解决类似 -usr-lib64-libstdc-so-6- version -GLIBCXX-3-4-21- not found 的问题/" rel="next" title="解决类似 /usr/lib64/libstdc++.so.6:version `GLIBCXX_3.4.21' not found 的问题">
+                解决类似 /usr/lib64/libstdc++.so.6:version `GLIBCXX_3.4.21' not found 的问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+              
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法"><span class="nav-number">1.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两数之和"><span class="nav-number">1.1.</span> <span class="nav-text">两数之和</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两数相加"><span class="nav-number">1.2.</span> <span class="nav-text">两数相加</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大数"><span class="nav-number">1.3.</span> <span class="nav-text">最大数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无重复字符的最长子串"><span class="nav-number">1.4.</span> <span class="nav-text">无重复字符的最长子串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#寻找两个有序数组的中位数"><span class="nav-number">1.5.</span> <span class="nav-text">寻找两个有序数组的中位数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最长回文子串"><span class="nav-number">1.6.</span> <span class="nav-text">最长回文子串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Z-字形变换"><span class="nav-number">1.7.</span> <span class="nav-text"> Z 字形变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#整数反转"><span class="nav-number">1.8.</span> <span class="nav-text">整数反转</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL架构"><span class="nav-number">2.</span> <span class="nav-text">SQL架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第二高的薪水"><span class="nav-number">2.1.</span> <span class="nav-text">第二高的薪水</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第N高的薪水"><span class="nav-number">2.2.</span> <span class="nav-text">第N高的薪水</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分数排名"><span class="nav-number">2.3.</span> <span class="nav-text">分数排名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连续出现的数字"><span class="nav-number">2.4.</span> <span class="nav-text">连续出现的数字</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

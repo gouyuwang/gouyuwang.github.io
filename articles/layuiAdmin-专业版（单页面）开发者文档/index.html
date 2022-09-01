@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="在线演示     正版授权    layuiAdmin pro （单页版）是完全基于 layui 架构而成的后台管理模板系统，可以更轻松地实现前后端分离，它是 mvc 的简化版，全面接管 视图 和 页面路由，并可自主完成数据渲染，服务端通常只负责数据接口，而前端只需专注视图和事件交互，所有的页面动作都是在一个宿主页面中完成，因此这赋予了 layuiAdmin 单页面应用开发的能力。  题">
+<meta name="keywords" content="ui - layuiadmin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="layuiAdmin 专业版（单页面）开发者文档">
+<meta property="og:url" content="https://ya2.top/articles/layuiAdmin-专业版（单页面）开发者文档/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="在线演示     正版授权    layuiAdmin pro （单页版）是完全基于 layui 架构而成的后台管理模板系统，可以更轻松地实现前后端分离，它是 mvc 的简化版，全面接管 视图 和 页面路由，并可自主完成数据渲染，服务端通常只负责数据接口，而前端只需专注视图和事件交互，所有的页面动作都是在一个宿主页面中完成，因此这赋予了 layuiAdmin 单页面应用开发的能力。  题">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-07-27T16:12:00.564Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="layuiAdmin 专业版（单页面）开发者文档">
+<meta name="twitter:description" content="在线演示     正版授权    layuiAdmin pro （单页版）是完全基于 layui 架构而成的后台管理模板系统，可以更轻松地实现前后端分离，它是 mvc 的简化版，全面接管 视图 和 页面路由，并可自主完成数据渲染，服务端通常只负责数据接口，而前端只需专注视图和事件交互，所有的页面动作都是在一个宿主页面中完成，因此这赋予了 layuiAdmin 单页面应用开发的能力。  题">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>layuiAdmin 专业版（单页面）开发者文档 | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/layuiAdmin-专业版（单页面）开发者文档/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">layuiAdmin 专业版（单页面）开发者文档
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-12 10:36:45" itemprop="dateCreated datePublished" datetime="2020-03-12T10:36:45Z">2020-03-12</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <p style="text-align:center">
+    <a href="http://www.layui.com/admin/pro/" target="_blank" class="layui-btn">在线演示</a>
+    <a href="https://www.layui.com/admin/" target="_blank" class="layui-btn">正版授权</a>
+</p>
+
+<blockquote>
+<p>layuiAdmin pro （单页版）是完全基于 layui 架构而成的后台管理模板系统，可以更轻松地实现前后端分离，它是 mvc 的简化版，全面接管 视图 和 页面路由，并可自主完成数据渲染，服务端通常只负责数据接口，而前端只需专注视图和事件交互，所有的页面动作都是在一个宿主页面中完成，因此这赋予了 layuiAdmin 单页面应用开发的能力。</p>
+</blockquote>
+<h3 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h3><ul>
+<li>该文档适用于 layuiAdmin 专业版（单页面），阅读之前请务必确认是否与你使用的版本对应。</li>
+<li>熟练掌握 layuiAdmin 的前提是熟练掌握 layui，因此除了本篇文档， <a href="https://www.layui.com/doc/" target="_blank" rel="noopener">layui 的文档</a> 也是必不可少的存在。</li>
+</ul>
+<h3 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h3><h4 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h4><ul>
+<li>解压文件后，将 layuiAdmin 完整放置在任意目录</li>
+<li>通过本地 web 服务器去访问 ./start/index.html 即可运行 Demo</li>
+</ul>
+<blockquote>
+<p>由于 layuiAdmin 可采用前后端分离开发模式，因此你无需将其放置在你的服务端 MVC 框架中，你只需要给 layuiAdmin 主入口页面（我们也称之为：宿主页面）进行访问解析，它即可全权完成自身路由的跳转和视图的呈现，而数据层则完全通过服务端提供的异步接口来完成。</p>
+</blockquote>
+<h4 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h4><ul>
+<li><code>src/</code>: layuiAdmin 源代码，通常用于开发环境（如本地），推荐你在本地开发时，将 ./start/index.html 中的 layui.css 和 layui.js 的引入路径由 dist 改为 src 目录。<ul>
+<li><code>src/controller/</code>：存放 JS 业务模块，即对视图进行事件等交互性处理</li>
+<li><code>src/lib/</code>：layuiAdmin 的核心模块，一般不推荐修改</li>
+<li><code>src/style/</code>：存放样式，其中 admin.css是核心样式</li>
+<li><code>src/views/</code>：存放视图文件。其中 layout.html 是整个框架结构的承载，一般不推荐做大量改动。</li>
+<li><code>src/config.js</code>：layuiAdmin 的全局配置文件，可随意修改。</li>
+<li><code>src/index.js</code>：layuiAdmin 的入口模块，一般不推荐修改</li>
+</ul>
+</li>
+<li><code>dist/</code>: 通过 gulp 将 layuiAdmin src 目录的源代码进行构建后生成的目录（即：将 JS 和 CSS 文件进行了压缩等处理），通常用于线上环境。关于 gulp 的使用，下文也有介绍。</li>
+<li><code>start/</code>: 存放 layuiAdmin 的入口页面、模拟接口数据、layui</li>
+</ul>
+<h4 id="宿主页面"><a href="#宿主页面" class="headerlink" title="宿主页面"></a>宿主页面</h4><p>你所看到的 start/index.html 是我们提供好的宿主页面，它是整个单页面的承载，所有的界面都是在这一个页面中完成跳转和渲染的。事实上，宿主页面可以放在任何地方，但是要注意修改里面的 &lt;link&gt; &lt;script&gt; 的 src 和 layui.config 中 base 的路径。</p>
+<h4 id="全局配置"><a href="#全局配置" class="headerlink" title="全局配置"></a>全局配置</h4><p>当你已经顺利在本地预览了 layuiAdmin 后，你一定迫不及待关注更深层的结构。打开 src 目录，你将看到 config.js，里面存储着所有的默认配置。你可以按照实际需求选择性修改，下面是 layuiAdmin 默认提供的配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">layui.define([<span class="string">'laytpl'</span>, <span class="string">'layer'</span>, <span class="string">'element'</span>, <span class="string">'util'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">exports</span>)</span>&#123;</span><br><span class="line">  exports(<span class="string">'setter'</span>, &#123;</span><br><span class="line">    container: <span class="string">'LAY_app'</span> <span class="comment">//容器ID</span></span><br><span class="line">    ,<span class="attr">base</span>: layui.cache.base <span class="comment">//记录layuiAdmin文件夹所在路径</span></span><br><span class="line">    ,<span class="attr">views</span>: layui.cache.base + <span class="string">'views/'</span> <span class="comment">//视图所在目录</span></span><br><span class="line">    ,<span class="attr">entry</span>: <span class="string">'index'</span> <span class="comment">//默认视图文件名</span></span><br><span class="line">    ,<span class="attr">engine</span>: <span class="string">'.html'</span> <span class="comment">//视图文件后缀名</span></span><br><span class="line">    ,<span class="attr">pageTabs</span>: <span class="literal">false</span> <span class="comment">//是否开启页面选项卡功能。单页版不推荐开启</span></span><br><span class="line">    </span><br><span class="line">    ,<span class="attr">name</span>: <span class="string">'layuiAdmin Pro'</span></span><br><span class="line">    ,<span class="attr">tableName</span>: <span class="string">'layuiAdmin'</span> <span class="comment">//本地存储表名</span></span><br><span class="line">    ,<span class="attr">MOD_NAME</span>: <span class="string">'admin'</span> <span class="comment">//模块事件名</span></span><br><span class="line">    </span><br><span class="line">    ,<span class="attr">debug</span>: <span class="literal">true</span> <span class="comment">//是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息</span></span><br><span class="line">    </span><br><span class="line">    ,<span class="attr">interceptor</span>: <span class="literal">false</span> <span class="comment">//是否开启未登入拦截</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//自定义请求字段</span></span><br><span class="line">    ,<span class="attr">request</span>: &#123;</span><br><span class="line">      tokenName: <span class="string">'access_token'</span> <span class="comment">//自动携带 token 的字段名。可设置 false 不携带。</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//自定义响应字段</span></span><br><span class="line">    ,<span class="attr">response</span>: &#123;</span><br><span class="line">      statusName: <span class="string">'code'</span> <span class="comment">//数据状态的字段名称</span></span><br><span class="line">      ,<span class="attr">statusCode</span>: &#123;</span><br><span class="line">        ok: <span class="number">0</span> <span class="comment">//数据状态一切正常的状态码</span></span><br><span class="line">        ,<span class="attr">logout</span>: <span class="number">1001</span> <span class="comment">//登录状态失效的状态码</span></span><br><span class="line">      &#125;</span><br><span class="line">      ,<span class="attr">msgName</span>: <span class="string">'msg'</span> <span class="comment">//状态信息的字段名称</span></span><br><span class="line">      ,<span class="attr">dataName</span>: <span class="string">'data'</span> <span class="comment">//数据详情的字段名称</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//独立页面路由，可随意添加（无需写参数）</span></span><br><span class="line">    ,<span class="attr">indPage</span>: [</span><br><span class="line">      <span class="string">'/user/login'</span> <span class="comment">//登入页</span></span><br><span class="line">      ,<span class="string">'/user/reg'</span> <span class="comment">//注册页</span></span><br><span class="line">      ,<span class="string">'/user/forget'</span> <span class="comment">//找回密码</span></span><br><span class="line">      ,<span class="string">'/template/tips/test'</span> <span class="comment">//独立页的一个测试 demo</span></span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//扩展的第三方模块</span></span><br><span class="line">    ,<span class="attr">extend</span>: [</span><br><span class="line">      <span class="string">'echarts'</span>, <span class="comment">//echarts 核心包</span></span><br><span class="line">      <span class="string">'echartsTheme'</span> <span class="comment">//echarts 主题</span></span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//主题配置</span></span><br><span class="line">    ,<span class="attr">theme</span>: &#123;</span><br><span class="line">      <span class="comment">//配色方案，如果用户未设置主题，第一个将作为默认</span></span><br><span class="line">      color: [&#123;</span><br><span class="line">        main: <span class="string">'#20222A'</span> <span class="comment">//主题色</span></span><br><span class="line">        ,<span class="attr">selected</span>: <span class="string">'#009688'</span> <span class="comment">//选中色</span></span><br><span class="line">        ,<span class="attr">logo</span>: <span class="string">''</span> <span class="comment">//logo区域背景色</span></span><br><span class="line">        ,<span class="attr">header</span>: <span class="string">''</span> <span class="comment">//头部区域背景色</span></span><br><span class="line">        ,<span class="attr">alias</span>: <span class="string">'default'</span> <span class="comment">//默认别名</span></span><br><span class="line">      &#125;] <span class="comment">//为了减少篇幅，更多主题此处不做列举，可直接参考 config.js</span></span><br><span class="line"> </span><br><span class="line">      <span class="comment">//初始的颜色索引，对应上面的配色方案数组索引</span></span><br><span class="line">      <span class="comment">//如果本地已经有主题色记录，则以本地记录为优先，除非清除 localStorage（步骤：F12呼出调试工具→Aplication→Local Storage→选中页面地址→layuiAdmin→再点上面的X）</span></span><br><span class="line">      <span class="comment">// 1.0 正式版开始新增</span></span><br><span class="line">      ,<span class="attr">initColorIndex</span>: <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="侧边菜单"><a href="#侧边菜单" class="headerlink" title="侧边菜单"></a>侧边菜单</h4><ul>
+<li>在 start/json/menu.js 文件中，我们放置了默认的侧边菜单数据，你可以去随意改动它。</li>
+<li>如果你需要动态加载菜单，你需要将 views/layout.html 中的对应地址改成你的真实接口地址<br>侧边菜单最多可支持到三级。无论你采用静态的菜单还是动态的，菜单的数据格式都必须是一段合法的 JSON，且必须符合以下规范： </li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"code"</span>: <span class="number">0</span>, <span class="comment">//状态码，key 名可以通过 config.js 去重新配置</span></span><br><span class="line">  <span class="string">"msg"</span>:<span class="string">""</span>, <span class="comment">//提示信息</span></span><br><span class="line">  <span class="string">"data"</span>: [&#123; <span class="comment">//菜单数据，key名可以通过 config.js 去重新配置</span></span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"component"</span>, <span class="comment">//一级菜单名称（与视图的文件夹名称和路由路径对应）</span></span><br><span class="line">    <span class="string">"title"</span>: <span class="string">"组件"</span>, <span class="comment">//一级菜单标题</span></span><br><span class="line">    <span class="string">"icon"</span>: <span class="string">"layui-icon-component"</span>, <span class="comment">//一级菜单图标样式</span></span><br><span class="line">    <span class="string">"jump"</span>: <span class="string">''</span> ,<span class="comment">//自定义一级菜单路由地址，默认按照 name 解析。一旦设置，将优先按照 jump 设定的路由跳转</span></span><br><span class="line">    <span class="string">"spread"</span>: <span class="literal">true</span> ,<span class="comment">//是否默认展子菜单（1.0.0-beta9 新增）</span></span><br><span class="line">    <span class="string">"list"</span>: [&#123; <span class="comment">//二级菜单</span></span><br><span class="line">      <span class="string">"name"</span>: <span class="string">"grid"</span>, <span class="comment">//二级菜单名称（与视图的文件夹名称和路由路径对应）</span></span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"栅格"</span>, <span class="comment">//二级菜单标题</span></span><br><span class="line">      <span class="string">"jump"</span>: <span class="string">''</span>,  <span class="comment">//自定义二级菜单路由地址</span></span><br><span class="line">      <span class="string">"spread"</span>: <span class="literal">true</span>, <span class="comment">//是否默认展子菜单（1.0.0-beta9 新增）</span></span><br><span class="line">      <span class="string">"list"</span>: [&#123; <span class="comment">//三级菜单</span></span><br><span class="line">         <span class="string">"name"</span>: <span class="string">"list"</span>, <span class="comment">//三级菜单名（与视图中最终的文件名和路由对应），如：component/grid/list</span></span><br><span class="line">         <span class="string">"title"</span>: <span class="string">"等比例列表排列"</span> <span class="comment">//三级菜单标题</span></span><br><span class="line">        &#125;,&#123;</span><br><span class="line">         <span class="string">"name"</span>: <span class="string">"mobile"</span>,</span><br><span class="line">         <span class="string">"title"</span>: <span class="string">"按移动端排列"</span></span><br><span class="line">       &#125;</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>TIPS：实际运用时，切勿出现上述中的注释，否则将不是合法的 JSON ，会出现解析错误。</p>
+</blockquote>
+<p>需要注意的是以下几点：</p>
+<ol>
+<li>当任意级菜单有子菜单，点击该菜单都只是收缩和展开操作，而并不会跳转，只有没有子菜单的菜单才被允许跳转。</li>
+<li>菜单的路由地址默认是按照菜单层级的 name 来设定的。<br>我们假设一级菜单的 name 是：a，二级菜单的是：b，三级菜单的 name 是 c，那么：<ul>
+<li>三级菜单最终的路由地址就是：/a/b/c</li>
+<li>如果二级菜单没有三级菜单，那么二级菜单就是最终路由，地址就是：/a/b/</li>
+<li>如果一级菜单没有二级菜单，那么一级菜单就是最终路由，地址就是：/a/</li>
+</ul>
+</li>
+<li>但如果你设置了 参数 jump，那么就会优先读取 jump 设定的路由地址，如：”jump”: “/user/set” </li>
+</ol>
+<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><p>layuiAdmin 的路由是采用 <em>location.hash</em> 的机制，即路由地址是放在 <code>./#/</code> 后面，并通过 layui 自带的方法： <code>layui.router()</code> 来进行解析。每一个路由都对应一个真实存在的视图文件，且路由地址和视图文件的路径是一致的（相对 <em>views</em> 目录）。因此，你不再需要通过配置服务端的路由去访问一个页面，也无需在 layuiAdmin 内部代码中去定义路由，而是直接通过 layuiAdmin 的前端路由去访问，即可匹配相应目录的视图，从而呈现出页面结果。</p>
+<h4 id="路由规则"><a href="#路由规则" class="headerlink" title="路由规则"></a>路由规则</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./#/path1/path2/path3/key1=value1/key2=value2…</span><br></pre></td></tr></table></figure>
+
+<p>一个实际的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./#/user/set</span><br><span class="line">./#/user/set/uid=123/type=1#xxx（下面将以这个为例继续讲解）</span><br></pre></td></tr></table></figure>
+
+<p>当你需要对路由结构进行解析时，你只需要通过 layui 内置的方法 <code>layui.router()</code> 即可完成。如上面的路由解析出来的结果是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    path: [<span class="string">'user'</span>,<span class="string">'set'</span>]</span><br><span class="line">    ,<span class="attr">search</span>: &#123;<span class="attr">uid</span>: <span class="number">123</span>, <span class="attr">type</span>: <span class="number">1</span>&#125;</span><br><span class="line">    ,<span class="attr">href</span>: <span class="string">'user/set/uid=123/type=1'</span></span><br><span class="line">    ,<span class="attr">hash</span>: <span class="string">'xxx'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，不同的结构会自动归纳到相应的参数中，其中：</p>
+<blockquote>
+<ul>
+<li>path：存储的是路由的目录结构</li>
+<li>search：存储的是路由的参数部分</li>
+<li>href：存储的是 layuiAdmin 的完整路由地址</li>
+<li>hash：存储的是 layuiAdmin 自身的锚记，跟系统自带的 <code>location.hash</code> 有点类似</li>
+</ul>
+</blockquote>
+<p>通过 <code>layui.router()</code> 得到路由对象后，你就可以对页面进行个性化操作、异步参数传值等等。如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在 JS 中获取路由参数</span></span><br><span class="line"><span class="keyword">var</span> router = layui.router();</span><br><span class="line">admin.req(&#123;</span><br><span class="line">url: <span class="string">'xxx'</span></span><br><span class="line">,<span class="attr">data</span>: &#123;</span><br><span class="line">    uid: router.search.uid</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--  在动态模板中获取路由参数 --&gt;</span><br><span class="line">&lt;script type=<span class="string">"text/html"</span> template lay-url=<span class="string">"./xxx/?uid=&#123;&#123; layui.router().search.uid &#125;&#125;"</span>&gt;</span><br><span class="line">…</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;!-- 或 --&gt;</span></span><br><span class="line"><span class="regexp">&lt;script type="text/</span>html<span class="string">" template lay-url="</span>./xxx/<span class="string">" lay-data="</span>&#123;<span class="attr">uid</span>:<span class="string">'&#123;&#123; layui.router().search.uid &#125;&#125;'</span>&#125;<span class="string">"&gt;</span></span><br><span class="line"><span class="string">…</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="路由跳转"><a href="#路由跳转" class="headerlink" title="路由跳转"></a>路由跳转</h4><p>通过上文的路由规则，你已经大致清楚了 layuiAdmin 路由的基本原理和解析方法。那么如何完成路由的跳转呢？</p>
+<ol>
+<li>在视图文件的 HTML 代码中，通过对任意元素设定 <code>lay-href=&quot;/user/set/uid=123/type=1&quot;</code> ，<strong>好处是</strong>：任意元素都可以触发跳转。<strong>缺点是</strong>：只能在浏览器当前选项卡完成跳转（注意：不是 layuiAdmin 的选项卡）</li>
+<li>直接对 a 标签设定 href，如： <code>&lt;a href=&quot;#/user/set&quot;&gt;text&lt;/a&gt;</code> 。<strong>好处是</strong>：你可以通过设定 <code>target=&quot;_blank&quot;</code> 来打开一个浏览器新选项卡。<strong>缺点是</strong>：只能设置 <code>a</code> 标签，且前面必须加 <code>/#/</code></li>
+<li>在 JS 代码中，还可通过 <code>location.hash = &#39;/user/set&#39;;</code> 来跳转。前面无需加 <code>#</code>，它会自动追加。</li>
+</ol>
+<h4 id="路由结尾"><a href="#路由结尾" class="headerlink" title="路由结尾"></a>路由结尾</h4><p>在路由结尾部分出现的 <code>/</code> 与不出现，是两个完全不同的路由。比如下面这个：</p>
+<ol>
+<li>user/set<br>读取的视图文件是：.views/user/set.html</li>
+<li>user/set/<br>读取的视图文件是：./views/user/set/index.html （TIPS：这里的  index.html 即是目录下的默认主视图，下文会有讲解）</li>
+</ol>
+<p>因此一定要注意结尾处的 <code>/</code>，避免视图读取错误。</p>
+<h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><p>这或许是你应用 layuiAdmin 时的主要焦点，在开发过程中，你的大部分精力都可能会聚焦在这里。它取代了服务端 MVC 架构中的 <em>view</em> 层，使得应用开发变得更具扩展性。因此如果你采用 layuiAdmin 的 SPA（单页应用）模式，请务必要抛弃服务端渲染视图的思想，让页面的控制权限重新回归到前端吧！</p>
+<blockquote>
+<p><strong>views</strong> 目录存放的正是视图文件，你可以在该目录添加任意的新目录和新文件，通过对应的路由即可访问。</p>
+</blockquote>
+<p>注意：如果是单页面模式，视图文件通常是一段 HTML 碎片，而不能是一个完整的 html 代码结构。</p>
+<h4 id="视图与路由的关系"><a href="#视图与路由的关系" class="headerlink" title="视图与路由的关系"></a>视图与路由的关系</h4><p>每一个视图文件，都对应一个路由。其中 <code>index.html</code> 是默认文件（你也可以通过 config.js 去重新定义）。视图文件的所在目录决定了路由的访问地址，如：</p>
+<table>
+<thead>
+<tr>
+<th align="left">视图路径</th>
+<th align="left">对应的路由地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">./views/user/index.html</td>
+<td align="left">/user/</td>
+</tr>
+<tr>
+<td align="left">./views/user.html</td>
+<td align="left">/user</td>
+</tr>
+<tr>
+<td align="left">./views/user/set/index.html</td>
+<td align="left">/user/set/</td>
+</tr>
+<tr>
+<td align="left">./views/user/set.html</td>
+<td align="left">/user/set</td>
+</tr>
+<tr>
+<td align="left">./views/user/set/base.html</td>
+<td align="left">/user/set/base</td>
+</tr>
+</tbody></table>
+<p>通过上述的表格列举的对应关系，可以总结出：</p>
+<ul>
+<li>当视图文件是 index.html，那么路由地址就是它的上级目录（相对 _views_），以 <code>/</code> 结尾</li>
+<li>当视图文件不是 index.html，那么路由地址就是它的上级目录+视图文件名，不以 <code>/</code> 结尾</li>
+</ul>
+<blockquote>
+<p>值得注意的是：路由路径并非最多只能三级，它可以无限极。但对应的视图也必须存放在相应的层级目录下</p>
+</blockquote>
+<h4 id="视图中加载-JS-模块"><a href="#视图中加载-JS-模块" class="headerlink" title="视图中加载 JS 模块"></a>视图中加载 JS 模块</h4><p>在视图文件中，除了写 HTML，也可以写 JavaScript 代码。如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">“LAY-demo-hello”</span>&gt;</span>Hello layuiAdmin<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">layui.use(<span class="string">'admin'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> $ = layui.jquery;</span></span><br><span class="line">    admin.popup(&#123;</span><br><span class="line"><span class="javascript">        content: $(<span class="string">'#LAY-demo-hello'</span>).html()</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果该视图对应的 JS 代码量太大，我们更推荐你在  controller  目录下新增一个业务模块，并在视图中直接 layui.use 去加载该模块。下面以控制台主页 <code>index.html</code> 为例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>html区域<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="comment">//加载 controller 目录下的对应模块</span></span></span><br><span class="line">/*</span><br><span class="line">小贴士：</span><br><span class="line"><span class="javascript">    这里 <span class="built_in">console</span> 模块对应 的 <span class="built_in">console</span>.js 并不会重复加载，</span></span><br><span class="line">    然而该页面的视图可能会重新插入到容器，那如何保证脚本能重新控制视图呢？有两种方式：</span><br><span class="line"><span class="javascript">    <span class="number">1</span>): 借助 layui.factory 方法获取 <span class="built_in">console</span> 模块的工厂（回调函数）给 layui.use</span></span><br><span class="line">    2): 直接在 layui.use 方法的回调中书写业务代码，即:</span><br><span class="line"><span class="javascript">        layui.use(<span class="string">'console'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; </span></span><br><span class="line"><span class="javascript">            <span class="comment">//同 console.js 中的 layui.define 回调中的代码 </span></span></span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">这里我们采用的是方式1。其它很多视图中采用的其实都是方式2，因为更简单些，也减少了一个请求数。</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line"><span class="javascript">layui.use(<span class="string">'console'</span>, layui.factory(<span class="string">'console'</span>));</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当视图被渲染后，layui.factory 返回的函数也会被执行，从而保证在不重复加载 JS 模块文件的前提下，保证脚本能重复执行。</p>
+<h3 id="动态模板"><a href="#动态模板" class="headerlink" title="动态模板"></a>动态模板</h3><p>layuiAdmin 的视图是一个“动静结合”的载体，除了常规的静态模板，你当然还可以在视图中存放动态模板，因此它可谓是焦点中的焦点。</p>
+<h4 id="定义模板"><a href="#定义模板" class="headerlink" title="定义模板"></a>定义模板</h4><p>在视图文件中，通过下述规则定义模板：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/html"</span> template&gt;</span><br><span class="line">&lt;!-- 动态模板碎片 --&gt;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>下面是一个简单的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/html"</span> template&gt;</span><br><span class="line">当前 layuiAdmin 的版本是：&#123;&#123; layui.admin.v &#125;&#125;</span><br><span class="line">路由地址：&#123;&#123; layui.router().href &#125;&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在不对动态模板设定数据接口地址的情况下，它能读取到全局对象。但更多时候，一个动态模板应该是对应一个接口地址，如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/html"</span> template lay-url=<span class="string">"接口地址"</span>&gt;</span><br><span class="line">    我叫：&#123;&#123; d.data.username &#125;&#125;</span><br><span class="line">    &#123;&#123;# if(d.data.sex === '男')&#123; &#125;&#125;</span><br><span class="line">        公的</span><br><span class="line">    &#123;&#123;# &#125; else &#123; &#125;&#125;</span><br><span class="line">        母的</span><br><span class="line">    &#123;&#123;# &#125; &#125;&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>模板中的 <code>d</code> 对应的是你接口返回的 json 转化后的一维对象，如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">      <span class="attr">"username"</span>: <span class="string">"贤心"</span>,</span><br><span class="line">      <span class="attr">"sex"</span>: <span class="string">"男"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>那么，上述动态模板最终输出的结果就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">我叫：贤心</span><br><span class="line">公的</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="模板基础属性"><a href="#模板基础属性" class="headerlink" title="模板基础属性"></a>模板基础属性</h4><p>动态模板支持以下基础属性</p>
+<ul>
+<li><strong>lay-url</strong><br>用于绑定模板的数据接口地址，支持动态模板解析，如：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-url</span>=<span class="string">"https://api.xxx.com?id=&#123;&#123; layui.router().search.id &#125;&#125;"</span>&gt;</span></span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- 动态模板碎片 --&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>lay-data</strong><br>用于定义接口请求的参数，其值是一个 JavaScript object 对象，同样支持动态模板解析，如：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-url</span>=<span class="string">""</span> <span class="attr">lay-data</span>=<span class="string">"&#123;id: '&#123;&#123; layui.router().search.id &#125;&#125;', type: 1&#125;"</span>&gt;</span></span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- 动态模板碎片 --&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>lay-headers</strong><br>用户定义接口请求的 Request Headers 参数，用法与 lay-data 的完全类似，支持动态模板解析。</p>
+</li>
+<li><p><strong>lay-done</strong><br>接口请求完毕并完成视图渲染的回调脚本，里面支持写任意的 JavaScript 语句。事实上它是一个封闭的函数作用域，通过给 Function 实例返回的函数传递一个参数 <code>d</code>，用于得到接口返回的数据：</p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-url</span>=<span class="string">""</span> <span class="attr">lay-done</span>=<span class="string">"console.log(d);"</span>&gt;</span></span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- 动态模板碎片 --&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>很多时候，你在动态模板中可能会放入一些类似于 layui 的 form 元素，而有些控件需要执行 <code>form.render()</code> 才会显示，这时，你可以对 lay-done 赋值一个全局函数，如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-url</span>=<span class="string">""</span> <span class="attr">lay-done</span>=<span class="string">"layui.data.done(d);"</span>&gt;</span></span><br><span class="line"><span class="javascript">  &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"layui-form"</span> lay-filter=<span class="string">"LAY-filter-demo-form"</span>&gt;</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">title</span>=<span class="string">"复选框"</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--  注意：别看眼花了，下面可不是动态模板，而是 JS 脚本区域 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">layui.data.done = <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    layui.use([<span class="string">'form'</span>], <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> form = layui.form;</span></span><br><span class="line"><span class="javascript">        form.render(<span class="literal">null</span>, <span class="string">'LAY-filter-demo-form'</span>); <span class="comment">//渲染该模板下的动态表单</span></span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>TIPS：</p>
+<blockquote>
+<ul>
+<li>如果模板渲染完毕需要处理过多的交互，我们强烈推荐你采用上述的方式定义一个全局函数赋值给 lay-done，会极大地减少维护成本。</li>
+<li>无需担心该全局函数的冲突问题，该函数是一次性的。其它页面即便声明了一个同样的函数，也只是用于新的视图，丝毫不会对之前的视图造成任何影响。</li>
+<li>layui.data.done 中的 <em>done</em> 可以随意命名，但需与 lay-done 的赋值对应上。</li>
+</ul>
+</blockquote>
+<h4 id="模板语法"><a href="#模板语法" class="headerlink" title="模板语法"></a>模板语法</h4><p>动态模板基于 layui 的 laytpl 模块，详细语法可见：  <a href="http://www.layui.com/doc/modules/laytpl.html#syntax" target="_blank" rel="noopener">传送门</a></p>
+<h3 id="登录与接口鉴权"><a href="#登录与接口鉴权" class="headerlink" title="登录与接口鉴权"></a>登录与接口鉴权</h3><p>由于 layuiAdmin 接管了视图层，所以不必避免可能会与服务端分开部署，这时你有必要了解一下 layuiAdmin 默认提供的：从 <em>登录</em> 到 <em>接口鉴权</em> ，再到 <em>注销</em> 的整个流程。</p>
+<h4 id="登录拦截器"><a href="#登录拦截器" class="headerlink" title="登录拦截器"></a>登录拦截器</h4><p>进入登入页面登入成功后，会在 localStorage 的本地表中写入一个字段。如： access_token （名称可以在 config.js 自定义）。拦截器判断没有 access_token 时，则会跳转到登入页。尽管可以通过伪造一个假的 access_token 绕过视图层的拦截，但在请求接口时，会自动带上 access_token，服务端应再次做一层校验。</p>
+<h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><ol>
+<li>打开 <code>config.js</code> ，将 <code>interceptor</code> 参数设置为 <code>true</code>（该参数为 1.0.0-beta6 开始新增）。那么，当其未检查到 <code>access_token</code> 值时，会强制跳转到登录页面，以获取 access_token。</li>
+<li>打开登录对应的视图文件 <code>views/user/login.html</code>，在代码最下面，你将看到一段已经写好的代码，你需要的是将接口地址改为服务端的真实接口，并返回 <code>access_token</code> 值。</li>
+<li>layuiAdmin 会将服务端返回的 <code>access_token</code> 值进行本地存储，这时你会发现 layuiAdmin 不再强制跳转到登录页面。并在后面每次请求服务端接口时，都会自动在参数和 Request Headers 中带上 <code>access_token</code>，以便服务端进行鉴权。</li>
+<li>若鉴权成功，顺利返回数据；若鉴权失败，服务端的 <code>code</code> 应返回 <code>1001</code>（可在 config.js 自定义） ， layuiAdmin 将会自动清空本地无效 token 并跳转到登入页。</li>
+<li>退出登录：重新打开 <code>controller/common.js</code>，搜索 <code>logout</code>，配上注销接口即可。</li>
+</ol>
+<blockquote>
+<p>如果是在其它场景请求的接口（如：table.render()），那么你需要获取本地存储的 token 复制给接口参数，如：</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">table.render(&#123;</span><br><span class="line">    elem: <span class="string">'#xxxx'</span></span><br><span class="line">    ,<span class="attr">url</span>: <span class="string">'url'</span></span><br><span class="line">    ,<span class="attr">where</span>: &#123;</span><br><span class="line">        access_token: layui.data(<span class="string">'layuiAdmin'</span>).access_token</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>事实上，layuiAdmin 的所有 Ajax 请求都是采用 <code>admin.req(options)</code>，它会自动传递 <code>access_token</code>，因此推荐你在 JS 执行 Ajax 请求时直接使用它。其中参数 <em>options</em> 和 <code>$.ajax(options)</code> 的参数完全一样。</p>
+<h4 id="接口鉴权"><a href="#接口鉴权" class="headerlink" title="接口鉴权"></a>接口鉴权</h4><p>我们推荐服务端遵循 <strong>JWT</strong>（JSON Web Token） 标准进行鉴权。对 JWT 不甚了解的同学，可以去搜索一些相关资料，会极大地增加应用的可扩展性。当然，你也可以直接采用传统的 cookie / session 机制。</p>
+<h3 id="基础方法"><a href="#基础方法" class="headerlink" title="基础方法"></a>基础方法</h3><ul>
+<li><strong>config 模块</strong></li>
+</ul>
+<blockquote>
+<p>你可以在任何地方通过 <code>layui.setter</code> 得到 <em>config.js</em> 中的配置信息</p>
+</blockquote>
+<ul>
+<li><strong>admin 模块</strong></li>
+</ul>
+<blockquote>
+<p>var admin = layui.admin;</p>
+</blockquote>
+<ul>
+<li><p><strong>admin.req(options)</strong><br>Ajax 请求，用法同 $.ajax(options)，只是该方法会进行错误处理和 token 的自动传递</p>
+</li>
+<li><p><strong>admin.screen()</strong><br>获取屏幕类型，根据当前屏幕大小，返回 0 - 3 的值<br>0: 低于768px的屏幕<br>1：768px到992px之间的屏幕<br>2：992px到1200px之间的屏幕<br>3：高于1200px的屏幕</p>
+</li>
+<li><p><strong>admin.exit()</strong><br>清除本地 token，并跳转到登入页</p>
+</li>
+<li><p><strong>admin.sideFlexible(status)</strong><br>侧边伸缩。status 为 null：收缩；status为 “spread”：展开</p>
+</li>
+<li><p><strong>admin.on(eventName, callback)</strong><br>事件监听，下文会有讲解</p>
+</li>
+<li><p><strong>admin.popup(options)</strong><br>弹出一个 layuiAdmin 主题风格的 layer 层，参数 options 跟 layer.open(options) 完全相同</p>
+</li>
+<li><p><strong>admin.popupRight(options)</strong><br>在屏幕右侧呼出一个面板层。options 同上。</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">admin.popupRight(&#123;</span><br><span class="line">    id: <span class="string">'LAY-popup-right-new1'</span> <span class="comment">//定义唯一ID，防止重复弹出</span></span><br><span class="line">    ,<span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//将 views 目录下的某视图文件内容渲染给该面板</span></span><br><span class="line">    layui.view(<span class="keyword">this</span>.id).render(<span class="string">'视图文件所在路径'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>admin.resize(callback)</strong><br>窗口 resize 事件处理，我们推荐你使用该方法取代 jQuery 的 resize 事件，以避免多页面标签下可能存在的冲突。</p>
+</li>
+<li><p><strong>admin.events</strong></p>
+<ul>
+<li><p>admin.events.refresh()<br>刷新当前右侧区域</p>
+</li>
+<li><p>admin.events.closeThisTabs()<br>关闭当前标签页</p>
+</li>
+<li><p>admin.events.closeOtherTabs()<br>关闭其它标签页</p>
+</li>
+<li><p>admin.events.closeAllTabs()<br>关闭全部标签页</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>view 模块</strong></li>
+</ul>
+<blockquote>
+<p>var view = layui.view;</p>
+</blockquote>
+<ul>
+<li><strong>view(id)</strong><br>获取指定容器，并返回一些视图渲染的方法，如：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//渲染视图，viewPath 即为视图路径</span></span><br><span class="line">view(<span class="string">'#id'</span>).render(viewPath).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">//视图文件请求完毕，视图内容渲染前的回调</span></span><br><span class="line">&#125;).done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">//视图文件请求完毕和内容渲染完毕的回调</span></span><br><span class="line">&#125;); </span><br><span class="line"></span><br><span class="line"><span class="comment">//直接向容器插入 html，tpl 为 模板字符；data 是传入的数据。该方法会自动完成动态模板解析</span></span><br><span class="line">view(<span class="string">'#id'</span>).send(tpl, data);</span><br></pre></td></tr></table></figure>
+
+<p>另外，<code>render</code> 方法支持动态传参，以用于视图内容接受。如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">admin.popup(&#123;</span><br><span class="line">    id: <span class="string">'LAY-popup-test1'</span></span><br><span class="line">    ,<span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    view(<span class="keyword">this</span>.id).render(<span class="string">'视图文件所在路径'</span>, &#123;</span><br><span class="line">            id: <span class="number">123</span> <span class="comment">//这里的 id 值你可以在一些事件中动态获取（如 table 模块的编辑）</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>那么，在视图文件中，你可以在动态模板中通过 <code>\{\{ d.params.xxx \}\}</code> 得到传入的参数，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/html"</span> template lay-url=<span class="string">"http://api.com?id=&#123;&#123; d.params.id &#125;&#125;"</span>&gt;</span><br><span class="line">配置了接口的动态模板，且接口动态获取了 render 传入的参数：&#123;&#123; d.params.id &#125;&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script type="text/</span>html<span class="string">" template&gt;</span></span><br><span class="line"><span class="string">也可以直接获取：&lt;input type="</span>hidden<span class="string">" name="</span>id<span class="string">" value="</span>&#123;&#123; d.params.id &#125;&#125;<span class="string">"&gt;</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>而如果是在 JS 语句中去获取模板传递过来的变量，可以借助动态模板的 lay-done 属性去实现，如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-done</span>=<span class="string">"layui.data.sendParams(d.params)"</span>&gt;</span></span><br><span class="line">  </span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在 JS 语句中通过执行动态模板 lay-done 中对应的方法得到对应的参数值：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="comment">//定义一个 lay-done 对应的全局方法，以供动态模板执行</span></span></span><br><span class="line"><span class="javascript">layui.data.sendParams = <span class="function"><span class="keyword">function</span>(<span class="params">params</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">console</span>.log(params.id) <span class="comment">//得到传递过来的 id 参数（或其他参数）值</span></span></span><br><span class="line">  </span><br><span class="line"><span class="javascript">  <span class="comment">//通过得到的参数值，做一些你想做的事</span></span></span><br><span class="line"><span class="javascript">  <span class="comment">//…</span></span></span><br><span class="line"> </span><br><span class="line"><span class="javascript">  <span class="comment">//若需用到 layui 组件，layui.use 需写在该全局方法里面，如：</span></span></span><br><span class="line"><span class="javascript">  layui.use([<span class="string">'table'</span>], <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> table = layui.table;</span></span><br><span class="line">    table.render(&#123;</span><br><span class="line"><span class="javascript">      elem: <span class="string">''</span></span></span><br><span class="line"><span class="javascript">      ,<span class="attr">url</span>: <span class="string">'url?id='</span>+ params.id</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：上述实现需保证 layuiAdmin 为 1.2.0+`</p>
+</blockquote>
+<p>总之，驾驭好 <code>view().render().done(callback)</code> 对您的项目开发至关重要。</p>
+<h3 id="ID唯一性"><a href="#ID唯一性" class="headerlink" title="ID唯一性"></a>ID唯一性</h3><p>如果你开启了标签页功能，请务必注意 ID 的冲突，尤其是在你自己绑定事件的情况。ID 的命令可以遵循以下规则来规避冲突：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LAY-路由-任意名</span><br></pre></td></tr></table></figure>
+
+<p>以_消息中心_页面为例，假设它的路由为：<code>/app/message/</code>，那么 ID 应该命名为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"layui-btn"</span> <span class="attr">id</span>=<span class="string">"LAY-app-message-del"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实用组件"><a href="#实用组件" class="headerlink" title="实用组件"></a>实用组件</h3><h4 id="Hover-提示层"><a href="#Hover-提示层" class="headerlink" title="Hover 提示层"></a>Hover 提示层</h4><p>通过对元素设置 <code>lay-tips=&quot;提示内容&quot;</code> 来开启一个 hover 提示，如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"layui-icon layui-icon-tips"</span> <span class="attr">lay-tips</span>=<span class="string">"要支持的噢"</span> <span class="attr">lay-offset</span>=<span class="string">"5"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>lay-offset</code> 用于定于水平偏移距离（单位px），以调整箭头让其对准元素</p>
+<h3 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h3><ul>
+<li><strong>hash</strong><br>监听路由地址改变</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下述中的 xxx 可随意定义，不可与已经定义的 hash 事件同名，否则会覆盖上一事件</span></span><br><span class="line">admin.on(<span class="string">'hash(xxx)'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">router</span>)</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(router); <span class="comment">//得到路由信息</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>side</strong><br>监听侧边伸缩</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下述中的 xxx 可随意定义，不可与已经定义的 side 事件同名，否则会覆盖上一事件</span></span><br><span class="line">admin.on(<span class="string">'side(xxx)'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(obj.status); <span class="comment">//得到伸缩状态：spread 为展开状态，其它值为收缩状态</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p>layuiAdmin 使用到了 layui 的栅格系统，而栅格则是基于浏览器的媒体查询。ie8、9不支持。  所以要在宿主页面（如 start/index.html ）加上下面这段保证兼容：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 让IE8/9支持媒体查询，从而兼容栅格 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">&lt;script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">&lt;script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>由于单页面版本的视图文件和静态资源模块都是动态加载的，所以可能存在浏览器的本地缓存问题，事实上我们也考虑到这个，因此，为了避免改动后的文件未及时生效，你只需在入口页面（默认为start/index.html）中，找到 layui.config，修改其 version 的值即可。</p>
+<p>我们推荐你分场景来更新缓存：</p>
+<ul>
+<li>场景一：如果项目是在本地开发。你可以设置 version 为动态毫秒数，如：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="keyword">new</span> <span class="built_in">Date</span>().getTime() <span class="comment">//这样你每次刷新页面，都会更新一次缓存</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>场景二：如果项目是在线上运行。建议你手工更新 version，如：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">'1.0.0'</span> <span class="comment">//每次发布项目时，跟着改动下该属性值即可更新静态资源的缓存</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="升级事项"><a href="#升级事项" class="headerlink" title="升级事项"></a>升级事项</h3><p>从官网更新资源包后，除了 src 和 dist 目录需要注意一下，其它目录和文件均可覆盖，下面以 src 为例（dist 由于是 src 构建后生成的目录，所以本质是和 src 一样的）  </p>
+<p><strong>src 目录下可以直接覆盖的有</strong>：</p>
+<blockquote>
+<ul>
+<li>src/lib/</li>
+<li>src/style/</li>
+<li>src/index.js</li>
+</ul>
+</blockquote>
+<p><strong>需要灵活调配的有</strong>：</p>
+<blockquote>
+<ul>
+<li>src/controller/</li>
+<li>src/views/</li>
+<li>src/config.js<br>如果没有改动默认配置，事实上 config.js 也可以覆盖升级</li>
+</ul>
+</blockquote>
+<p>开发过程中，建议同时运行两个 layuiAdmin 。一个是已经实际运用的，一个是 layuiAdmin 本身的 Demo。以便从 Demo 中获取参考和提取示例。</p>
+<h3 id="源码构建"><a href="#源码构建" class="headerlink" title="源码构建"></a>源码构建</h3><p>当你在 src 目录完成开发后，你可通过 gulp 对 src 源码进行自动化构建，以生成用于线上环境的 dist 目录。<br>其中，gulpfile.js 是 layuiAdmin 写好的任务脚本，package.json 是任务配置文件，你只需按照以下步骤：</p>
+<ul>
+<li>step1：确保你的电脑已经安装好了 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>，如果未安装，可去官网下载安装<a href="https://nodejs.org/en/" target="_blank" rel="noopener">传送门</a></li>
+<li>step2: 命令行安装 gulp：npm install gulp -g</li>
+<li>step3：切换到 layuiAdmin 项目根目录（即 gulpfile.js 所在目录），命令行安装任务所依赖的包：npm install</li>
+</ul>
+<p>安装完成后，后续只需直接执行命令：<code>gulp</code> 即可完成 src 到 dist 目录的构建</p>
+<h3 id="关于版权"><a href="#关于版权" class="headerlink" title="关于版权"></a>关于版权</h3><blockquote>
+<p>layuiAdmin 受国家计算机软件著作权保护，未经官网正规渠道授权擅自公开产品源文件、以及直接对产品二次出售的，我们将追究相应的法律责任。</p>
+</blockquote>
+<p>获取官方正版授权： <a href="https://www.layui.com/admin/" target="_blank" rel="noopener">传送门</a></p>
+
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/layuiAdmin-专业版（单页面）开发者文档/" title="layuiAdmin 专业版（单页面）开发者文档">https://ya2.top/articles/layuiAdmin-专业版（单页面）开发者文档/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/ui-layuiadmin/" rel="tag"><i class="fa fa-tag"></i> ui - layuiadmin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/Flex布局/" rel="prev" title="Flex 布局">
+                <i class="fa fa-chevron-left"></i> Flex 布局
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/正则表达式/" rel="next" title="正则表达式">
+                正则表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+              
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题外"><span class="nav-number">1.</span> <span class="nav-text">题外</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速上手"><span class="nav-number">2.</span> <span class="nav-text">快速上手</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#部署"><span class="nav-number">2.1.</span> <span class="nav-text">部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#目录说明"><span class="nav-number">2.2.</span> <span class="nav-text">目录说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#宿主页面"><span class="nav-number">2.3.</span> <span class="nav-text">宿主页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局配置"><span class="nav-number">2.4.</span> <span class="nav-text">全局配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#侧边菜单"><span class="nav-number">2.5.</span> <span class="nav-text">侧边菜单</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由"><span class="nav-number">3.</span> <span class="nav-text">路由</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#路由规则"><span class="nav-number">3.1.</span> <span class="nav-text">路由规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路由跳转"><span class="nav-number">3.2.</span> <span class="nav-text">路由跳转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路由结尾"><span class="nav-number">3.3.</span> <span class="nav-text">路由结尾</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图"><span class="nav-number">4.</span> <span class="nav-text">视图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#视图与路由的关系"><span class="nav-number">4.1.</span> <span class="nav-text">视图与路由的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图中加载-JS-模块"><span class="nav-number">4.2.</span> <span class="nav-text">视图中加载 JS 模块</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态模板"><span class="nav-number">5.</span> <span class="nav-text">动态模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义模板"><span class="nav-number">5.1.</span> <span class="nav-text">定义模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板基础属性"><span class="nav-number">5.2.</span> <span class="nav-text">模板基础属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板语法"><span class="nav-number">5.3.</span> <span class="nav-text">模板语法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#登录与接口鉴权"><span class="nav-number">6.</span> <span class="nav-text">登录与接口鉴权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#登录拦截器"><span class="nav-number">6.1.</span> <span class="nav-text">登录拦截器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程"><span class="nav-number">6.2.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口鉴权"><span class="nav-number">6.3.</span> <span class="nav-text">接口鉴权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基础方法"><span class="nav-number">7.</span> <span class="nav-text">基础方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ID唯一性"><span class="nav-number">8.</span> <span class="nav-text">ID唯一性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实用组件"><span class="nav-number">9.</span> <span class="nav-text">实用组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hover-提示层"><span class="nav-number">9.1.</span> <span class="nav-text">Hover 提示层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件监听"><span class="nav-number">10.</span> <span class="nav-text">事件监听</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#兼容性"><span class="nav-number">11.</span> <span class="nav-text">兼容性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存问题"><span class="nav-number">12.</span> <span class="nav-text">缓存问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#升级事项"><span class="nav-number">13.</span> <span class="nav-text">升级事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码构建"><span class="nav-number">14.</span> <span class="nav-text">源码构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于版权"><span class="nav-number">15.</span> <span class="nav-text">关于版权</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

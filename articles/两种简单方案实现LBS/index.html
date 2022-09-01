@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里  对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="两种简单方案实现LBS">
+<meta property="og:url" content="https://ya2.top/articles/两种简单方案实现LBS/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里  对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-07-27T16:11:49.944Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="两种简单方案实现LBS">
+<meta name="twitter:description" content="方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里  对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>两种简单方案实现LBS | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/两种简单方案实现LBS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">两种简单方案实现LBS
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-07-27 10:15:23" itemprop="dateCreated datePublished" datetime="2020-07-27T10:15:23Z">2020-07-27</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <h3 id="方案一：-Mysql"><a href="#方案一：-Mysql" class="headerlink" title="方案一： Mysql"></a>方案一： Mysql</h3><h4 id="通过球面两点距离公式"><a href="#通过球面两点距离公式" class="headerlink" title="通过球面两点距离公式"></a>通过球面两点距离公式</h4><blockquote>
+<p>$ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$<br>其中 A（jA,wA）和B（jB，wB）,推导过程见<a href="http://www.360doc.com/content/14/0117/10/325430_345890919.shtml" target="_blank" rel="noopener">这里</a></p>
+</blockquote>
+<p>对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常大，性能将会是严重的问题。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> address (</span><br><span class="line">	<span class="keyword">id</span> <span class="built_in">INT</span> (<span class="number">11</span>) AUTO_INCREMENT,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">CHAR</span> (<span class="number">80</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	lat <span class="built_in">CHAR</span> (<span class="number">10</span>),</span><br><span class="line">	lng <span class="built_in">CHAR</span> (<span class="number">10</span>),</span><br><span class="line">	PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 插入测试数据</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> address(<span class="keyword">name</span>,lat,lng) <span class="keyword">VALUES</span></span><br><span class="line"> (<span class="string">'成都'</span>, <span class="number">30.659673</span>,<span class="number">104.068433</span>)</span><br><span class="line">,(<span class="string">'绵阳'</span>, <span class="number">31.473909</span>,<span class="number">104.680961</span>)</span><br><span class="line">,(<span class="string">'泸州'</span>, <span class="number">28.876403</span>,<span class="number">105.450251</span>) </span><br><span class="line">,(<span class="string">'德阳'</span>, <span class="number">31.134847</span>,<span class="number">104.408441</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">id</span>,<span class="keyword">name</span>, (</span><br><span class="line">      <span class="number">6371</span> * <span class="keyword">acos</span> (    <span class="comment"># 3959是地球半径的英里，6371是地球半径的千米</span></span><br><span class="line">      <span class="keyword">cos</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">      * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">      * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lng ) - <span class="keyword">radians</span>(<span class="number">106.644153</span>) )</span><br><span class="line">      + <span class="keyword">sin</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">      * <span class="keyword">sin</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">    )</span><br><span class="line">) <span class="keyword">AS</span> distance</span><br><span class="line"><span class="keyword">FROM</span> address</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> distance</span><br><span class="line"><span class="keyword">LIMIT</span> <span class="number">0</span> , <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或通过 st_distance_sphere 函数计算</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">  <span class="keyword">name</span>,</span><br><span class="line">	<span class="keyword">round</span>( st_distance_sphere ( point ( <span class="number">106.644153</span>, <span class="number">30.452034</span> ), point ( lng, lat ))/ <span class="number">1000</span>, <span class="number">2</span> ) <span class="keyword">AS</span> distance </span><br><span class="line"><span class="keyword">FROM</span> address </span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> distance <span class="keyword">ASC</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 查询结果</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> 3	泸州	209.7647687926011</span></span><br><span class="line"><span class="comment"> 2	绵阳	218.97099731812352</span></span><br><span class="line"><span class="comment"> 4	德阳	226.64161541779157</span></span><br><span class="line"><span class="comment"> 1	成都	247.70751793832144</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="通过空间存储-spatial"><a href="#通过空间存储-spatial" class="headerlink" title="通过空间存储(spatial)"></a>通过空间存储(spatial)</h4><p>MySQL的空间扩展（MySQL Spatial Extensions），它允许在MySQL中直接处理、保存和分析地理位置相关的信息，但是需要手动排序（请忽略distance字段）。文档可见<a href="https://dev.mysql.com/doc/refman/8.0/en/spatial-types.html" target="_blank" rel="noopener">这里</a></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> address (</span><br><span class="line">	<span class="keyword">id</span> <span class="built_in">INT</span> (<span class="number">11</span>) AUTO_INCREMENT,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">CHAR</span> (<span class="number">80</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	point POINT <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>)</span><br><span class="line">);</span><br><span class="line"><span class="comment"># 创建索引</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> address <span class="keyword">ADD</span> SPATIAL <span class="keyword">INDEX</span>(point);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 插入测试数据</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> address(<span class="keyword">name</span>,point,lat,lng) <span class="keyword">VALUES</span></span><br><span class="line"> (<span class="string">'成都'</span>, GeomFromText(<span class="string">'POINT(30.659673 104.068433)'</span>))</span><br><span class="line">,(<span class="string">'绵阳'</span>, GeomFromText(<span class="string">'POINT(31.473909 104.680961)'</span>))</span><br><span class="line">,(<span class="string">'泸州'</span>, GeomFromText(<span class="string">'POINT(28.876403 105.450251)'</span>)) </span><br><span class="line">,(<span class="string">'德阳'</span>, GeomFromText(<span class="string">'POINT(31.134847 104.408441)'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询： 查找坐标(30.452034,106.644153)附近 220 公里内的城市</span></span><br><span class="line"><span class="keyword">SELECT</span>  <span class="keyword">id</span>,<span class="keyword">name</span>,(</span><br><span class="line">          <span class="number">6371</span> * <span class="keyword">acos</span> (    <span class="comment"># 3959是地球半径的英里，6371是地球半径的千米</span></span><br><span class="line">          <span class="keyword">cos</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">          * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">          * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lng ) - <span class="keyword">radians</span>(<span class="number">106.644153</span>) )</span><br><span class="line">          + <span class="keyword">sin</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">          * <span class="keyword">sin</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">        )</span><br><span class="line">    ) <span class="keyword">AS</span> distance <span class="comment"># 仅供结果可视，非必须</span></span><br><span class="line">    <span class="keyword">FROM</span>    address</span><br><span class="line">    <span class="keyword">WHERE</span>   MBRContains (</span><br><span class="line">                LineString(</span><br><span class="line">                        Point (</span><br><span class="line">                                <span class="number">30.452034</span> + <span class="number">220</span> / ( <span class="number">111.1</span> / <span class="keyword">COS</span>(<span class="keyword">RADIANS</span>(<span class="number">30.452034</span>))), // <span class="number">1</span>弧度 = <span class="number">111.1</span></span><br><span class="line">                                <span class="number">106.644153</span> + <span class="number">220</span> / <span class="number">111.1</span></span><br><span class="line">                          ),</span><br><span class="line">                        Point (</span><br><span class="line">                                <span class="number">30.452034</span> - <span class="number">220</span> / ( <span class="number">111.1</span> / <span class="keyword">COS</span>(<span class="keyword">RADIANS</span>(<span class="number">30.452034</span>))),</span><br><span class="line">                                <span class="number">106.644153</span> - <span class="number">220</span> / <span class="number">111.1</span></span><br><span class="line">                        ) </span><br><span class="line">                ), point)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 查询结果</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> 2	绵阳	218.97099731812352</span></span><br><span class="line"><span class="comment"> 3	泸州	209.7647687926011</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="通过Geohash算法"><a href="#通过Geohash算法" class="headerlink" title="通过Geohash算法"></a>通过Geohash算法</h4><p>GeoHash是一种地址编码，通过切分地图区域为小方块（切分次数越多，精度越高），它能把二维的经纬度编码成一维的字符串。也就是说，理论上geohash字符串表示的并不是一个点，而是一个矩形区域，只要矩形区域足够小，达到所需精度即可。（MongoDB的索引也是基于geohash）</p>
+<p>如：wm3yr31d252414ux就是目前我所在的位置，降低一些精度，就会是wm3yr31d2524，再降低一些精度，就会是wm3yr。</p>
+<p>所以这样一来，我们就可以在MySQL中用LIKE ‘wm3yr%’来限定区域范围查询目标点，并且可以对结果集做缓存。更不会因为微小的经纬度变化而无法用上数据库的Query Cache。</p>
+<p>这种方案的优点显而易见，仅用一个字符串保存经纬度信息，并且精度由字符串从头到尾的长度决定，可以方便索引。</p>
+<p>但这种方案的缺点是：从geohash的编码算法中可以看出，靠近每个方块边界两侧的点虽然十分接近，但所属的编码会完全不同。实际应用中，虽然可以通过去搜索环绕当前方块周围的8个方块来解决该问题，但一下子将原来只需要1次SQL查询变成了需要查询9次，这样不仅增大了查询量，也将原本简单的方案复杂化了。除此之外，这个方案也无法直接得到距离，需要程序协助进行后续的排序计算。</p>
+<p><strong>geohash的编码算法</strong></p>
+<p>成都永丰立交经纬度(30.63578,104.031601)</p>
+<p>1)、纬度范围(-90, 90)平分成两个区间(-90, 0)、(0, 90)， 如果目标纬度位于前一个区间，则编码为0，否则编码为1。</p>
+<p>由于30.625265属于(0, 90)，所以取编码为1。</p>
+<p>然后再将(0, 90)分成 (0, 45), (45, 90)两个区间，而39.92324位于(0, 45)，所以编码为0</p>
+<p>然后再将(0, 45)分成 (0, 22.5), (22.5, 45)两个区间，而39.92324位于(22.5, 45)，所以编码为1</p>
+<p>依次类推可得永丰立交纬度编码为101010111001001000100101101010。</p>
+<p>2)、经度也用同样的算法，对(-180, 180)依次细分，(-180，0)、(0,180) 得出编码110010011111101001100000000000</p>
+<p>3)、合并经纬度编码，从高到低，先取一位经度，再取一位纬度；得出结果 111001001100011111101011100011000010110000010001010001000100</p>
+<p>4)、用0-9、b-z（去掉a, i, l, o）这32个字母进行base32编码，得到(30.63578,104.031601)的编码为wm3yr31d2524。</p>
+<p>11100 10011 00011 11110 10111 00011 00001 01100 00010 00101 00010 00100 =&gt; <a href="http://geohash.org/wm3yr31d2524" target="_blank" rel="noopener">wm3yr31d2524</a></p>
+<p>算法如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GeoHash</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Base32编码映射关系</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">const</span> DIGITS = [<span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>,</span><br><span class="line">        <span class="string">'9'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span>, <span class="string">'g'</span>, <span class="string">'h'</span>, <span class="string">'j'</span>, <span class="string">'k'</span>, <span class="string">'m'</span>, <span class="string">'n'</span>, <span class="string">'p'</span>,</span><br><span class="line">        <span class="string">'q'</span>, <span class="string">'r'</span>, <span class="string">'s'</span>, <span class="string">'t'</span>, <span class="string">'u'</span>, <span class="string">'v'</span>, <span class="string">'w'</span>, <span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 精确度，值越大越精准, 建议此处使用5的倍数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">const</span> MAX = <span class="number">40</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * GeoHash encode</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $lat</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $lng</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">encode</span><span class="params">($lat, $lng)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>::base32_encode(<span class="keyword">self</span>::combine(<span class="keyword">self</span>::dec2bit($lat, <span class="number">-90</span>, <span class="number">90</span>), <span class="keyword">self</span>::dec2bit($lng, <span class="number">-180</span>, <span class="number">180</span>)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * GeoHash decode</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $val</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">decode</span><span class="params">($val)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $encode = <span class="keyword">self</span>::base32_decode($val);</span><br><span class="line">        <span class="keyword">list</span>($elat, $elng) = <span class="keyword">self</span>::spilt($encode);</span><br><span class="line">        <span class="keyword">return</span> [<span class="keyword">self</span>::bit2dec($elat, <span class="number">-90</span>, <span class="number">90</span>), <span class="keyword">self</span>::bit2dec($elng, <span class="number">-180</span>, <span class="number">180</span>)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将十进制转换成二进制经纬度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> float $v 十进制经纬度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> float $l 左阈值</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> float $r 右阈值</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">dec2bit</span><span class="params">($v, $l, $r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $s = <span class="string">''</span>;</span><br><span class="line">        $max = <span class="keyword">self</span>::MAX;</span><br><span class="line">        <span class="keyword">while</span> ($max--) &#123;</span><br><span class="line">            $mid = ($l + $r) / <span class="number">2</span>;</span><br><span class="line">            $d = $mid &gt; $v ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> ($d) &#123;</span><br><span class="line">                $l = $mid;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $r = $mid;</span><br><span class="line">            &#125;</span><br><span class="line">            $s .= $d;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 经纬度编码值合并</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> int $elat 二进制维度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> int $elng 二进制经度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">combine</span><span class="params">($elat, $elng)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $c = <span class="string">''</span>;</span><br><span class="line">        $max = <span class="keyword">self</span>::MAX;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $max; $i++) &#123;</span><br><span class="line">            $c .= $elng[$i] . $elat[$i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $c;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * base32编码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> string $s 合并后的经纬度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">base32_encode</span><span class="params">($s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $r = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($s); $i += <span class="number">5</span>) &#123;</span><br><span class="line">            $sub = str_pad(substr($s, $i, <span class="number">5</span>), <span class="number">5</span>, <span class="number">0</span>, STR_PAD_RIGHT);</span><br><span class="line">            $num = base_convert($sub,<span class="number">2</span>,<span class="number">10</span>);</span><br><span class="line">            $r .= <span class="keyword">self</span>::DIGITS[$num];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $r;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * base32解码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> string $s GeoHash.encode的值</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">base32_decode</span><span class="params">($s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $r = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($s); $i++) &#123;</span><br><span class="line">            $v = array_search($s[$i], <span class="keyword">self</span>::DIGITS);</span><br><span class="line">            $b = str_pad(base_convert($v, <span class="number">10</span>, <span class="number">2</span>), <span class="number">5</span>, <span class="number">0</span>, STR_PAD_LEFT);</span><br><span class="line">            $r .= $b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $r;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 经纬度拆分</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> string $s 将合并的经纬度拆出来</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">spilt</span><span class="params">($s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $lat = <span class="string">''</span>;</span><br><span class="line">        $lng = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($s); $i += <span class="number">2</span>) &#123;</span><br><span class="line">            $lng .= $s[$i];</span><br><span class="line">            $lat .= $s[$i + <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> [$lat, $lng];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 二进制转换成十进制经纬度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> float $s 二进制经纬度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> float $l 左阈值</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> float $r 右阈值</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> float|int|string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">bit2dec</span><span class="params">($s, $l, $r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $k = <span class="string">''</span>;</span><br><span class="line">        $mid = ($l + $r) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($s); $i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> ($s[$i]) &#123;</span><br><span class="line">                $l = $mid;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $r = $mid;</span><br><span class="line">            &#125;</span><br><span class="line">            $mid = ($l + $r) / <span class="number">2</span>;</span><br><span class="line">            $k = $mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Testing</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">$lat = <span class="number">30.63578</span>;</span><br><span class="line">$lng = <span class="number">104.031601</span>;</span><br><span class="line">var_dump(<span class="string">"初始值: $lat,$lng"</span>);</span><br><span class="line">var_dump(<span class="string">"编码后: "</span> . ($s = GeoHash::encode($lat, $lng)));</span><br><span class="line">var_dump(<span class="string">"解码后: "</span> . (implode(<span class="string">','</span>, GeoHash::decode($s))));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 输出</span></span><br><span class="line"><span class="comment">string(30) "初始值: 30.63578,104.031601"</span></span><br><span class="line"><span class="comment">string(27) "编码后: wm3yr31d252414ux"</span></span><br><span class="line"><span class="comment">string(41) "解码后: 30.63577999993,104.03160100012"</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="方案二：-MongoDB"><a href="#方案二：-MongoDB" class="headerlink" title="方案二： MongoDB"></a>方案二： MongoDB</h3><p>MongoDB原生支持地理位置索引，可以直接用于位置距离计算和查询。</p>
+<p>另外，它也是如今最流行的NoSQL数据库之一，除了能够很好地支持地理位置计算之外，还拥有诸如面向集合存储、模式自由、高性能、支持复杂查询、支持完全索引等等特性。查询结果默认将会由近到远排序，而且查询结果也包含目标点对象、距离目标点的距离等信息。由于geoNear是MongoDB原生支持的查询函数，所以性能上也做到了高度的优化，完全可以应付生产环境的压力。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 插入数据</span></span><br><span class="line">db.location.insert(&#123;</span><br><span class="line">      "xian":"成都",</span><br><span class="line">      "sheng":"四川",</span><br><span class="line">      "center":&#123; "type":"Point","coordinates":[104.068433,30.659673]&#125;</span><br><span class="line">&#125;);</span><br><span class="line">db.location.insert(&#123;</span><br><span class="line">      "xian":"绵阳",</span><br><span class="line">      "sheng":"四川",</span><br><span class="line">      "center":&#123; "type":"Point","coordinates":[104.680961,31.473909]&#125;</span><br><span class="line">&#125;);</span><br><span class="line">db.location.insert(&#123;</span><br><span class="line">      "xian":"泸州",</span><br><span class="line">      "sheng":"四川",</span><br><span class="line">      "center":&#123; "type":"Point","coordinates":[105.450251,28.876403]&#125;</span><br><span class="line">&#125;);</span><br><span class="line">db.location.insert(&#123;</span><br><span class="line">      "xian":"德阳",</span><br><span class="line">      "sheng":"四川",</span><br><span class="line">      "center":&#123; "type":"Point","coordinates":[104.408441,31.134847]&#125;</span><br><span class="line">&#125;);</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 创建 2dsphere索引</span></span><br><span class="line">db.location.createIndex(&#123;"center":"2dsphere"&#125;); # 或 db.location.ensureIndex( &#123; center : "2dsphere" &#125; )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询: 这种方法可以返回的由近及远的点，但是不能获取距离，支持分页查询</span></span><br><span class="line">db.location.find(&#123;</span><br><span class="line">  center:&#123;</span><br><span class="line">     $near:&#123;</span><br><span class="line">       $geometry:&#123;</span><br><span class="line">          type:"Point",</span><br><span class="line">          coordinates:[106.644153,30.452034]</span><br><span class="line">       &#125;,</span><br><span class="line">       $maxDistance: 500000 </span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).limit(3);</span><br><span class="line"><span class="comment">/** 查询结果</span></span><br><span class="line"><span class="comment">&#123; "_id" : ObjectId("5f1e4e971a9a5bb3e50e17d3"), "xian" : "泸州", "sheng" : "四川", "center" : &#123; "type" : "Point", "coordinates" : [ 105.450251, 28.876403 ] &#125; &#125;</span></span><br><span class="line"><span class="comment">&#123; "_id" : ObjectId("5f1e4e971a9a5bb3e50e17d2"), "xian" : "绵阳", "sheng" : "四川", "center" : &#123; "type" : "Point", "coordinates" : [ 104.680961, 31.473909 ] &#125; &#125;</span></span><br><span class="line"><span class="comment">&#123; "_id" : ObjectId("5f1e4e991a9a5bb3e50e17d4"), "xian" : "德阳", "sheng" : "四川", "center" : &#123; "type" : "Point", "coordinates" : [ 104.408441, 31.134847 ] &#125; &#125;</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查询：这种方法更加灵活，可以返回距离，还可以指定查询条件等,但是不可以分页</span></span><br><span class="line"></span><br><span class="line">db.runCommand( &#123;</span><br><span class="line">   geoNear: "location" ,</span><br><span class="line">   near: &#123; </span><br><span class="line">      type: "Point" , </span><br><span class="line">      coordinates: [106.644153,30.452034]</span><br><span class="line">    &#125; ,</span><br><span class="line">   spherical: true,</span><br><span class="line">   limit:3</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** 查询结果</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">        "results" : [</span></span><br><span class="line"><span class="comment">                &#123;</span></span><br><span class="line"><span class="comment">                        "dis" : 209998.53583992278,// 距离查询点距离，单位：米</span></span><br><span class="line"><span class="comment">                        "obj" : &#123;</span></span><br><span class="line"><span class="comment">                                "_id" : ObjectId("5f1e4e971a9a5bb3e50e17d3"),</span></span><br><span class="line"><span class="comment">                                "xian" : "泸州",</span></span><br><span class="line"><span class="comment">                                "sheng" : "四川",</span></span><br><span class="line"><span class="comment">                                "center" : &#123;</span></span><br><span class="line"><span class="comment">                                        "type" : "Point",</span></span><br><span class="line"><span class="comment">                                        "coordinates" : [</span></span><br><span class="line"><span class="comment">                                                105.450251,</span></span><br><span class="line"><span class="comment">                                                28.876403</span></span><br><span class="line"><span class="comment">                                        ]</span></span><br><span class="line"><span class="comment">                                &#125;</span></span><br><span class="line"><span class="comment">                        &#125;</span></span><br><span class="line"><span class="comment">                &#125;,</span></span><br><span class="line"><span class="comment">                &#123;</span></span><br><span class="line"><span class="comment">                        "dis" : 219215.02401424237,</span></span><br><span class="line"><span class="comment">                        "obj" : &#123;</span></span><br><span class="line"><span class="comment">                                "_id" : ObjectId("5f1e4e971a9a5bb3e50e17d2"),</span></span><br><span class="line"><span class="comment">                                "xian" : "绵阳",</span></span><br><span class="line"><span class="comment">                                "sheng" : "四川",</span></span><br><span class="line"><span class="comment">                                "center" : &#123;</span></span><br><span class="line"><span class="comment">                                        "type" : "Point",</span></span><br><span class="line"><span class="comment">                                        "coordinates" : [</span></span><br><span class="line"><span class="comment">                                                104.680961,</span></span><br><span class="line"><span class="comment">                                                31.473909</span></span><br><span class="line"><span class="comment">                                        ]</span></span><br><span class="line"><span class="comment">                                &#125;</span></span><br><span class="line"><span class="comment">                        &#125;</span></span><br><span class="line"><span class="comment">                &#125;,</span></span><br><span class="line"><span class="comment">                &#123;</span></span><br><span class="line"><span class="comment">                        "dis" : 226894.19044046788,</span></span><br><span class="line"><span class="comment">                        "obj" : &#123;</span></span><br><span class="line"><span class="comment">                                "_id" : ObjectId("5f1e4e991a9a5bb3e50e17d4"),</span></span><br><span class="line"><span class="comment">                                "xian" : "德阳",</span></span><br><span class="line"><span class="comment">                                "sheng" : "四川",</span></span><br><span class="line"><span class="comment">                                "center" : &#123;</span></span><br><span class="line"><span class="comment">                                        "type" : "Point",</span></span><br><span class="line"><span class="comment">                                        "coordinates" : [</span></span><br><span class="line"><span class="comment">                                                104.408441,</span></span><br><span class="line"><span class="comment">                                                31.134847</span></span><br><span class="line"><span class="comment">                                        ]</span></span><br><span class="line"><span class="comment">                                &#125;</span></span><br><span class="line"><span class="comment">                        &#125;</span></span><br><span class="line"><span class="comment">                &#125;</span></span><br><span class="line"><span class="comment">        ],</span></span><br><span class="line"><span class="comment">        "stats" : &#123;</span></span><br><span class="line"><span class="comment">                "nscanned" : 5,</span></span><br><span class="line"><span class="comment">                "objectsLoaded" : 4,</span></span><br><span class="line"><span class="comment">                "avgDistance" : 218702.58343154436,</span></span><br><span class="line"><span class="comment">                "maxDistance" : 226894.19044046788,</span></span><br><span class="line"><span class="comment">                "time" : 0</span></span><br><span class="line"><span class="comment">        &#125;,</span></span><br><span class="line"><span class="comment">        "ok" : 1</span></span><br><span class="line"><span class="comment">&#125;**/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="附录：两点距离算法"><a href="#附录：两点距离算法" class="headerlink" title="附录：两点距离算法"></a>附录：两点距离算法</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 获取两点间的距离</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> float $latitude1 纬度1</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> float $longitude1 经度1</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> float $latitude2 纬度2</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> float $longitude2 经度2</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> string $unit 单位: Km/Mi</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> false|float</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">getDistanceBetweenPointsNew</span><span class="params">($latitude1, $longitude1, $latitude2, $longitude2, $unit = <span class="string">'Mi'</span>)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">     $theta = $longitude1 - $longitude2;</span><br><span class="line">     $distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($theta)));</span><br><span class="line">     $distance = acos($distance);</span><br><span class="line">     $distance = rad2deg($distance);</span><br><span class="line">     $distance = $distance * <span class="number">60</span> * <span class="number">1.1515</span>;</span><br><span class="line">     <span class="keyword">switch</span> (strtolower($unit)) &#123;</span><br><span class="line">         <span class="keyword">case</span> <span class="string">'mi'</span>:</span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">         <span class="keyword">case</span> <span class="string">'km'</span> :</span><br><span class="line">             $distance = $distance * <span class="number">1.609344</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> (round($distance, <span class="number">2</span>));</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/两种简单方案实现LBS/" title="两种简单方案实现LBS">https://ya2.top/articles/两种简单方案实现LBS/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/平滑升级PHP版本/" rel="prev" title="平滑升级PHP版本">
+                <i class="fa fa-chevron-left"></i> 平滑升级PHP版本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/Redis-Transactions/" rel="next" title="Redis Transactions">
+                Redis Transactions <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+              
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#方案一：-Mysql"><span class="nav-text">方案一： Mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过球面两点距离公式"><span class="nav-text">通过球面两点距离公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过空间存储-spatial"><span class="nav-text">通过空间存储(spatial)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过Geohash算法"><span class="nav-text">通过Geohash算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案二：-MongoDB"><span class="nav-text">方案二： MongoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录：两点距离算法"><span class="nav-text">附录：两点距离算法</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

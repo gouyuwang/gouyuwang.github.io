@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="前言LeetCode上有一道SQL练习题感觉很有必要备注一下。 1234567891011121314151617181920【中等】180.编写一个 SQL 查询，查找所有至少连续出现三次的数字。+----+-----+| Id | Num |+----+-----+| 1  |  1  || 2  |  1  || 3  |  1  || 4  |  2  || 5  |  1  || 6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql中的用户变量">
+<meta property="og:url" content="https://ya2.top/articles/mysql中的用户变量/index.html">
+<meta property="og:site_name" content="e攻城狮">
+<meta property="og:description" content="前言LeetCode上有一道SQL练习题感觉很有必要备注一下。 1234567891011121314151617181920【中等】180.编写一个 SQL 查询，查找所有至少连续出现三次的数字。+----+-----+| Id | Num |+----+-----+| 1  |  1  || 2  |  1  || 3  |  1  || 4  |  2  || 5  |  1  || 6">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-07-27T16:13:35.686Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql中的用户变量">
+<meta name="twitter:description" content="前言LeetCode上有一道SQL练习题感觉很有必要备注一下。 1234567891011121314151617181920【中等】180.编写一个 SQL 查询，查找所有至少连续出现三次的数字。+----+-----+| Id | Num |+----+-----+| 1  |  1  || 2  |  1  || 3  |  1  || 4  |  2  || 5  |  1  || 6">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="e攻城狮" type="application/atom+xml">
+
+
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>mysql中的用户变量 | e攻城狮</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0822ee530d1bf122367506f876cbff8d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">e攻城狮</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-essay">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/随笔/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>随笔</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-瞎折腾">
+
+    
+    
+      
+    
+
+    
+
+    <a href="https://app.ya2.top/" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-heart"></i> <br>瞎折腾</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/mysql中的用户变量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">mysql中的用户变量
+
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-11 10:56:05" itemprop="dateCreated datePublished" datetime="2019-11-11T10:56:05Z">2019-11-11</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 不明生物： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://leetcode-cn.com/problems/consecutive-numbers" target="_blank" rel="noopener">LeetCode</a>上有一道SQL练习题感觉很有必要备注一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">【中等】180.编写一个 SQL 查询，查找所有至少连续出现三次的数字。</span><br><span class="line"></span><br><span class="line">+----+-----+</span><br><span class="line">| Id | Num |</span><br><span class="line">+----+-----+</span><br><span class="line">| 1  |  1  |</span><br><span class="line">| 2  |  1  |</span><br><span class="line">| 3  |  1  |</span><br><span class="line">| 4  |  2  |</span><br><span class="line">| 5  |  1  |</span><br><span class="line">| 6  |  2  |</span><br><span class="line">| 7  |  2  |</span><br><span class="line">+----+-----+</span><br><span class="line">例如，给定上面的 Logs 表， 1 是唯一连续出现至少三次的数字。</span><br><span class="line"></span><br><span class="line">+-----------------+</span><br><span class="line">| ConsecutiveNums |</span><br><span class="line">+-----------------+</span><br><span class="line">| 1               |</span><br><span class="line">+-----------------+</span><br></pre></td></tr></table></figure>
+
+<p>题解：</p>
+<ul>
+<li><a href="https://leetcode-cn.com/problems/consecutive-numbers/solution/lian-xu-chu-xian-de-shu-zi-by-leetcode/" target="_blank" rel="noopener">ID是连续的</a>：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> *</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    <span class="keyword">Logs</span> l1,</span><br><span class="line">    <span class="keyword">Logs</span> l2,</span><br><span class="line">    <span class="keyword">Logs</span> l3</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    l1.Id = l2.Id - <span class="number">1</span></span><br><span class="line">    <span class="keyword">AND</span> l2.Id = l3.Id - <span class="number">1</span></span><br><span class="line">    <span class="keyword">AND</span> l1.Num = l2.Num</span><br><span class="line">    <span class="keyword">AND</span> l2.Num = l3.Num</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">利用了ID连续，前后ID相差1的特性来确定，缺点也很明显, 数据必须保证前后ID是连续的且不断裂的</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://leetcode-cn.com/problems/consecutive-numbers/comments/" target="_blank" rel="noopener">ID连续性不确定</a>：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span></span><br><span class="line">	<span class="keyword">Num</span> <span class="keyword">AS</span> ConsecutiveNums</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	(</span><br><span class="line">		<span class="keyword">SELECT</span></span><br><span class="line">			<span class="keyword">Num</span>,</span><br><span class="line">			<span class="keyword">CASE</span></span><br><span class="line">		<span class="keyword">WHEN</span> @prev = <span class="keyword">Num</span> <span class="keyword">THEN</span></span><br><span class="line">			@<span class="keyword">count</span> := @<span class="keyword">count</span> + <span class="number">1</span></span><br><span class="line">		<span class="keyword">WHEN</span> (@prev := <span class="keyword">Num</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">THEN</span></span><br><span class="line">			@<span class="keyword">count</span> := <span class="number">1</span></span><br><span class="line">		<span class="keyword">END</span> <span class="keyword">AS</span> CNT</span><br><span class="line">		<span class="keyword">FROM</span></span><br><span class="line">			<span class="keyword">LOGS</span>,</span><br><span class="line">			(</span><br><span class="line">				<span class="keyword">SELECT</span></span><br><span class="line">					@prev := <span class="literal">NULL</span> ,@<span class="keyword">count</span> := <span class="literal">NULL</span></span><br><span class="line">			) <span class="keyword">AS</span> t</span><br><span class="line">	) <span class="keyword">AS</span> temp</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	temp.CNT &gt;= <span class="number">3</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">利用用户变量实现对连续出现的值进行计数,与自关联或自连接相比，这种方法的效率更高，不受Logs表中的Id是否连续的限制，而且可以任意设定某个值连续出现的次数。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="MySQL的变量分类"><a href="#MySQL的变量分类" class="headerlink" title="MySQL的变量分类"></a>MySQL的变量分类</h2><p>MySQL变量一共分为两大类：用户自定义变量和系统变量。如下：</p>
+<ul>
+<li>用户自定义变量<ul>
+<li>局部变量</li>
+<li>会话变量</li>
+</ul>
+</li>
+<li>系统变量<ul>
+<li>会话变量</li>
+<li>全局变量</li>
+</ul>
+</li>
+</ul>
+<h3 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h3><p>局部变量一般用于SQL的语句块中，比如存储过程中的begin和end语句块。其作用域仅限于该语句块内。生命周期也仅限于该存储过程的调用期间。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">procedure</span> <span class="keyword">if</span> <span class="keyword">exists</span> _procedure_test;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> _procedure_test</span><br><span class="line">(</span><br><span class="line">    <span class="keyword">in</span> a <span class="built_in">int</span>,</span><br><span class="line">    <span class="keyword">in</span> b <span class="built_in">int</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> c <span class="built_in">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">set</span> c = a + b;</span><br><span class="line">    <span class="keyword">select</span> c <span class="keyword">as</span> c;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上述存储过程中定义的变量c就是局部变量。</p>
+<h3 id="会话变量"><a href="#会话变量" class="headerlink" title="会话变量"></a>会话变量</h3><p>会话变量即为服务器为每个客户端连接维护的变量。在客户端连接时，使用相应全局变量的当前值对客户端的回话变量进行初始化。设置会话变量不需要特殊权限，但客户端只能更改自己的会话变量。其作用域与生命周期均限于当前客户端连接。</p>
+<p>会话变量的赋值：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set session var_name = value;</span><br><span class="line">mysql&gt; set @@session.var_name = value;</span><br><span class="line">mysql&gt; set var_name = value;</span><br></pre></td></tr></table></figure>
+
+<p>会话变量的查询：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select @@var_name;</span><br><span class="line">mysql&gt; select @@session.var_name;</span><br><span class="line">mysql&gt; show session variables like "%var%";</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h3><p>全局变量影响服务器整体操作。当服务器启动时，它将所有全局变量初始化为默认值。这些默认值可以在选项文件中或在命令行中指定的选项进行更改。要想更改全局变量，必须具有SUPER权限。全局变量作用于server的整个生命周期，但是不能跨重启。即重启后所有设置的全局变量均失效。要想让全局变量重启后继续生效，需要更改相应的配置文件。</p>
+<p>全局变量的设置：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set global var_name = value; //注意：此处的global不能省略。根据手册，set命令设置变量时若不指定GLOBAL、SESSION或者LOCAL，默认使用SESSION</span><br><span class="line">mysql&gt; set @@global.var_name = value; //同上</span><br></pre></td></tr></table></figure>
+
+<p>全局变量的查询：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select @@global.var_name;</span><br><span class="line">mysql&gt; show global variables like "%var%";</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义变量"><a href="#自定义变量" class="headerlink" title="自定义变量"></a>自定义变量</h2><p>你可以利用SQL语句将值存储在用户自定义变量中，然后再利用另一条SQL语句来查询用户自定义变量。这样以来，可以再不同的SQL间传递值。</p>
+<p>用户自定义变量的声明方法形如：@var_name，其中变量名称由字母、数字、“.”、“_”和“$”组成。当然，在以字符串或者标识符引用时也可以包含其他字符（例如：@’my-var’，@”my-var”，或者@<code>my-var</code>）。</p>
+<p><code>用户自定义变量是会话级别的变量</code>。其变量的作用域仅限于声明其的客户端链接。当这个客户端断开时，其所有的会话变量将会被释放。</p>
+<p><code>用户自定义变量是不区分大小写的。</code></p>
+<p>使用SET语句来声明用户自定义变量：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @var_name = expr[, @var_name = expr] ...</span><br></pre></td></tr></table></figure>
+
+<p>在使用SET设置变量时，可以使用 <code>=</code> 或者 <code>:=</code> 操作符进行赋值。</p>
+<p>当然，除了SET语句还有其他赋值的方式。比如下面这个例子，但是赋值操作符只能使用 <code>:=</code> , 因为 <code>=</code> 操作符将会被认为是比较操作符。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @t1 = 1, @t2 = 2, @t3 := 4;</span><br><span class="line">mysql&gt; SELECT @t1, @t2, @t3, @t4 := @t1 + @t2 + @t3;</span><br><span class="line">+<span class="comment">------+------+------+--------------------+</span></span><br><span class="line">| @t1  | @t2  | @t3  | @t4 := @t1+@t2+@t3 |</span><br><span class="line">+<span class="comment">------+------+------+--------------------+</span></span><br><span class="line">|    1 |    2 |    4 |                  7 |</span><br><span class="line">+<span class="comment">------+------+------+--------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>用户变量的类型仅限于：<code>整形</code>、<code>浮点型</code>、<code>二进制</code>与<code>非二进制串</code>和<code>NULL</code>。在赋值浮点数时，系统不会保留精度。其他类型的值将会被转成相应的上述类型。比如：一个包含时间或者空间数据类型（temporal or spatial data type）的值将会转换成一个二进制串。</p>
+<p>如果用户自定义变量的值以结果集形式返回，系统会将其转换成字符串形式。</p>
+<p>如果查询一个没有初始化的变量，将会以字符串类型返回NULL。</p>
+<p>不要在同一个非SET语句中同时赋值并使用同一个用户自定义变量</p>
+<p>用户自定义变量可以用于很多上下文中。但是目前并不包括那些显式使用常量的表达式中，比如SELECT中的LIMIT子句，或者LOAD DATA中的IGNORE N LINES的字句中。</p>
+<p>通常来说，除了在SET语句中，不要再同一个SQL语句中同时赋值并使用同一个用户自定义变量。举个变量自增的例子，下面的是没问题的：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @a = @a + 1;</span><br></pre></td></tr></table></figure>
+
+<p>对于其他语句，比如SELECT，也许会得到期望的效果，但这真心不靠谱。比如下面的语句，也许你自然地会认为MySQL会先执行@a的值，然后再进行赋值操作：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT @a, @a:=@a+1, ...;</span><br></pre></td></tr></table></figure>
+
+<p>然而，用户自定义变量表达式的计算顺序还没有定义呢。</p>
+<p>除此之外，还有另一个问题。<code>变量的默认返回类型由语句开始时的类型决定的</code>，正如下面的例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SET @a='test';</span><br><span class="line">mysql&gt; SELECT @a,(@a:=20) FROM tbl_name;</span><br></pre></td></tr></table></figure>
+
+<p>上述的SELECT语句中，MySQL会报告给客户端第一列的字段类型为字符串，同时将所有对@a变量的使用均转换为字符串处理，尽管在SELECT语句中将@a变量设置为数字类型。在SELECT语句执行后，@a变量才会在下一个语句中识别为数字类型。</p>
+<p>为了避免上述问题的发生，要么不在同一个语句中同时赋值并使用变量，要么在使用之前，将变量设置为0，0.0，或者’’，以确定它的数据类型。</p>
+<p><code>变量的值是在SQL发送到客户端后才计算的</code></p>
+<p>在SELECT语句中，在每一个select表达式被发送给客户端后，才会进行计算。这就意味着，在形如HAVING，GROUP BY和ORDER BY只句中有使用在当前select表达式定义的变量的情况下，该语句将不会得到如期的效果。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT (@aa:=id) AS a, (@aa+3) AS b FROM tbl_name HAVING b=5;</span><br></pre></td></tr></table></figure>
+
+<p>上述在HAVING只句中使用了在当前的select列表中定义的别名b，其使用了变量@aa。这条语句并不会得到如期的效果：@aa变量为上一次SQL语句执行的结果集中的ID值，并非当前的。</p>
+<h2 id="例-在MySQL中实现Rank高级排名函数"><a href="#例-在MySQL中实现Rank高级排名函数" class="headerlink" title="例 : 在MySQL中实现Rank高级排名函数"></a>例 : 在MySQL中实现Rank高级排名函数</h2><p>除了上面题目中的示例，这里给出另外一个常用的示例：</p>
+<p>MySQL中没有Rank排名函数，当我们需要查询排名时，我们可以利用自定义变量来达到Rank函数一样的高级排名效果。</p>
+<p>首先我们先创建一个我们需要进行高级排名查询的players表，</p>
+<table>
+<thead>
+<tr>
+<th>pid</th>
+<th>name</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Samual</td>
+<td>25</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vino</td>
+<td>20</td>
+</tr>
+<tr>
+<td>3</td>
+<td>John</td>
+<td>20</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Andy</td>
+<td>22</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Brian</td>
+<td>21</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Dew</td>
+<td>24</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Kris</td>
+<td>25</td>
+</tr>
+<tr>
+<td>8</td>
+<td>William</td>
+<td>26</td>
+</tr>
+<tr>
+<td>9</td>
+<td>George</td>
+<td>23</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Peter</td>
+<td>19</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Tom</td>
+<td>20</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Andre</td>
+<td>20</td>
+</tr>
+</tbody></table>
+<h3 id="实现Rank普通排名函数"><a href="#实现Rank普通排名函数" class="headerlink" title="实现Rank普通排名函数"></a>实现Rank普通排名函数</h3><p>在这里，我们希望获得一个排名字段的列，以及age的升序排列。所以我们的查询语句将是：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, <span class="keyword">name</span>, age, @curRank := @curRank + <span class="number">1</span> <span class="keyword">AS</span> <span class="keyword">rank</span></span><br><span class="line"><span class="keyword">FROM</span> players p, (<span class="keyword">SELECT</span> @curRank := <span class="number">0</span>) q</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> age</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>PID</th>
+<th>NAME</th>
+<th>AGE</th>
+<th>RANK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10</td>
+<td>Peter</td>
+<td>19</td>
+<td>1</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Andre</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vino</td>
+<td>20</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>John</td>
+<td>20</td>
+<td>4</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Tom</td>
+<td>20</td>
+<td>5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Brian</td>
+<td>21</td>
+<td>6</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Andy</td>
+<td>22</td>
+<td>7</td>
+</tr>
+<tr>
+<td>9</td>
+<td>George</td>
+<td>23</td>
+<td>8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Dew</td>
+<td>24</td>
+<td>9</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Kris</td>
+<td>25</td>
+<td>10</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Samual</td>
+<td>25</td>
+<td>11</td>
+</tr>
+<tr>
+<td>8</td>
+<td>William</td>
+<td>26</td>
+<td>12</td>
+</tr>
+</tbody></table>
+<p>要在mysql中声明一个变量，你必须在变量名之前使用@符号。FROM子句中的(@curRank := 0)部分允许我们进行变量初始化，而不需要单独的SET命令。当然，也可以使用SET，但它会处理两个查询：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> @curRank := <span class="number">0</span>;</span><br><span class="line"><span class="keyword">SELECT</span> pid, <span class="keyword">name</span>, age, @curRank := @curRank + <span class="number">1</span> <span class="keyword">AS</span> <span class="keyword">rank</span></span><br><span class="line"><span class="keyword">FROM</span> players</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> age</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现Rank查询以降序排列"><a href="#实现Rank查询以降序排列" class="headerlink" title="实现Rank查询以降序排列"></a>实现Rank查询以降序排列</h3><p>首要按age的降序排列，其次按name进行排列，只需修改查询语句加上ORDER BY和 DESC以及列名即可。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, <span class="keyword">name</span>, age, @curRank := @curRank + <span class="number">1</span> <span class="keyword">AS</span> <span class="keyword">rank</span></span><br><span class="line"><span class="keyword">FROM</span> players p, (<span class="keyword">SELECT</span> @curRank := <span class="number">0</span>) q</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> age <span class="keyword">DESC</span>, <span class="keyword">name</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>PID</th>
+<th>NAME</th>
+<th>AGE</th>
+<th>RANK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8</td>
+<td>William</td>
+<td>26</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Kris</td>
+<td>25</td>
+<td>2</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Samual</td>
+<td>25</td>
+<td>3</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Dew</td>
+<td>24</td>
+<td>4</td>
+</tr>
+<tr>
+<td>9</td>
+<td>George</td>
+<td>23</td>
+<td>5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Andy</td>
+<td>22</td>
+<td>6</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Brian</td>
+<td>21</td>
+<td>7</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Andre</td>
+<td>20</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>John</td>
+<td>20</td>
+<td>9</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Tom</td>
+<td>20</td>
+<td>10</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vino</td>
+<td>20</td>
+<td>11</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Peter</td>
+<td>19</td>
+<td>12</td>
+</tr>
+</tbody></table>
+<h3 id="实现Rank普通并列排名函数"><a href="#实现Rank普通并列排名函数" class="headerlink" title="实现Rank普通并列排名函数"></a>实现Rank普通并列排名函数</h3><p>现在，如果我们希望为并列数据的行赋予相同的排名，则意味着那些在排名比较列中具有相同值的行应在MySQL中计算排名时保持相同的排名(例如在我们的例子中的age)。为此，我们使用了一个额外的变量。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, <span class="keyword">name</span>, age,</span><br><span class="line"><span class="keyword">CASE</span></span><br><span class="line"><span class="keyword">WHEN</span> @prevRank = age <span class="keyword">THEN</span> @curRank</span><br><span class="line"><span class="keyword">WHEN</span> @prevRank := age <span class="keyword">THEN</span> @curRank := @curRank + <span class="number">1</span></span><br><span class="line"><span class="keyword">END</span> <span class="keyword">AS</span> <span class="keyword">rank</span></span><br><span class="line"><span class="keyword">FROM</span> players p, (<span class="keyword">SELECT</span> @curRank :=<span class="number">0</span>, @prevRank := <span class="literal">NULL</span>) r</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> age</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>PID</th>
+<th>NAME</th>
+<th>AGE</th>
+<th>RANK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10</td>
+<td>Peter</td>
+<td>19</td>
+<td>1</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Andre</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vino</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>John</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Tom</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Brian</td>
+<td>21</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Andy</td>
+<td>22</td>
+<td>4</td>
+</tr>
+<tr>
+<td>9</td>
+<td>George</td>
+<td>23</td>
+<td>5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Dew</td>
+<td>24</td>
+<td>6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Kris</td>
+<td>25</td>
+<td>7</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Samual</td>
+<td>25</td>
+<td>7</td>
+</tr>
+<tr>
+<td>8</td>
+<td>William</td>
+<td>26</td>
+<td>8</td>
+</tr>
+</tbody></table>
+<p>如上所示，具有相同数据和排行的两行或多行，它们都会获得相同的排名。玩家Andre, Vino, John 和Tom都有相同的age，所以他们排名并列第二。下一个最高age的玩家(Brian)排名第3。这个查询相当于MSSQL和ORACLE 中的DENSE_RANK()函数。</p>
+<h3 id="实现Rank高级并列排名函数"><a href="#实现Rank高级并列排名函数" class="headerlink" title="实现Rank高级并列排名函数"></a>实现Rank高级并列排名函数</h3><p>当使用RANK()函数时，如果两个或以上的行排名并列，则相同的行都会有相同的排名，但是实际排名中存在有关系的差距。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pid, <span class="keyword">name</span>, age, <span class="keyword">rank</span> <span class="keyword">FROM</span></span><br><span class="line">(<span class="keyword">SELECT</span> pid, <span class="keyword">name</span>, age,</span><br><span class="line">    @curRank := <span class="keyword">IF</span>(@prevRank = age, @curRank, @incRank) <span class="keyword">AS</span> <span class="keyword">rank</span>,</span><br><span class="line">    @incRank := @incRank + <span class="number">1</span>,</span><br><span class="line">    @prevRank := age</span><br><span class="line">    <span class="keyword">FROM</span> players p, (<span class="keyword">SELECT</span> @curRank :=<span class="number">0</span>, @prevRank := <span class="literal">NULL</span>, @incRank := <span class="number">1</span>) r</span><br><span class="line">    <span class="keyword">ORDER</span> <span class="keyword">BY</span> age ) s</span><br></pre></td></tr></table></figure>
+
+<p>这是一个查询中的子查询。我们使用三个变量(@incRank，@prevRank，@curRank)来计算关系的情况下，在查询结果中我们已经补全了因为并列而导致的排名空位。我们已经封闭子查询到查询。这个查询相当于MSSQL和ORACLE中的RANK()函数。</p>
+<table>
+<thead>
+<tr>
+<th>PID</th>
+<th>NAME</th>
+<th>AGE</th>
+<th>RANK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10</td>
+<td>Peter</td>
+<td>19</td>
+<td>1</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Andre</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vino</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>John</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Tom</td>
+<td>20</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Brian</td>
+<td>21</td>
+<td>6</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Andy</td>
+<td>22</td>
+<td>7</td>
+</tr>
+<tr>
+<td>9</td>
+<td>George</td>
+<td>23</td>
+<td>8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Dew</td>
+<td>24</td>
+<td>9</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Kris</td>
+<td>25</td>
+<td>10</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Samual</td>
+<td>25</td>
+<td>10</td>
+</tr>
+<tr>
+<td>8</td>
+<td>William</td>
+<td>26</td>
+<td>12</td>
+</tr>
+</tbody></table>
+<p>在这里我们可以看到，Andre，Vino，John和Tom都有相同的age，所以他们排名并列第二。下一个最高年龄的球员(Brian)排名第6，而不是第3，因为有4个人并列排名在第2。</p>
+<p>好的，通过本文加深对sql的运用，也希望你能从中获取收获。</p>
+<p>参考链接:</p>
+<p><a href="http://blog.ihuxu.com/explaination-of-the-mysql-variables-usage-and-the-use-case/#mysql-user-defined-variables" target="_blank" rel="noopener">深入MySQL用户自定义变量</a> 胡小旭<br><a href="https://www.jianshu.com/p/bb1b72a1623e" target="_blank" rel="noopener">在MySQL中实现Rank高级排名函数</a> 风澈vio</p>
+
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/mp.png" style="width: 200px; max-width: 100%;">
+  <div>关注作者公众号,获取更多资源!</div>
+</div>
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>赏作者一杯咖啡~</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/wxpay.png" alt="Mr.Gou 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/alipay.png" alt="Mr.Gou 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mr.Gou</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ya2.top/articles/mysql中的用户变量/" title="mysql中的用户变量">https://ya2.top/articles/mysql中的用户变量/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！</li>
+</ul>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/php如何实现多继承/" rel="prev" title="php如何实现“多继承”">
+                <i class="fa fa-chevron-left"></i> php如何实现“多继承”
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/redis持久化/" rel="next" title="redis持久化">
+                redis持久化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg" alt="Mr.Gou">
+            
+              <p class="site-author-name" itemprop="name">Mr.Gou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/gouyuwang" title="GitHub &rarr; https://github.com/gouyuwang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:529156563@gmail.com" title="E-Mail &rarr; mailto:529156563@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/3820911628" title="Weibo &rarr; https://weibo.com/u/3820911628" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.leavesongs.com/" title="https://www.leavesongs.com/" rel="noopener" target="_blank">离别歌 - 代码审计漏洞挖掘pythonc++</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://92ez.com/" title="http://92ez.com/" rel="noopener" target="_blank">一只猿 - 前端攻城尸</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yulegeyu.com/" title="http://www.yulegeyu.com/" rel="noopener" target="_blank">雨了个雨&#39;s blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one/" title="https://thief.one/" rel="noopener" target="_blank">nMask&#39;s Blog - 风陵渡口</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wiki.learnblockchain.cn/bitcoin/readme.html" title="https://wiki.learnblockchain.cn/bitcoin/readme.html" rel="noopener" target="_blank">区块链技术导航</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL的变量分类"><span class="nav-number">2.</span> <span class="nav-text">MySQL的变量分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#局部变量"><span class="nav-number">2.1.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话变量"><span class="nav-number">2.2.</span> <span class="nav-text">会话变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局变量"><span class="nav-number">2.3.</span> <span class="nav-text">全局变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义变量"><span class="nav-number">3.</span> <span class="nav-text">自定义变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例-在MySQL中实现Rank高级排名函数"><span class="nav-number">4.</span> <span class="nav-text">例 : 在MySQL中实现Rank高级排名函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现Rank普通排名函数"><span class="nav-number">4.1.</span> <span class="nav-text">实现Rank普通排名函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现Rank查询以降序排列"><span class="nav-number">4.2.</span> <span class="nav-text">实现Rank查询以降序排列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现Rank普通并列排名函数"><span class="nav-number">4.3.</span> <span class="nav-text">实现Rank普通并列排名函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现Rank高级并列排名函数"><span class="nav-number">4.4.</span> <span class="nav-text">实现Rank高级并列排名函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 
+  <span itemprop="copyrightYear">2022</span>  
+
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022014529号</a> </span> 
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+      
+        <div class="footer-inner">
+    <span onclick="showSoul();" id="footer-soul" style="cursor:pointer;padding-left:10px;" title="点击再来一碗"></span><i class="fa fa-stop-circle" id="speak" onclick="speakSwitch(this)"></i>
+</div>
+
+<script type="text/javascript">
+
+var interval;
+var __SPEAK__='__SPEAK__';
+
+function speakSwitch(e){
+    var nowState = e.className
+    var flag = 0;
+    if(-1 != nowState.indexOf('fa-play-circle')){
+         flag = 0;
+         e.className = nowState.replace('fa-play-circle','fa-stop-circle')
+    }else{
+         flag = 1;
+         e.className = nowState.replace('fa-stop-circle','fa-play-circle')
+    } 
+    localStorage.setItem(__SPEAK__,flag); 
+}
+
+function speak(content) {
+    // 详情见 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis 
+    let synth = window.speechSynthesis;
+    let voices = synth.getVoices().filter (voice => voice.lang.startsWith("zh-CN"));
+    if (voices.length == 0) return;
+    let utterThis = new SpeechSynthesisUtterance(content);
+    utterThis.voice = voices[0];
+    synth.speak(utterThis);
+}
+
+function showSoul(){
+    var soul =localStorage.getItem('soul');
+    if(!soul){  
+        let xhr = (new XMLHttpRequest()) ||  (new ActiveXObject("Microsoft.XMLHttp"));
+        xhr.open("get", location.protocol+'//'+location.host+'/soul.json');
+        xhr.send(null); 
+        xhr.onload = function () {  
+            if (xhr.status == 200) { 
+                soul =  xhr.responseText;
+                localStorage.setItem('soul',soul);
+            }
+        }
+    } 
+    if(soul){ 
+        soul = JSON.parse(soul); 
+        if(interval){
+            clearInterval(interval) 
+        } 
+        content = soul[parseInt(Math.random()*(soul.length+1),10)];
+        document.getElementById('footer-soul').innerHTML = content;
+        (1 == localStorage.getItem(__SPEAK__)) && speak(content);
+        interval = setInterval(showSoul,10*1000); 
+    }
+} 
+
+setTimeout(showSoul,0); 
+
+</script>
+      
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
