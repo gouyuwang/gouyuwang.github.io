@@ -360,6 +360,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Laravel SQLSTATE 2002 - No such file or directory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/Laravel SQLSTATE 2002 - No such file or directory/" class="post-title-link" itemprop="url">Laravel SQLSTATE 2002-No such file or directory</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-07 06:50:26" itemprop="dateCreated datePublished" datetime="2017-08-07T06:50:26Z">2017-08-07</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>问题</p>
+<p>SQLSTATE[HY000] [2002] No such file or directory</p>
+<p>原因</p>
+<p>框架没有找到对应的mysql执行</p>
+<p>解决方案</p>
+<ol>
+<li><p>执行sql语句 <code>show variables like ‘%sock%’</code> 获取 mysql socket 的位置 ,  对应返回的字段 socket 对应的value, 一般的结果大概长这个样子 /tmp/mysql.sock</p>
+</li>
+<li><p>修改文件 <code>./config/database.php</code> 中的 connections 下的 mysql 添加</p>
+</li>
+</ol>
+<p>‘unix_socket’ =&gt; ‘/tmp/mysql.sock’</p>
+<p>或者在.env中添加</p>
+<p>DB_SOCKET = /tmp/mysql.sock</p>
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Redis-后台启动/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2044,209 +2221,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/git-svn放弃本地更新/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/git-svn放弃本地更新/" class="post-title-link" itemprop="url">git、svn放弃本地更新</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-07-26 12:55:08" itemprop="dateCreated datePublished" datetime="2017-07-26T12:55:08Z">2017-07-26</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <h4 id="GIT"><a href="#GIT" class="headerlink" title="GIT"></a>GIT</h4><p>1、只是下载远程的库的内容，不做任何的合并</p>
-<p><code>git fetch --all</code></p>
-<p>2、把HEAD指向刚刚下载的最新的版本</p>
-<p><code>git reset --hard origin/master</code></p>
-<h4 id="SVN"><a href="#SVN" class="headerlink" title="SVN"></a>SVN</h4><p>第一种情况：改动没有被提交（commit）。</p>
-<p>这种情况下，使用svn</p>
-<p>revert就能取消之前的修改。</p>
-<p>svn revert用法如下：</p>
-<p><code># svn revert [-R] something</code></p>
-<p>其中something可以是（目录或文件的）相对路径也可以是绝对路径。</p>
-<p>当something为单个文件时，直接svn revert something就行了；当something为目录时，需要加上参数-R(Recursive,递归)，否则只会将something这个目录的改动。</p>
-<p>在这种情况下也可以使用svn update命令来取消对之前的修改，但不建议使用。因为svn update会去连接仓库服务器，耗费时间。</p>
-<p>注意：svn revert本身有固有的危险，因为它的目的是放弃未提交的修改。一旦你选择了恢复，Subversion没有方法找回未提交的修改。</p>
-<p>第二种情况：改动已经被提交（commit）。</p>
-<p>这种情况下，用svn merge命令来进行回滚。</p>
-<p>回滚的操作过程如下：</p>
-<p>1、保证我们拿到的是最新代码：</p>
-<p><code>svn update</code></p>
-<p>假设最新版本号是28。</p>
-<p>2、然后找出要回滚的确切版本号：</p>
-<p><code>svn log [something]</code></p>
-<p>假设根据svn log日志查出要回滚的版本号是25，此处的something可以是文件、目录或整个项目</p>
-<p>如果想要更详细的了解情况，可以使用<code>svn diff -r 28:25 [something]</code></p>
-<p>3、回滚到版本号25：</p>
-<p><code>svn merge -r 28:25 something</code></p>
-<p>为了保险起见，再次确认回滚的结果：</p>
-<p><code>svn diff [something]</code></p>
-<p>发现正确无误，提交。</p>
-<p>4、提交回滚：</p>
-<p><code>svn commit -m &quot;Revert revision from r28 to r25,because of ...&quot;</code></p>
-<p>提交后版本变成了29。</p>
-<p>将以上操作总结为三条如下：</p>
-<ol>
-<li><p>svn update，svn log，找到最新版本（latest revision）</p>
-</li>
-<li><p>找到自己想要回滚的版本号（rollbak revision）</p>
-</li>
-<li><p>用svn merge来回滚： svn merge -r : something</p>
-</li>
-</ol>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2295,7 +2269,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-count">154</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2425,7 +2399,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                    <span class="site-state-item-count">38</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

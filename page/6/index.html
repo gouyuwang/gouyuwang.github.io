@@ -360,6 +360,207 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/解决类似 -usr-lib64-libstdc-so-6- version -GLIBCXX-3-4-21- not found 的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/解决类似 -usr-lib64-libstdc-so-6- version -GLIBCXX-3-4-21- not found 的问题/" class="post-title-link" itemprop="url">解决类似 /usr/lib64/libstdc++.so.6:version `GLIBCXX_3.4.21' not found 的问题</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-26 03:47:41" itemprop="dateCreated datePublished" datetime="2019-03-26T03:47:41Z">2019-03-26</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>源码编译升级安装了gcc后，编译程序或运行其它程序时，有时会出现类似/usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21’ not found的问题。这是因为升级gcc时，生成的动态库没有替换老版本gcc的动态库导致的，将gcc最新版本的动态库替换系统中老版本的动态库即可解决。</p>
+<p><strong>问题原因分析</strong></p>
+<p>为了安装最新版本的Node.js（最新版本的Node.js使用了C++ 11中，而C++ 11需要code&gt;gcc 4.8+才能支持），将gcc升级到了当前最新版本v 5.2.0。升级后，成功编译安装了新版本的Node.js（v 4.2.1）,但运行时程序时出现了以下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21&apos; not found (required by node)</span><br><span class="line"></span><br><span class="line">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.15&apos; not found (required by node)</span><br><span class="line"></span><br><span class="line">node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.20&apos; not found (required by node)</span><br></pre></td></tr></table></figure>
+
+<p>运行以下命令检查动态库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strings /usr/lib64/libstdc++.so.6 | grep GLIBC</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">GLIBCXX_3.4</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.1</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.2</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.3</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.4</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.5</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.6</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.7</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.8</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.9</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.10</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.11</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.12</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.13</span><br><span class="line"></span><br><span class="line">GLIBCXX_FORCE_NEW</span><br><span class="line"></span><br><span class="line">GLIBCXX_DEBUG_MESSAGE_LENGTH</span><br></pre></td></tr></table></figure>
+
+<p>从以上输出可以看出，gcc的动态库还是旧版本的。说明出现这些问题，是因为升级gcc时，生成的动态库没有替换老版本gcc的动态库。</p>
+<p><strong>问题处理</strong></p>
+<p>执行以下命令，查找编译gcc时生成的最新动态库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name "libstdc++.so*"</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/home/gcc-5.2.0/gcc-temp/stage1-x86_64-unknown-linux-gnu/libstdc++-v3/src/.libs/libstdc++.so</span><br><span class="line"></span><br><span class="line">/home/gcc-5.2.0/gcc-temp/stage1-x86_64-unknown-linux-gnu/libstdc++-v3/src/.libs/libstdc++.so.6</span><br><span class="line"></span><br><span class="line">/home/gcc-5.2.0/gcc-temp/stage1-x86_64-unknown-linux-gnu/libstdc++-v3/src/.libs/libstdc++.so.6.0.21  // 最新动态库</span><br><span class="line"></span><br><span class="line">/home/gcc-5.2.0/gcc-temp是升级gcc时的输出目录。</span><br></pre></td></tr></table></figure>
+
+<p>将上面的最新动态库libstdc++.so.6.0.21复制到/usr/lib64目录下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp   path/libstdc++.so.6.0.21      /usr/lib64</span><br></pre></td></tr></table></figure>
+
+<p>复制后，修改系统默认动态库的指向，即：重建默认库的软连接。</p>
+<p>切换工作目录至/usr/lib64：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/lib64</span><br></pre></td></tr></table></figure>
+
+<p>删除原来软连接：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf libstdc++.so.6</span><br></pre></td></tr></table></figure>
+
+<p>将默认库的软连接指向最新动态库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s libstdc++.so.6.0.21 libstdc++.so.6</span><br></pre></td></tr></table></figure>
+
+<p>默认动态库升级完成。重新运行以下命令检查动态库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strings /usr/lib64/libstdc++.so.6 | grep GLIBC</span><br></pre></td></tr></table></figure>
+
+<p>现在输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">GLIBCXX_3.4</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.1</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.2</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.3</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.4</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.5</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.6</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.7</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.8</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.9</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.10</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.11</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.12</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.13</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.14</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.15</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.16</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.17</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.18</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.19</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.20</span><br><span class="line"></span><br><span class="line">GLIBCXX_3.4.21</span><br><span class="line"></span><br><span class="line">GLIBC_2.3</span><br><span class="line"></span><br><span class="line">GLIBC_2.2.5</span><br><span class="line"></span><br><span class="line">GLIBC_2.3.2</span><br><span class="line"></span><br><span class="line">GLIBCXX_FORCE_NEWGLIBCXX_DEBUG_MESSAGE_LENGTH</span><br></pre></td></tr></table></figure>
+
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/如何创建泛域名/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2400,181 +2601,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/phpexcel导出excel无法打开-提示文件格式或文件名无效-文件损毁-解决办法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/phpexcel导出excel无法打开-提示文件格式或文件名无效-文件损毁-解决办法/" class="post-title-link" itemprop="url">phpexcel导出excel无法打开，提示文件格式或文件名无效，文件损毁，解决办法</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-11-14 07:02:37" itemprop="dateCreated datePublished" datetime="2018-11-14T07:02:37Z">2018-11-14</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <blockquote>
-<p>xls还是xlsx？首先确定导出的excel文件扩展名,然后添加header，不同的文件类型，不同的header。我就是这里出了问题，xlsx用了xls的header，导致导出的excel无法打开。</p>
-</blockquote>
-<p><strong>xlsx如下：</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$excelName = <span class="string">'绩效得分统计'</span>.time();</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'</span>);</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Content-Disposition: attachment;filename="'</span>.$excelName.<span class="string">'.xlsx"'</span>);</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Cache-Control: max-age=0'</span>);</span><br><span class="line"></span><br><span class="line">$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, <span class="string">'Excel2007'</span>);</span><br><span class="line"></span><br><span class="line">$objWriter-&gt;save(<span class="string">'php://output'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>xls如下：</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">header(<span class="string">'Content-Type: application/vnd.ms-excel'</span>);</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Content-Disposition: attachment;filename="links_out'</span>.$timestamp.<span class="string">'.xls"'</span>);</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Cache-Control: max-age=0'</span>);</span><br><span class="line"></span><br><span class="line">$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, <span class="string">'Excel5'</span>);</span><br><span class="line"></span><br><span class="line">$objWriter-&gt;save(<span class="string">'php://output'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure>
-
-<p>末尾添加exit。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$objWriter-&gt;save(<span class="string">'php://output'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure>
-
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2623,7 +2649,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-count">154</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2753,7 +2779,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                    <span class="site-state-item-count">38</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

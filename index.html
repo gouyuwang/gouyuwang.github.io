@@ -360,6 +360,254 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/MySQL-MERGE存储引擎/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/MySQL-MERGE存储引擎/" class="post-title-link" itemprop="url">MySQL MERGE存储引擎</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-11-03 00:38:13" itemprop="dateCreated datePublished" datetime="2022-11-03T00:38:13Z">2022-11-03</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>MERGE存储引擎把一组MyISAM数据表当做一个逻辑单元来对待，让我们可以同时对他们进行查询，是一种简单的分表方案。</p>
+<p>例如将日志表按日期分为 <em>log_20221103</em>, <em>log_20221104</em> 两张表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`log_20221103`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`log`</span> <span class="built_in">varchar</span>(<span class="number">45</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=MyISAM AUTO_INCREMENT=<span class="number">1</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=latin1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`log_20221104`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`log`</span> <span class="built_in">varchar</span>(<span class="number">45</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=MyISAM AUTO_INCREMENT=<span class="number">1</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=latin1;</span><br></pre></td></tr></table></figure>
+
+<p>分别插入数据：</p>
+<p>log_20221103：</p>
+<table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">3</td>
+</tr>
+</tbody></table>
+<p>log_20221104:</p>
+<table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">a</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">b</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">c</td>
+</tr>
+</tbody></table>
+<p>创建Merge表:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`log_merge`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`log`</span> <span class="built_in">varchar</span>(<span class="number">45</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=MRG_MyISAM <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=latin1 INSERT_METHOD=<span class="keyword">LAST</span> <span class="keyword">UNION</span>=(<span class="string">`log_20221103`</span>,<span class="string">`log_20221104`</span>);</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">解释：</span></span><br><span class="line"><span class="comment">1）ENGINE=MERGE 指明使用MERGE引擎。</span></span><br><span class="line"><span class="comment">2）UNION=(`log_20221103`,`log_20221104`) 指明了MERGE表中挂接了些哪表，可以通过alter table (如移除基础表log_20221104： ALTER TABLE `log_merge` UNION = (`log_20221103`);)的方式修改UNION的值，以实现增删MERGE表子表的功能。</span></span><br><span class="line"><span class="comment">3）INSERT_METHOD=LAST 指明往merge表插入方式，取值可以是：0 不允许插入；FIRST 插入到UNION中的第一个表； LAST 插入到UNION中的最后一个表。</span></span><br><span class="line"><span class="comment">4）MERGE表及构成MERGE数据表结构的各成员数据表必须具有完全一样的结构。每一个成员数据表的数据列必须按照同样的顺序定义同样的名字和类型，索引也必须按照同样的顺序和同样的方式定义。</span></span><br><span class="line"><span class="comment">**/</span></span><br></pre></td></tr></table></figure>
+
+<p>执行<code>select * from log_merge</code> 将会得到如下结果:</p>
+<table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">a</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">b</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">c</td>
+</tr>
+</tbody></table>
+<p>从效果上看，两张表记录如同union在一起了一样, 但是需要注意的是：</p>
+<p><strong>1.</strong> 此表结构必须与基本表完全一致，包括列名、顺序。UNION表必须同属一个DATABASE。<br><strong>2.</strong> 此表类似于SQL中的union机制。<br><strong>3.</strong> 基本表类型必须是MyISAM的。<br><strong>4.</strong> 可以通过修改.mrg文件来修改MERGE表，每个基本表的名字占一行。注意：修改后要通过FLUSH TABLES刷新表缓存。<br><strong>5.</strong> 对基本表的更改可以直接反映在此表上。<br><strong>6.</strong> INSERT_METHOD的取值可以是： 0 不允许插入 FIRST 插入到UNION中的第一个表 LAST 插入到UNION中的最后一个表。(4.0之后可用)<br><strong>7.</strong> 定义在它上面的约束没有任何作用，约束是由基本表控制的，例如两个基本表中存在着同样的一个Key值，那么在MERGE表中会有两个一样的Key值。<br><strong>8.</strong> 在数据量、查询量较大的情况下, 使用Merge表会很影响性能，原因参考2。<br><strong>9.</strong> 查询结果及顺序与创建Merge表时联合表的顺序有关。<br><strong>10.</strong> 当key一样的时候，修改Merge表内容会影响key对应的第一条数据，和9有关。<br><strong>11.</strong> <code>TRUNCATE Merge表的时候会同时truncate基础表，请慎重操作。</code> 但是DELETE merge表的时候对基础表是没有影响的。</p>
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Navicat-Premium-16无限试用方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2392,241 +2640,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/SSL双向认证/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/SSL双向认证/" class="post-title-link" itemprop="url">SSL双向认证</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-09-04 17:10:42" itemprop="dateCreated datePublished" datetime="2020-09-04T17:10:42Z">2020-09-04</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有朋友最近遇到客户需求：他们出于安全考虑只能是从某一台电脑才能访问应用。以下是我所想到的几种实现方案思考：</p>
-<ul>
-<li><p>IP地址。 你所用的IP都是运营商自动随机分配的，基本上都是处在变化中的，要想固定IP，你需要支付高昂的网络费用购买专网服务保证IP不发生变化，且需要保证局域网内就你使用这个对外的IP地址。</p>
-</li>
-<li><p>客户端软件。提供配套的客户端软件与web应用实现通信，配合MAC地址唯一性，验证客户身份。web端QQ自动登录就是这么发现你本地登录了哪些QQ的，更多可以看我这篇文章<a href="/articles/QQ如何实现跨端通信的/">QQ如何实现跨端通信的</a>了解原理。</p>
-</li>
-<li><p>SSL双向认证。生成客户证书，只让持有证书的客户访问。安装证书和安装桌面客户端是一样的考验客户的电脑操作水平。</p>
-</li>
-</ul>
-<p>当然，肯定还有其他更好的方案，欢迎大佬留言指点一二。  </p>
-<p>本篇文章主要是记录一下我是如何实现SSL双向认证这个方案的。<em>ip方案没啥好说的，保证IP唯一即可。客户端软件方案我在<a href="/articles/QQ如何实现跨端通信的/">QQ如何实现跨端通信的</a>这篇文章有DEMO。</em></p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><ul>
-<li><p>SSL单向认证</p>
-<p><img src="/articles/SSL双向认证/SSL%E5%8D%95%E5%90%91%E8%AE%A4%E8%AF%81.png" alt="SSL单向认证"></p>
-</li>
-</ul>
-<ul>
-<li><p>①客户端的浏览器向服务器传送客户端SSL协议的版本号，加密算法的种类，产生的随机数，以及其他服务器和客户端之间通讯所需要的各种信息。</p>
-</li>
-<li><p>②服务器向客户端传送SSL协议的版本号，加密算法的种类，随机数以及其他相关信息，同时服务器还将向客户端传送自己的证书。</p>
-</li>
-<li><p>③客户利用服务器传过来的信息验证服务器的合法性，服务器的合法性包括：证书是否过期，发行服务器证书的CA是否可靠，发行者证书的公钥能否正确解开服务器证书的”发行者的数字签名”，服务器证书上的域名是否和服务器的实际域名相匹配。如果合法性验证没有通过，通讯将断开;如果合法性验证通过，将继续进行第四步。</p>
-</li>
-<li><p>④用户端随机产生一个用于后面通讯的”对称密码”，然后用服务器的公钥(服务器的公钥从步骤②中的服务器的证书中获得)对其加密，然后将加密后的”预主密码”传给服务器。</p>
-</li>
-<li><p>⑤如果服务器要求客户的身份认证(在握手过程中为可选)，用户可以建立一个随机数然后对其进行数据签名，将这个含有签名的随机数和客户自己的证书以及加密过的”预主密码”一起传给服务器。</p>
-</li>
-<li><p>⑥如果服务器要求客户的身份认证，服务器必须检验客户证书和签名随机数的合法性，具体的合法性验证过程包括：客户的证书使用日期是否有效，为客户提供证书的CA是否可靠，发行CA 的公钥能否正确解开客户证书的发行CA的数字签名，检查客户的证书是否在证书废止列表(CRL)中。检验如果没有通过，通讯立刻中断;如果验证通过，服务器将用自己的私钥解开加密的”预主密码 “，然后执行一系列步骤来产生主通讯密码(客户端也将通过同样的方法产生相同的主通讯密码)。</p>
-</li>
-<li><p>⑦服务器和客户端用相同的主密码即”通话密码”，一个对称密钥用于SSL协议的安全数据通讯的加解密通讯。同时在SSL通讯过程中还要完成数据通讯的完整性，防止数据通讯中的任何变化。</p>
-</li>
-<li><p>⑧客户端向服务器端发出信息，指明后面的数据通讯将使用的步骤⑦中的主密码为对称密钥，同时通知服务器客户端的握手过程结束。</p>
-</li>
-<li><p>⑨服务器向客户端发出信息，指明后面的数据通讯将使用的步骤⑦中的主密码为对称密钥，同时通知客户端服务器端的握手过程结束。</p>
-</li>
-<li><p>⑩-SSL的握手部分结束，SSL安全通道的数据通讯开始，客户和服务器开始使用相同的对称密钥进行数据通讯，同时进行通讯完整性的检验。 </p>
-</li>
-<li><p>SSL双向认证</p>
-</li>
-</ul>
-<p><img src="/articles/SSL双向认证/SSL%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81.png" alt="SSL双向认证"></p>
-<p>① 浏览器发送一个连接请求给安全服务器。</p>
-<p>② 服务器将自己的证书，以及同证书相关的信息发送给客户浏览器。</p>
-<p>③ 客户浏览器检查服务器送过来的证书是否是由自己信赖的CA中心（如沃通CA）所签发的。如果是，就继续执行协议;如果不是，客户浏览器就给客户一个警告消息：警告客户这个证书不是可以信赖的，询问客户是否需要继续。</p>
-<p>④ 接着客户浏览器比较证书里的消息，例如域名和公钥，与服务器刚刚发送的相关消息是否一致，如果是一致的，客户浏览器认可这个服务器的合法身份。</p>
-<p>⑤ 服务器要求客户发送客户自己的证书。收到后，服务器验证客户的证书，如果没有通过验证，拒绝连接;如果通过验证，服务器获得用户的公钥。</p>
-<p>⑥ 客户浏览器告诉服务器自己所能够支持的通讯对称密码方案。</p>
-<p>⑦ 服务器从客户发送过来的密码方案中，选择一种加密程度最高的密码方案，用客户的公钥加过密后通知浏览器。</p>
-<p>⑧ 浏览器针对这个密码方案，选择一个通话密钥，接着用服务器的公钥加过密后发送给服务器。</p>
-<p>⑨ 服务器接收到浏览器送过来的消息，用自己的私钥解密，获得通话密钥。</p>
-<p>⑩ 服务器、浏览器接下来的通讯都是用对称密码方案，对称密钥是加过密的。</p>
-<p>双向认证则是需要服务端与客户端提供身份认证，只能是服务端允许的客户能去访问，安全性相对于要高一些。 </p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>网上有很多实现方法，个人觉得这篇文章说的最详细：<a href="https://www.cnblogs.com/dyllove98/p/3157370.html" target="_blank" rel="noopener">传送门</a></p>
-<p>因为我域名下面申请过一个https,所以下面是我省去生成服务器端证书直接生成客户端证书的步骤：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 生成服务器crt, 用来验证client证书的, ca.key就是https证书那个</span><br><span class="line">openssl req -new -x509 -days 3650 -key ca.key -out ca.crt </span><br><span class="line"></span><br><span class="line">// 生成客户端证书</span><br><span class="line">openssl genrsa -des3 -out client.key 1024</span><br><span class="line"></span><br><span class="line">openssl req -new -key client.key -out client.csr</span><br><span class="line"></span><br><span class="line">openssl ca -policy policy_anything -<span class="keyword">in</span> client.csr -cert ca.crt -keyfile ca.key -out client.crt -days 3650</span><br><span class="line"></span><br><span class="line">// 生成浏览器证书安装文件</span><br><span class="line">openssl pkcs12 -<span class="built_in">export</span> -inkey client.key -<span class="keyword">in</span> client.crt -out client.pfx</span><br></pre></td></tr></table></figure>
-
-<p>上面代码可以在linux上面执行，也可以在windows上面执行。linux不说了，windows用户主要安装了apache的可以在它bin目录下找到 openssl.exe文件。</p>
-<p>生成好了就开始使用了</p>
-<ul>
-<li>服务端</li>
-</ul>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># server</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">listen</span> <span class="number">443</span> ssl;</span><br><span class="line"></span><br><span class="line"><span class="attribute">ssl_certificate</span>  /etc/pki/ca_linvo/server/server.crt;       <span class="comment">#server公钥</span></span><br><span class="line"><span class="attribute">ssl_certificate_key</span>  /etc/pki/ca_linvo/server/server.key;   <span class="comment">#server私钥</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">ssl_client_certificate</span>   /etc/pki/ca_linvo/root/ca.crt;     <span class="comment"># 根级证书公钥，用于验证各个二级client</span></span><br><span class="line"><span class="attribute">ssl_verify_client</span> <span class="literal">on</span>;                                       <span class="comment"># 开启客户端ssl校验</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>客户端</li>
-</ul>
-<p>双击 <strong>client.pfx</strong> 安装证书，安装时会提示输入生成证书时设置的密码。安装成功后，重启浏览器输入网址访问，浏览器可能会提示你选择证书，选择刚才安装的那个证书即可。 此时有些浏览器会提示用户该证书不受信任，地址不安全之类，这是因为我们的server证书是我们自己颁发的，而非真正的权威CA机构颁布，忽略它既可。当然你也可以像我一样去 <strong>x云</strong> 申请一个免费server证书用着。 </p>
-<ul>
-<li>测试 </li>
-</ul>
-<p><img src="/articles/SSL双向认证/demo.png" alt></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>SSL单向验证过程中，客户端会验证自己访问的服务器端，服务器端对客户端不做验证。如果服务器端验证客户端，则需要开启服务器端验证，这就是双向验证。 </p>
-<style>.posts-expand .post-body img{margin:0 auto; max-height:100vh;}</style>
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2675,7 +2688,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-count">154</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2805,7 +2818,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                    <span class="site-state-item-count">38</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

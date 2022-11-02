@@ -360,6 +360,253 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Linux挂载新的硬盘/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/Linux挂载新的硬盘/" class="post-title-link" itemprop="url">Linux挂载新的硬盘</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-08 23:05:26" itemprop="dateCreated datePublished" datetime="2018-04-08T23:05:26Z">2018-04-08</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <h4 id="文字版"><a href="#文字版" class="headerlink" title="文字版"></a>文字版</h4><ol>
+<li><p><code>fdisk -l</code>  //先查询未挂载的硬盘名如：sdb1 等</p>
+</li>
+<li><p><code>mkfs.ext3 /dev/xvdb(新的盘)</code>   // 开始格式化</p>
+</li>
+<li><p><code>df -h</code> // 查看挂载情况</p>
+</li>
+<li><p><code>mount /dev/xvdb /home</code> // (/home挂载的地方， 最好是根路径下建一个空的文件夹)   开始挂载</p>
+</li>
+<li><p><code>vi /etc/fstab</code>       // 设置自动开启启动</p>
+<p>格式： <code>/dev/xvdb  /home        ext3    defaults        0 0</code> // 硬盘名      需要挂载的位置   格式</p>
+</li>
+<li><p>卸载挂载点： <code>umount /home/ftp2</code></p>
+</li>
+</ol>
+<p>另：如果执行fdisk -l 报错，往下看↓</p>
+<p>发现有问题：</p>
+<blockquote>
+<p>Disk /dev/sdb doesn’t contain a valid partition table</p>
+</blockquote>
+<p><code>fdisk /dev/sdb</code> 跟着向导一步步做下去（如果不知道该输入什么，就输入“m”并回车，可以打印出菜单）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Command (m for help): m</span><br><span class="line"></span><br><span class="line">Command action</span><br><span class="line"></span><br><span class="line">a   toggle a bootable flag</span><br><span class="line"></span><br><span class="line">b   edit bsd disklabel</span><br><span class="line"></span><br><span class="line">c   toggle the dos compatibility flag</span><br><span class="line"></span><br><span class="line">d   delete a partition</span><br><span class="line"></span><br><span class="line">l   list known partition types</span><br><span class="line"></span><br><span class="line">m   print this menu</span><br><span class="line"></span><br><span class="line">n   add a new partition</span><br><span class="line"></span><br><span class="line">（后面的菜单省略，太长了）</span><br></pre></td></tr></table></figure>
+
+<p>这里我们要添加一个新的分区，所以输入“n”：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Command (m for help): n</span><br><span class="line"></span><br><span class="line">Command action</span><br><span class="line"></span><br><span class="line">e   extended</span><br><span class="line"></span><br><span class="line">p   primary partition (1-4)</span><br><span class="line"></span><br><span class="line">p</span><br><span class="line"></span><br><span class="line">Partition number (1-4): 1</span><br><span class="line"></span><br><span class="line">First cylinder (1-14098, default 1): （此处直接回车）</span><br><span class="line"></span><br><span class="line">Using default value 1</span><br><span class="line"></span><br><span class="line">Last cylinder or +size or +sizeM or +sizeK (1-14098, default 14098): （此处直接回车）</span><br><span class="line"></span><br><span class="line">Using default value 14098</span><br><span class="line"></span><br><span class="line">Command (m for help): p</span><br><span class="line"></span><br><span class="line">Disk /dev/sdb: 115.9 GB, 115964116992 bytes</span><br><span class="line"></span><br><span class="line">255 heads, 63 sectors/track, 14098 cylinders</span><br><span class="line"></span><br><span class="line">Units = cylinders of 16065 * 512 = 8225280 bytes</span><br><span class="line"></span><br><span class="line">Device Boot      Start         End      Blocks   Id  System</span><br><span class="line"></span><br><span class="line">/dev/sdb1               1       14098   113242153+  83  Linux</span><br></pre></td></tr></table></figure>
+
+<p>现在可以写入分区表了，所以输入“w”：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Command (m for help): w</span><br><span class="line"></span><br><span class="line">The partition table has been altered!</span><br><span class="line"></span><br><span class="line">Calling ioctl() to re-read partition table.</span><br><span class="line"></span><br><span class="line">Syncing disks.</span><br></pre></td></tr></table></figure>
+
+<p>现在再fdisk -l，结果正常</p>
+<p>– 如果到这里挂载完成，以下内容可不看 –</p>
+<h4 id="图文版"><a href="#图文版" class="headerlink" title="图文版"></a>图文版</h4><h5 id="查看新硬盘"><a href="#查看新硬盘" class="headerlink" title="查看新硬盘"></a>查看新硬盘</h5><p><code>fdisk -l</code></p>
+<p><img src="/articles/Linux挂载新的硬盘/1.jpg" alt></p>
+<p>新添加的硬盘的编号为/dev/sdb</p>
+<h5 id="硬盘分区"><a href="#硬盘分区" class="headerlink" title="硬盘分区"></a>硬盘分区</h5><ul>
+<li>进入fdisk模式</li>
+</ul>
+<p><code>fdisk /dev/sdb</code></p>
+<p><img src="/articles/Linux挂载新的硬盘/2.jpg" alt></p>
+<ul>
+<li><p>输入n进行分区</p>
+</li>
+<li><p>选择分区类型</p>
+</li>
+</ul>
+<p><img src="/articles/Linux挂载新的硬盘/3.jpg" alt></p>
+<p>这里有两个选项：</p>
+<p>p: 主分区 linux上主分区最多能有4个</p>
+<p>e: 扩展分区 linux上扩展分区只能有1个，扩展分区创建后不能直接使用，还要在扩展分区上创建逻辑分区。</p>
+<p>这里选择的p。</p>
+<ul>
+<li>选择分区个数</li>
+</ul>
+<p>只分1个分区 直接输入1 接下来设置柱面，默认即可</p>
+<p><img src="/articles/Linux挂载新的硬盘/4.jpg" alt></p>
+<ul>
+<li>写入分区表 输入w，分区结束</li>
+</ul>
+<p><img src="/articles/Linux挂载新的硬盘/5.jpg" alt></p>
+<ul>
+<li>分区结束后，查看/dev目录</li>
+</ul>
+<p><code>ls -l /dev</code></p>
+<p><img src="/articles/Linux挂载新的硬盘/6.jpg" alt></p>
+<p>可以看到刚刚生成的新分区sdb1</p>
+<h5 id="格式化分区"><a href="#格式化分区" class="headerlink" title="格式化分区"></a>格式化分区</h5><p>将新分区格式化为ext3文件系统</p>
+<p><code>mkfs -t ext3 /dev/sdb1</code></p>
+<p><img src="/articles/Linux挂载新的硬盘/7.jpg" alt></p>
+<p>最后写入文件系统信息。</p>
+<p>此时就可以用新创建的分区了</p>
+<h5 id="挂载硬盘"><a href="#挂载硬盘" class="headerlink" title="挂载硬盘"></a>挂载硬盘</h5><ul>
+<li>创建挂载点</li>
+</ul>
+<p>在根目录下创建storage目录</p>
+<p><code>mkdir /storage</code></p>
+<ul>
+<li>将/dev/sdb1挂载到/storage下</li>
+</ul>
+<p><code>mount /dev/sdb1 /storage</code></p>
+<h5 id="设置开机启动自动挂载"><a href="#设置开机启动自动挂载" class="headerlink" title="设置开机启动自动挂载"></a>设置开机启动自动挂载</h5><p>新创建的分区不能开机自动挂载，每次重启机器都要手动挂载。</p>
+<p>设置开机自动挂载需要修改/etc/fstab文件</p>
+<p><code>vi /etc/fstab</code></p>
+<p>在文件的最后增加一行</p>
+<p><code>/dev/sdb1 /storage ext3 defaults 1 2</code></p>
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/弱类型-强类型-动态类型-静态类型语言的区别是什么-/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2306,202 +2553,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/采用PHP实现-服务器推-技术的聊天室/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/采用PHP实现-服务器推-技术的聊天室/" class="post-title-link" itemprop="url">采用PHP实现”服务器推”技术的聊天室</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-              <span class="reprint" title="转载">转</span>
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-10-11 04:52:46" itemprop="dateCreated datePublished" datetime="2017-10-11T04:52:46Z">2017-10-11</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <p>传统的B/S结构的应用程序，都是采用”客户端拉”结束来实现客户端和服务器端的数据交换。<br>本文将通过结合Ticks(可以参看我的另外一篇文章：<a href="http://www.laruence.com/2008/04/21/101.html" target="_blank" rel="noopener">关于PHP你可能不知道的－PHP的事件驱动化设计</a>)，来实现一个服务器推的PHP聊天室简单构想。</p>
-<p>PHPer，尤其是用过set_cookie, header的，一定见过这样的提示信息：”Warning: Cannot modify header information – headers already sent by…..”, 这是因为通过HTTP协议通信，数据包会包含俩个部分，一个是Header,一个是data。一般来说，都是先Header部分，在Heaer部分指明了 Data部分的长度，然后使用\r\n\r\n来表示header部分结束，接下来是Data部分。</p>
-<p>当我们有任何输出的时候，Header部分就发送了，这个时候，你再想header函数来改变一些Header部分的域信息，就会得到上面的提示信息。</p>
-<p>一个简单的办法就是使用output_buffering。让它来缓存服务器的输出，不要太早将Header部分发给客户端。</p>
-<p>那么，如果不使用output_buffering，是不是就可以实现，每当服务器有输出，就立即发送给客户端呢？</p>
-<p>做个如下试验：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置php.ini中output_buffering=0 或者使用ob_end_flush()关闭缓存</span></span><br><span class="line"></span><br><span class="line">set_time_limit(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;<span class="number">10</span>;$i++)&#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">"Now Index is :"</span>. $i;</span><br><span class="line">  sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结果我们发现，还是要等到脚本全部执行完以后，才能一次看到所有的结果。。</p>
-<p>为什么呢？</p>
-<p>这是因为我们只是解决了缓存问题，但是还有一个缓冲问题，PHP会缓冲程序的输出。所以，这个时候，我们还需要调用，flush(), 来强制使得PHP将所有的程序输出发送给客户端。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">set_time_limit(<span class="number">0</span>);</span><br><span class="line"><span class="comment">//设置php.ini中output_buffering=0</span></span><br><span class="line">ob_end_flush();<span class="comment">//关闭缓存</span></span><br><span class="line"></span><br><span class="line">set_time_limit(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;<span class="number">10</span>;$i++)&#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">"Now Index is :"</span>. $i;</span><br><span class="line">  flush();</span><br><span class="line">  sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>现在是不是看到了，不断有服务器的数据显示出来(如果看不到, 可以在输出前填充相当数量的占位字符)?</p>
-<p>有几个概念之间的关系，我这里补充以下：</p>
-<p>在代码中使用ob_start(), 就相当于在php.ini中使用output_buffering=on一样，使用服务器缓存。</p>
-<p>在代码中使用ob_end_flush() 就相当于在php.ini中使用output_buffering = false一样，关闭服务器缓存.</p>
-<p>基于前面的讨论，我们就有可能使用Ticks来实现，一个无刷新，无ajax的聊天室: 页面中包含俩个iframe,一个是不断获取聊天室的聊天内容，一个包含用户发表聊天内容的form. 这样，在第一个frame的脚本中：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ob_end_clean();<span class="comment">//关闭缓存</span></span><br><span class="line">set_time_limit(<span class="number">0</span>);</span><br><span class="line">ob_implicit_flush(); <span class="comment">//这个语句将强制每当有输出就自动刷新，相当于在每个echo后，调用ob_flush()</span></span><br><span class="line">$new_mesg = <span class="keyword">NULL</span>;</span><br><span class="line">register_tick_function(<span class="string">"getNewMesg"</span>);</span><br><span class="line"><span class="keyword">declare</span>(ticks=<span class="number">1</span>)&#123;</span><br><span class="line">  <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">     <span class="keyword">if</span>(!is_null($new_mesg))&#123;</span><br><span class="line">          <span class="keyword">foreach</span>($new_mesg <span class="keyword">as</span> $msg)&#123;</span><br><span class="line">                <span class="keyword">echo</span> $msg;</span><br><span class="line">          &#125;</span><br><span class="line">          $new_mesg = <span class="keyword">null</span>;</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getNewMesg</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment">//通过查询数据库，或者共享内存，来获取现在的聊天室大厅的内容。</span></span><br><span class="line"><span class="comment">//返回一个数组，包含所有的新的聊天内容</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样就实现了一个简单的使用服务器推技术的聊天室的框架。</p>
-<p>当然，关于实时输出，还有一些其他的限制，比如在PHP5手册中讲到的：</p>
-<p>个别web服务器程序，特别是Win32下的web服务器程序，在发送结果到浏览器之前，仍然会缓存脚本的输出，直到程序结束为止。</p>
-<p>有些Apache的模块，比如mod_gzip，可能自己进行输出缓存，这将导致flush()函数产生的结果不会立即被发送到客户端浏览器。</p>
-<p>甚至浏览器也会在显示之前，缓存接收到的内容。例如 Netscape 浏览器会在接受到换行或 html 标记的开头之前缓存内容，并且在接受到</p>
-<p>标记之前，不会显示出整个表格。</p>
-<p>一些版本的 Microsoft Internet Explorer 只有当接受到的256(甚至更多)个字节以后才开始显示该页面，所以必须发送一些额外的空格来让这些浏览器显示页面内容。</p>
-<p>接下来，我贴一个很有趣的代码，有兴趣的同学，可以试试：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">header(<span class="string">"Content-type: multipart/x-mixed-replace;boundary=endofsection"</span>);</span><br><span class="line"><span class="keyword">print</span> <span class="string">"--endofsection\n"</span>;</span><br><span class="line">$pmt = <span class="keyword">array</span>(<span class="string">"-"</span>, <span class="string">"\\"</span>, <span class="string">"|"</span>, <span class="string">"/"</span> );</span><br><span class="line"><span class="keyword">for</span>( $i = <span class="number">0</span>; $i &lt;<span class="number">10</span>;$i ++ )</span><br><span class="line">&#123;</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Content-type: text/plain\n\n"</span>;</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Part $i     "</span>.$pmt[$i % <span class="number">4</span>];</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"--endofsection\n"</span>;</span><br><span class="line">        ob_flush(); <span class="comment">//强制将缓存区的内容输出</span></span><br><span class="line">        flush(); <span class="comment">//强制将缓冲区的内容发送给客户端</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Content-type: text/plain\n\n"</span>;</span><br><span class="line"><span class="keyword">print</span> <span class="string">"The end\n"</span>;</span><br><span class="line"><span class="keyword">print</span> <span class="string">"–endofsection–\n"</span>;</span><br></pre></td></tr></table></figure>
-
-<p>使用firefox打开，看看你看到了什么。</p>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2550,7 +2601,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-count">154</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2680,7 +2731,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                    <span class="site-state-item-count">38</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

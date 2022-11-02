@@ -360,6 +360,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/phpexcel导出excel无法打开-提示文件格式或文件名无效-文件损毁-解决办法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/phpexcel导出excel无法打开-提示文件格式或文件名无效-文件损毁-解决办法/" class="post-title-link" itemprop="url">phpexcel导出excel无法打开，提示文件格式或文件名无效，文件损毁，解决办法</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-14 07:02:37" itemprop="dateCreated datePublished" datetime="2018-11-14T07:02:37Z">2018-11-14</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <blockquote>
+<p>xls还是xlsx？首先确定导出的excel文件扩展名,然后添加header，不同的文件类型，不同的header。我就是这里出了问题，xlsx用了xls的header，导致导出的excel无法打开。</p>
+</blockquote>
+<p><strong>xlsx如下：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$excelName = <span class="string">'绩效得分统计'</span>.time();</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'</span>);</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Content-Disposition: attachment;filename="'</span>.$excelName.<span class="string">'.xlsx"'</span>);</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Cache-Control: max-age=0'</span>);</span><br><span class="line"></span><br><span class="line">$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, <span class="string">'Excel2007'</span>);</span><br><span class="line"></span><br><span class="line">$objWriter-&gt;save(<span class="string">'php://output'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>xls如下：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">header(<span class="string">'Content-Type: application/vnd.ms-excel'</span>);</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Content-Disposition: attachment;filename="links_out'</span>.$timestamp.<span class="string">'.xls"'</span>);</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Cache-Control: max-age=0'</span>);</span><br><span class="line"></span><br><span class="line">$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, <span class="string">'Excel5'</span>);</span><br><span class="line"></span><br><span class="line">$objWriter-&gt;save(<span class="string">'php://output'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure>
+
+<p>末尾添加exit。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$objWriter-&gt;save(<span class="string">'php://output'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure>
+
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/重启nginx后丢失nginx-pid的解决方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1997,296 +2172,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/优化你的php-fpm-php5-3-）让你的网站跑得更快/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/优化你的php-fpm-php5-3-）让你的网站跑得更快/" class="post-title-link" itemprop="url">优化你的php-fpm(php5.3+）让你的网站跑得更快</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-              <span class="reprint" title="转载">转</span>
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-12 01:28:57" itemprop="dateCreated datePublished" datetime="2018-08-12T01:28:57Z">2018-08-12</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <p>从php5.3以后php自带了php-fpm不是和php5.2一样以插件的方式存在了。这给我们带来一个好处502没有那么容易出现了,用linux的绝大多数应该还是在用小军的lnmp的那个包，但是配置优化却是不尽人意。</p>
-<p>php-fpm的配置文件位置： /usr/local/php/etc/php-fpm.conf</p>
-<blockquote>
-<p>   pid = run/php-fpm.pid</p>
-</blockquote>
-<p>pid设置，默认在安装目录中的var/run/php-fpm.pid，建议开启</p>
-<blockquote>
-<p>   error_log = log/php-fpm.log</p>
-</blockquote>
-<p>错误日志，默认在安装目录中的var/log/php-fpm.log</p>
-<blockquote>
-<p>   log_level = notice</p>
-</blockquote>
-<p>错误级别. 可用级别为: alert（必须立即处理）, error（错误情况）, warning（警告情况）, notice（一般重要信息）, debug（调试信息）. 默认: notice.</p>
-<blockquote>
-<p>  emergency_restart_threshold = 60</p>
-<p>  emergency_restart_interval = 60s</p>
-</blockquote>
-<p>表示在emergency_restart_interval所设值内出现SIGSEGV或者SIGBUS错误的php-cgi进程数如果超过 emergency_restart_threshold个，php-fpm就会优雅重启。这两个选项一般保持默认值。</p>
-<blockquote>
-<p>   process_control_timeout = 0</p>
-</blockquote>
-<p>设置子进程接受主进程复用信号的超时时间. 可用单位: s(秒), m(分), h(小时), 或者 d(天) 默认单位: s(秒). 默认值: 0.</p>
-<blockquote>
-<p>   daemonize = yes</p>
-</blockquote>
-<p>后台执行fpm,默认值为yes，如果为了调试可以改为no。</p>
-<p>在FPM中，可以使用不同的设置来运行多个进程池。 这些设置可以针对每个进程池单独设置。</p>
-<blockquote>
-<p>   listen = 127.0.0.1:9000</p>
-</blockquote>
-<p>fpm监听端口，即nginx中php处理的地址，一般默认值即可。</p>
-<p>可用格式为: <em>ip:port</em>, <em>port</em>, <em>/path/to/unix/socket</em>. 每个进程池都需要设置.</p>
-<blockquote>
-<p>   listen.backlog = -1</p>
-</blockquote>
-<p>backlog数，-1表示无限制，由操作系统决定，此行注释掉就行。backlog含义参考：</p>
-<blockquote>
-<p>   listen.allowed_clients = 127.0.0.1</p>
-</blockquote>
-<p>允许访问FastCGI进程的IP，设置any为不限制IP，如果要设置其他主机的nginx也能访问这台FPM进程，listen处要设置成本地可被访问的IP。默认值是any。</p>
-<p>每个地址是用逗号分隔. 如果没有设置或者为空，则允许任何服务器请求连接</p>
-<blockquote>
-<p>   listen.owner = www</p>
-<p>   listen.group = www</p>
-<p>   listen.mode = 0666</p>
-</blockquote>
-<p>unix socket设置选项，如果使用tcp方式访问，这里注释即可。</p>
-<blockquote>
-<p>   user = www</p>
-<p>   group = www</p>
-</blockquote>
-<p>启动进程的帐户和组</p>
-<blockquote>
-<p>   pm = dynamic</p>
-</blockquote>
-<p>pm表示使用那种方式，有两个值可以选择，就是static（静态模式）或者dynamic（动态模式5.2的时候叫apache-like但是不好使）</p>
-<p>如果选择static，则由pm.max_children指定固定的子进程数。</p>
-<p>如果选择dynamic，则由下开参数决定：</p>
-<blockquote>
-<p>   pm.max_children ，子进程最大数</p>
-<p>   pm.start_servers ，启动时的进程数</p>
-<p>   pm.min_spare_servers ，保证空闲进程数最小值，如果空闲进程小于此值，则创建新的子进程</p>
-<p>   pm.max_spare_servers ，保证空闲进程数最大值，如果空闲进程大于此值，此进行清理</p>
-</blockquote>
-<p>对于专用服务器，pm可以设置为static。</p>
-<blockquote>
-<p>  pm.max_requests = 1000</p>
-</blockquote>
-<p>设置每个子进程重生之前服务的请求数. 对于可能存在内存泄漏的第三方模块来说是非常有用的. 如果设置为 ‘0′ 则一直接受请求. 等同于 PHP_FCGI_MAX_REQUESTS 环境变量. 默认值: 0.</p>
-<blockquote>
-<p>   pm.status_path = /status</p>
-</blockquote>
-<p>FPM状态页面的网址. 如果没有设置, 则无法访问状态页面. 默认值: none.</p>
-<blockquote>
-<p>   ping.path = /ping</p>
-</blockquote>
-<p>FPM监控页面的ping网址. 如果没有设置, 则无法访问ping页面. 该页面用于外部检测FPM是否存活并且可以响应请求. 请注意必须以斜线开头 (/)。</p>
-<blockquote>
-<p>   ping.response = pong</p>
-</blockquote>
-<p>用于定义ping请求的返回相应. 返回为 HTTP 200 的 text/plain 格式文本. 默认值: pong.</p>
-<blockquote>
-<p>   request_terminate_timeout = 0</p>
-</blockquote>
-<p>设置单个请求的超时中止时间. 该选项可能会对php.ini设置中的’max_execution_time’因为某些特殊原因没有中止运行的脚本有用. 设置为 ‘0′ 表示 ‘Off’.</p>
-<p>当经常出现502错误时可以尝试更改此选项。</p>
-<blockquote>
-<p>   request_slowlog_timeout = 10s</p>
-</blockquote>
-<p>当一个请求该设置的超时时间后，就会将对应的PHP调用堆栈信息完整写入到慢日志中. 设置为 ‘0′ 表示 ‘Off’</p>
-<blockquote>
-<p>  slowlog = log/$pool.log.slow</p>
-</blockquote>
-<p>慢请求的记录日志,配合request_slowlog_timeout使用</p>
-<blockquote>
-<p>   rlimit_files = 1024</p>
-</blockquote>
-<p>设置文件打开描述符的rlimit限制. 默认值: 系统定义值</p>
-<p>系统默认可打开句柄是1024，可使用 ulimit -n查看，ulimit -n 2048修改。</p>
-<blockquote>
-<p>   rlimit_core = 0</p>
-</blockquote>
-<p>设置核心rlimit最大限制值. 可用值: ‘unlimited’ 、0或者正整数. 默认值: 系统定义值.</p>
-<blockquote>
-<p>  chroot =</p>
-</blockquote>
-<p>启动时的Chroot目录. 所定义的目录需要是绝对路径. 如果没有设置, 则chroot不被使用.</p>
-<blockquote>
-<p>   chdir =</p>
-</blockquote>
-<p>设置启动目录，启动时会自动Chdir到该目录. 所定义的目录需要是绝对路径. 默认值: 当前目录，或者/目录（chroot时）</p>
-<blockquote>
-<p>   catch_workers_output = yes</p>
-</blockquote>
-<p>重定向运行过程中的stdout和stderr到主要的错误日志文件中. 如果没有设置, stdout 和 stderr 将会根据FastCGI的规则被重定向到 /dev/null . 默认值: 空</p>
-<p>下面已我的php配置例子：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">[global]pid = /usr/<span class="built_in">local</span>/php/var/run/php-fpm.pid</span><br><span class="line"></span><br><span class="line">error_log = /home/wwwlogs/php-fpm.log</span><br><span class="line"></span><br><span class="line">log_level = notice</span><br><span class="line"></span><br><span class="line">rlimit_files = 65535</span><br><span class="line"></span><br><span class="line">rlimit_core = 0</span><br><span class="line"></span><br><span class="line">[www]</span><br><span class="line"></span><br><span class="line">listen = /tmp/php-cgi.sock</span><br><span class="line"></span><br><span class="line">user = nobody   nginx, php-fpm进程的权限不能以网站所有权运行安全有问题</span><br><span class="line"></span><br><span class="line">group = nobody   nginx, php-fpm 进程 的权限不能以网站所有权运行安全有问题</span><br><span class="line"></span><br><span class="line">pm = dynamic</span><br><span class="line"></span><br><span class="line">pm.max_children = 36 静态模式开启进程数</span><br><span class="line"></span><br><span class="line">pm.start_servers = 9 动态模式默认开启进程 数</span><br><span class="line"></span><br><span class="line">pm.min_spare_servers = 8 动态模式默认最低保留进程 数</span><br><span class="line"></span><br><span class="line">pm.max_spare_servers = 36 动态模式默认最高 进程数具体通过netstat -napo |grep <span class="string">"php-fpm"</span> | wc -l和系统负载确定</span><br><span class="line"></span><br><span class="line">pm.max_requests = 4096 进程执行xxx后重启释放内存避免内存泄漏</span><br><span class="line"></span><br><span class="line">request_terminate_timeout = 100 进程超时时间</span><br><span class="line"></span><br><span class="line">request_slowlog_timeout = 3s 记录大于3秒的php执行命令</span><br><span class="line"></span><br><span class="line">slowlog = /home/wwwlogs/php-fpm.log.slow</span><br><span class="line"></span><br><span class="line">rlimit_files = 65535 这个值一定要改默认的太小不改日志会有错误但是要和全局文件数相同具体查看<span class="built_in">ulimit</span> -n系统全局设置</span><br><span class="line"></span><br><span class="line">rlimit_core = 0</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line"></span><br><span class="line">pid = /usr/<span class="built_in">local</span>/php/var/run/php-fpm.pid</span><br><span class="line"></span><br><span class="line">error_log = /home/wwwlogs/php-fpm.log</span><br><span class="line"></span><br><span class="line">log_level = notice</span><br><span class="line"></span><br><span class="line">rlimit_files = 65535</span><br><span class="line"></span><br><span class="line">rlimit_core = 0</span><br><span class="line"></span><br><span class="line">[www]</span><br><span class="line"></span><br><span class="line">listen = /tmp/php-cgi.sock</span><br><span class="line"></span><br><span class="line">user = nobody</span><br><span class="line"></span><br><span class="line">group = nobody</span><br><span class="line"></span><br><span class="line">pm = dynamtic</span><br><span class="line"></span><br><span class="line">pm.max_children = 20</span><br><span class="line"></span><br><span class="line">pm.start_servers = 2</span><br><span class="line"></span><br><span class="line">pm.min_spare_servers = 1</span><br><span class="line"></span><br><span class="line">pm.max_spare_servers = 20</span><br><span class="line"></span><br><span class="line">pm.max_requests = 4096</span><br><span class="line"></span><br><span class="line">request_slowlog_timeout = 3s</span><br><span class="line"></span><br><span class="line">slowlog = /home/wwwlogs/php-fpm.log.slow</span><br><span class="line"></span><br><span class="line">request_terminate_timeout = 100</span><br><span class="line"></span><br><span class="line">rlimit_files = 65535</span><br><span class="line"></span><br><span class="line">rlimit_core = 0</span><br></pre></td></tr></table></figure>
-
-<p>相关链接：</p>
-<p><a href="http://blog.51cto.com/itfun/1896016" target="_blank" rel="noopener">分析502服务器错误</a></p>
-<p>总结：</p>
-<p>1、每个进程约占用20-25M内存， top命令查询空闲内存大小， max_children = 空闲内存 / 20~25</p>
-<p>2、request_terminate_timeout 默认是0 ， 表示请求不中断，如果一个外部链接请求不到资源， 就会一直阻塞。所以这个时间需要和php.ini里面的执行时间保持一直。</p>
-<p>3、修改 php.ini 的 内存限制 memory_limit = 128M （5个进程的大小）甚至更大</p>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2335,7 +2220,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-count">154</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2465,7 +2350,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                    <span class="site-state-item-count">38</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

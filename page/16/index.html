@@ -360,6 +360,196 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/如何让网站变灰/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/如何让网站变灰/" class="post-title-link" itemprop="url">如何让网站变灰</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-10 06:59:22" itemprop="dateCreated datePublished" datetime="2016-11-10T06:59:22Z">2016-11-10</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>今天给大家分享一个web前端的小技巧哦，就是如何在公共哀悼纪念日，让网站变为黑白颜色。其实很多方法有css实现，和js实现的。网上都有的，js有js的特点，css有css优点，当然缺点也是存在。</p>
+<p><strong>1.超兼容IE，火狐firefox，谷歌的css滤镜</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line"></span><br><span class="line">    filter: grayscale(100%);//IE浏览器</span><br><span class="line"></span><br><span class="line">    -webkit-filter: grayscale(100%);//谷歌浏览器</span><br><span class="line"></span><br><span class="line">    -moz-filter: grayscale(100%);//火狐</span><br><span class="line"></span><br><span class="line">    <span class="selector-tag">-ms-filter</span>: <span class="selector-tag">grayscale</span>(100%);</span><br><span class="line"></span><br><span class="line">    <span class="selector-tag">-o-filter</span>: <span class="selector-tag">grayscale</span>(100%);</span><br><span class="line"></span><br><span class="line">    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);</span><br><span class="line"></span><br><span class="line">    -webkit-filter: grayscale(1);//谷歌浏览器</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点：基本兼容所有浏览器。</p>
+<p>缺点：就是ie6可能嗝屁了，ie页面电脑资源消耗肯能大一点。</p>
+<p><strong>2.js代码实现grayscale.js代码实现</strong></p>
+<p>引用文件，就不要讲了吧，好吧还是说一下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"http://james.padolsey.com/demos/grayscale/grayscale.js"</span>&gt;<span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line"></span><br><span class="line">    grayscale(<span class="built_in">document</span>.getElementById(<span class="string">"thisImage"</span>));</span><br><span class="line"></span><br><span class="line">&lt;script _ue_org_tagname=<span class="string">"script"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>优点：兼容所有浏览器,还能针对不同dom来实现</p>
+<p>缺点：电脑资源消耗肯能大一点，尤其老ie，老电脑浏览器一度卡死。</p>
+<p><strong>3.SVG滤镜实现</strong></p>
+<p>新建一个空白文件，比如说：gray.svg. 拷贝进去如下的XML代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg version="1.1"xmlns="http://www.w3.org/2000/svg"&gt;</span><br><span class="line">    &lt;filter id="grayscale"&gt;</span><br><span class="line">    &lt;feColorMatrix type="matrix" values="0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0"/&gt;</span><br><span class="line">    &lt;<span class="selector-tag">filter</span>&gt;</span><br><span class="line">&lt;<span class="selector-tag">svg</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>CSS调用代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">filter</span>: <span class="selector-tag">url</span>(<span class="selector-tag">gray</span><span class="selector-class">.svg</span><span class="selector-id">#grayscale</span>);</span><br></pre></td></tr></table></figure>
+
+<p>对应ie还要多写一下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">filter</span>: <span class="selector-tag">gray</span>;</span><br></pre></td></tr></table></figure>
+
+<p>优点：兼容所有浏览器</p>
+<p>缺点：修改很麻烦。</p>
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/一分钟了解负载均衡的一切/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1431,7 +1621,7 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-count">154</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1561,7 +1751,9 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                    <span class="site-state-item-count">38</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2221,6 +2413,8 @@ setTimeout(showSoul,0);
 
   
   
+    
+      
     
       
     

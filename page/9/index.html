@@ -360,6 +360,186 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/php 读取中文目录报错/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/php 读取中文目录报错/" class="post-title-link" itemprop="url">php 读取中文目录报错</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-11 07:25:20" itemprop="dateCreated datePublished" datetime="2018-07-11T07:25:20Z">2018-07-11</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>问题的发现：</p>
+<p>（1）在php文件所在目录，手动创建了文件名为“测试.txt”和“test.txt”的文件；</p>
+<p>（2）执行下列代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">var_dump(file_exits(<span class="string">"测试.txt"</span>)); <span class="comment">// false</span></span><br><span class="line">var_dump(file_exits(<span class="string">"test.txt"</span>)); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>分析原因：</p>
+<blockquote>
+<p>编码的不一样，导致文件系统无法识别UTF8编码下的中文路径；</p>
+</blockquote>
+<p>解决方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var_dump(file_exits(iconv(<span class="string">'UTF-8'</span>,<span class="string">'GB2312'</span>,<span class="string">"测试.txt"</span>)));<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>*在使用非ASCII码表字符时，必须考虑的以下几个问题是：</p>
+<p>（1）操作系统的编码；</p>
+<p>（2）存储环境的编码；</p>
+<p>（3）代码文件的编码；</p>
+<p>（4）目标运行环境的编码</p>
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/cURL error 60- SSL certificate problem/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1920,253 +2100,6 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Linux挂载新的硬盘/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/Linux挂载新的硬盘/" class="post-title-link" itemprop="url">Linux挂载新的硬盘</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-04-08 23:05:26" itemprop="dateCreated datePublished" datetime="2018-04-08T23:05:26Z">2018-04-08</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <h4 id="文字版"><a href="#文字版" class="headerlink" title="文字版"></a>文字版</h4><ol>
-<li><p><code>fdisk -l</code>  //先查询未挂载的硬盘名如：sdb1 等</p>
-</li>
-<li><p><code>mkfs.ext3 /dev/xvdb(新的盘)</code>   // 开始格式化</p>
-</li>
-<li><p><code>df -h</code> // 查看挂载情况</p>
-</li>
-<li><p><code>mount /dev/xvdb /home</code> // (/home挂载的地方， 最好是根路径下建一个空的文件夹)   开始挂载</p>
-</li>
-<li><p><code>vi /etc/fstab</code>       // 设置自动开启启动</p>
-<p>格式： <code>/dev/xvdb  /home        ext3    defaults        0 0</code> // 硬盘名      需要挂载的位置   格式</p>
-</li>
-<li><p>卸载挂载点： <code>umount /home/ftp2</code></p>
-</li>
-</ol>
-<p>另：如果执行fdisk -l 报错，往下看↓</p>
-<p>发现有问题：</p>
-<blockquote>
-<p>Disk /dev/sdb doesn’t contain a valid partition table</p>
-</blockquote>
-<p><code>fdisk /dev/sdb</code> 跟着向导一步步做下去（如果不知道该输入什么，就输入“m”并回车，可以打印出菜单）：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Command (m for help): m</span><br><span class="line"></span><br><span class="line">Command action</span><br><span class="line"></span><br><span class="line">a   toggle a bootable flag</span><br><span class="line"></span><br><span class="line">b   edit bsd disklabel</span><br><span class="line"></span><br><span class="line">c   toggle the dos compatibility flag</span><br><span class="line"></span><br><span class="line">d   delete a partition</span><br><span class="line"></span><br><span class="line">l   list known partition types</span><br><span class="line"></span><br><span class="line">m   print this menu</span><br><span class="line"></span><br><span class="line">n   add a new partition</span><br><span class="line"></span><br><span class="line">（后面的菜单省略，太长了）</span><br></pre></td></tr></table></figure>
-
-<p>这里我们要添加一个新的分区，所以输入“n”：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Command (m for help): n</span><br><span class="line"></span><br><span class="line">Command action</span><br><span class="line"></span><br><span class="line">e   extended</span><br><span class="line"></span><br><span class="line">p   primary partition (1-4)</span><br><span class="line"></span><br><span class="line">p</span><br><span class="line"></span><br><span class="line">Partition number (1-4): 1</span><br><span class="line"></span><br><span class="line">First cylinder (1-14098, default 1): （此处直接回车）</span><br><span class="line"></span><br><span class="line">Using default value 1</span><br><span class="line"></span><br><span class="line">Last cylinder or +size or +sizeM or +sizeK (1-14098, default 14098): （此处直接回车）</span><br><span class="line"></span><br><span class="line">Using default value 14098</span><br><span class="line"></span><br><span class="line">Command (m for help): p</span><br><span class="line"></span><br><span class="line">Disk /dev/sdb: 115.9 GB, 115964116992 bytes</span><br><span class="line"></span><br><span class="line">255 heads, 63 sectors/track, 14098 cylinders</span><br><span class="line"></span><br><span class="line">Units = cylinders of 16065 * 512 = 8225280 bytes</span><br><span class="line"></span><br><span class="line">Device Boot      Start         End      Blocks   Id  System</span><br><span class="line"></span><br><span class="line">/dev/sdb1               1       14098   113242153+  83  Linux</span><br></pre></td></tr></table></figure>
-
-<p>现在可以写入分区表了，所以输入“w”：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Command (m for help): w</span><br><span class="line"></span><br><span class="line">The partition table has been altered!</span><br><span class="line"></span><br><span class="line">Calling ioctl() to re-read partition table.</span><br><span class="line"></span><br><span class="line">Syncing disks.</span><br></pre></td></tr></table></figure>
-
-<p>现在再fdisk -l，结果正常</p>
-<p>– 如果到这里挂载完成，以下内容可不看 –</p>
-<h4 id="图文版"><a href="#图文版" class="headerlink" title="图文版"></a>图文版</h4><h5 id="查看新硬盘"><a href="#查看新硬盘" class="headerlink" title="查看新硬盘"></a>查看新硬盘</h5><p><code>fdisk -l</code></p>
-<p><img src="/articles/Linux挂载新的硬盘/1.jpg" alt></p>
-<p>新添加的硬盘的编号为/dev/sdb</p>
-<h5 id="硬盘分区"><a href="#硬盘分区" class="headerlink" title="硬盘分区"></a>硬盘分区</h5><ul>
-<li>进入fdisk模式</li>
-</ul>
-<p><code>fdisk /dev/sdb</code></p>
-<p><img src="/articles/Linux挂载新的硬盘/2.jpg" alt></p>
-<ul>
-<li><p>输入n进行分区</p>
-</li>
-<li><p>选择分区类型</p>
-</li>
-</ul>
-<p><img src="/articles/Linux挂载新的硬盘/3.jpg" alt></p>
-<p>这里有两个选项：</p>
-<p>p: 主分区 linux上主分区最多能有4个</p>
-<p>e: 扩展分区 linux上扩展分区只能有1个，扩展分区创建后不能直接使用，还要在扩展分区上创建逻辑分区。</p>
-<p>这里选择的p。</p>
-<ul>
-<li>选择分区个数</li>
-</ul>
-<p>只分1个分区 直接输入1 接下来设置柱面，默认即可</p>
-<p><img src="/articles/Linux挂载新的硬盘/4.jpg" alt></p>
-<ul>
-<li>写入分区表 输入w，分区结束</li>
-</ul>
-<p><img src="/articles/Linux挂载新的硬盘/5.jpg" alt></p>
-<ul>
-<li>分区结束后，查看/dev目录</li>
-</ul>
-<p><code>ls -l /dev</code></p>
-<p><img src="/articles/Linux挂载新的硬盘/6.jpg" alt></p>
-<p>可以看到刚刚生成的新分区sdb1</p>
-<h5 id="格式化分区"><a href="#格式化分区" class="headerlink" title="格式化分区"></a>格式化分区</h5><p>将新分区格式化为ext3文件系统</p>
-<p><code>mkfs -t ext3 /dev/sdb1</code></p>
-<p><img src="/articles/Linux挂载新的硬盘/7.jpg" alt></p>
-<p>最后写入文件系统信息。</p>
-<p>此时就可以用新创建的分区了</p>
-<h5 id="挂载硬盘"><a href="#挂载硬盘" class="headerlink" title="挂载硬盘"></a>挂载硬盘</h5><ul>
-<li>创建挂载点</li>
-</ul>
-<p>在根目录下创建storage目录</p>
-<p><code>mkdir /storage</code></p>
-<ul>
-<li>将/dev/sdb1挂载到/storage下</li>
-</ul>
-<p><code>mount /dev/sdb1 /storage</code></p>
-<h5 id="设置开机启动自动挂载"><a href="#设置开机启动自动挂载" class="headerlink" title="设置开机启动自动挂载"></a>设置开机启动自动挂载</h5><p>新创建的分区不能开机自动挂载，每次重启机器都要手动挂载。</p>
-<p>设置开机自动挂载需要修改/etc/fstab文件</p>
-<p><code>vi /etc/fstab</code></p>
-<p>在文件的最后增加一行</p>
-<p><code>/dev/sdb1 /storage ext3 defaults 1 2</code></p>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2215,7 +2148,7 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">153</span>
+                    <span class="site-state-item-count">154</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2345,7 +2278,9 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                    <span class="site-state-item-count">38</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
