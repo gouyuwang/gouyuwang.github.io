@@ -360,6 +360,216 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Schtasks命令详解-计划任务DOS批处理-/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/Schtasks命令详解-计划任务DOS批处理-/" class="post-title-link" itemprop="url">Schtasks命令详解(计划任务DOS批处理)</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-07-14 02:45:59" itemprop="dateCreated datePublished" datetime="2017-07-14T02:45:59Z">2017-07-14</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>安排命令和程序定期运行或在指定时间内运行。从计划表中添加和删除任务，按需要启动和停止任务，显示和更改计划任务。</p>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /create /tn TaskName /tr TaskRun /sc schedule [/momodifier] [/dday] [/mmonth[,month...] [/iIdleTime] [/stStartTime] [/sdStartDate] [/edEndDate] [/scomputer[/u[domain\]user/ppassword]][/ru&#123;[Domain\]User|"System"&#125; [/rpPassword]] /?</span><br></pre></td></tr></table></figure>
+
+<h4 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h4><p><code>/tn</code> TaskName  指定任务的名称。</p>
+<p><code>/tr</code> TaskRun   指定任务运行的程序或命令。键入可执行文件、脚本文件或批处理文件的完全合格的路径和文件名。如果忽略该路径，SchTasks.exe 将假定文件在Systemroot\System32 目录下。</p>
+<p><code>/sc</code> schedule  指定计划类型。有效值为 MINUTE、HOURLY、DAILY、WEEKLY、MONTHLY、ONCE、ONSTART、ONLOGON、ONIDLE。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">有效值说明</span><br><span class="line"></span><br><span class="line">MINUTE、HOURLY、DAILY、WEEKLY、MONTHLY  指定计划的时间单位。</span><br><span class="line"></span><br><span class="line">ONCE    任务在指定的日期和时间运行一次。</span><br><span class="line"></span><br><span class="line">ONSTART 任务在每次系统启动的时候运行。可以指定启动的日期，或下一次系统启动的时候运行任务。</span><br><span class="line"></span><br><span class="line">ONLOGON 每当用户（任意用户）登录的时候，任务就运行。可以指定日期，或在下次用户登录的时候运行任务。</span><br><span class="line"></span><br><span class="line">ONIDLE  只要系统空闲了指定的时间，任务就运行。可以指定日期，或在下次系统空闲的时候运行任务。</span><br></pre></td></tr></table></figure>
+
+<p><code>/mo</code> modifier 指定任务在其计划类型内的运行频率。这个参数对于 MONTHLY 计划是必需的。对于 MINUTE、HOURLY、DAILY 或 WEEKLY 计划，这个参数有效，但也可选。默认值为 1。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">参数说明</span><br><span class="line"></span><br><span class="line">MINUTE  1～1439  任务每n分钟运行一次。</span><br><span class="line"></span><br><span class="line">HOURLY  1～23    任务每n小时运行一次。</span><br><span class="line"></span><br><span class="line">`DAILY   1～365   任务每n天运行一次。</span><br><span class="line"></span><br><span class="line">WEEKLY  1～52    任务每n周运行一次。</span><br><span class="line"></span><br><span class="line">MONTHLY 1～12    任务每n月运行一次。</span><br><span class="line"></span><br><span class="line">LASTDAY 任务在月份的最后一天运行。</span><br><span class="line"></span><br><span class="line">FIRST、SECOND、THIRD、FOURTH、LAST 与 `/d day` 参数共同使用,并在特定的周和天运行任务。例如，在月份的第三个周三。</span><br></pre></td></tr></table></figure>
+
+<p><code>/d</code> dirlist 指定周或月的一天。只与 WEEKLY 或 MONTHLY 计划共同使用时有效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">计划类型 </span><br><span class="line"></span><br><span class="line">WEEKLY   可选项。有效值是 MON ~ SUN 和 * （每一天）。MON 是默认值。</span><br><span class="line"></span><br><span class="line">MONTHLY  在使用 FIRST、SECOND、THIRD、FOURTH 或 LAST 修饰符 (/mo) 时，需要 MON ～ SUN 中的某个值。1 ～ 31 是可选的，只在没有修饰符或修饰符为1 ～ 12类型时有效。默认值是 1 （月份的第一天）。</span><br></pre></td></tr></table></figure>
+
+<p><code>/m</code> month[,month…] 指定一年中的一个月。有效值是 JAN ～ DEC 和 * （每个月）。/m参数只对于 MONTHLY 计划有效。在使用 LASTDAY 修饰符时，这个参数是必需的。否则，它是可选的，默认值是 * （每个月）。</p>
+<p><code>/i</code> InitialPageFileSize 指定任务启动之前计算机空闲多少分钟。键入一个1 ～ 999之间的整数。这个参数只对于 ONIDLE 计划有效，而且是必需的。</p>
+<p><code>/st</code> StartTime  以HH:MM:SS24 小时格式指定时间。默认值是命令完成时的当前本地时间。/st参数只对于 MINUTE、HOURLY、DAILY、WEEKLY、MONTHLY 和 ONCE 计划有效。它只对于 ONCE 计划是必需的。</p>
+<p><code>/sd</code> StartDate 以MM/DD/YYYY格式指定任务启动的日期。默认值是当前日期。/sd参数对于所有的计划有效，但只对于 ONCE 计划是必需的。</p>
+<p><code>/ed</code> EndDate 指定任务计划运行的最后日期。此参数是可选的。它对于 ONCE、ONSTART、ONLOGON 或 ONIDLE 计划无效。默认情况下，计划没有结束日期。</p>
+<p><code>/s</code> Computer 指定远程计算机的名称或 IP 地址（带有或者没有反斜杠）。默认值是本地计算机。</p>
+<p><code>/u</code> [domain]user  使用特定用户帐户的权限运行命令。默认情况下，使用已登录到运行 SchTasks 的计算机上的用户的权限运行命令。</p>
+<p><code>/p</code> password 指定在/u参数中指定的用户帐户的密码。如果使用/u参数，则需要该参数。</p>
+<p><code>/ru</code> {[Domain]User|”System”} 使用指定用户帐户的权限运行任务。默认情况下，使用用户登录到运行 SchTasks 的计算机上的权限运行任务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">值说明</span><br><span class="line"></span><br><span class="line">[domain\&#125;User?  指定用户帐户。 &quot;System&quot;或&quot;&quot; 指定操作系统使用的 NT Authority\System 帐户。</span><br></pre></td></tr></table></figure>
+
+<p><code>/p</code> Password 指定用户帐户的密码，该用户帐户在/u参数中指定。如果在指定用户帐户的时候忽略了这个参数，SchTasks.exe 会提示您输入密码而且不显示键入的文本。使用 NT Authority\System 帐户权限运行的任务不需要密码，SchTasks.exe 也不会提示索要密码。</p>
+<p><code>/?</code> 在命令提示符显示帮助。</p>
+<h4 id="范例"><a href="#范例" class="headerlink" title="范例"></a>范例</h4><h5 id="计划任务每-20-分钟运行一次"><a href="#计划任务每-20-分钟运行一次" class="headerlink" title="计划任务每 20 分钟运行一次"></a>计划任务每 20 分钟运行一次</h5><p>下面的命令计划安全脚本 Sec.vbs 每 20 分钟运行一次。由于命令没有包含起始日期或时间，任务在命令完成 20 分钟后启动，此后每当系统运行它就每 20 分钟运行一次。请注意，安全脚本源文件位于远程计算机上，但任务在本地计算机上计划并执行。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /create /sc minute /mo <span class="number">20</span> /tn "Security scrīpt" /tr \\central\data\scrīpts\sec.vbs</span><br></pre></td></tr></table></figure>
+
+<h5 id="计划命令在每小时过五分的时候运行"><a href="#计划命令在每小时过五分的时候运行" class="headerlink" title="计划命令在每小时过五分的时候运行"></a>计划命令在每小时过五分的时候运行</h5><p>下面的命令将计划 MyApp 程序从午夜过后五分钟起每小时运行一次。因为忽略了/mo参数，命令使用了小时计划的默认值，即每 (1) 小时。如果该命令在 12:05 A.M 之后生成，程序将在第二天才会运行。</p>
+<blockquote>
+<p>schtasks /create /sc hourly /st 00:05:00 /tn “My App” /tr c:\apps\myapp.exe</p>
+</blockquote>
+<p>计划命令每五小时运行一次</p>
+<p>下面的命令计划 MyApp 程序从 2001 年 3 月的第一天起每五小时运行一次。它使用/mo参数来指定间隔时间，使用/sd参数来指定起始日期。由于命令没有指定起始时间，当前时间被用作起始时间。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">schtasks /create /sc hourly /mo <span class="number">5</span> /sd <span class="number">03</span>/<span class="number">01</span>/<span class="number">2001</span> /tn "My App" /tr c:\apps\myapp.exe</span><br><span class="line"></span><br><span class="line">schtasks create daily</span><br></pre></td></tr></table></figure>
+
+<h5 id="计划任务每天运行一次"><a href="#计划任务每天运行一次" class="headerlink" title="计划任务每天运行一次"></a>计划任务每天运行一次</h5><p>下面的范例计划 MyApp 程序在每天的 8:00 A.M. 运行一次，直到 2001 年 12 月 31 日结束。由于它忽略了/mo参数，所以使用默认间隔 1 来每天运行命令。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /create /tn "My App" /tr c:\apps\myapp.exe /sc daily /st <span class="number">08</span>:<span class="number">00</span>:<span class="number">00</span> /ed <span class="number">12</span>/<span class="number">31</span>/<span class="number">2001</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="计划任务每六周运行一次"><a href="#计划任务每六周运行一次" class="headerlink" title="计划任务每六周运行一次"></a>计划任务每六周运行一次</h5><p>下面的命令计划 MyApp 程序在远程计算机上每六周运行一次。该命令使用/mo参数来指定间隔。它也使用/s参数来指定远程计算机，使用/ru参数来计划任务以用户的 Administrator 帐户权限运行。因为忽略了/rp参数，SchTasks.exe 会提示用户输入 Administrator 帐户密码。</p>
+<p>另外，因为命令是远程运行的，所以命令中所有的路径，包括到 MyApp.exe 的路径，都是指向远程计算机上的路径。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /create /tn "My App" /tr c:\apps\myapp.exe /sc weekly /mo <span class="number">6</span> /s Server16 /ru Admin01</span><br></pre></td></tr></table></figure>
+
+<h4 id="如何关闭dos窗口提示"><a href="#如何关闭dos窗口提示" class="headerlink" title="如何关闭dos窗口提示"></a>如何关闭dos窗口提示</h4><figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 使用vbs 在后台静默执行</span><br><span class="line"></span><br><span class="line"><span class="keyword">Set</span> ws = CreateObject(<span class="string">"Wscript.Shell"</span>)</span><br><span class="line"></span><br><span class="line">ws.run <span class="string">"cmd /c d:\wamp\www\code\queue\task"</span>,vbhide</span><br></pre></td></tr></table></figure>
+
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/NoSQL-简介/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2150,191 +2360,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/字符编码基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/字符编码基础/" class="post-title-link" itemprop="url">字符编码基础</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-01-08 07:50:25" itemprop="dateCreated datePublished" datetime="2017-01-08T07:50:25Z">2017-01-08</time>
-            </span>
-          
-
-          
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <p>ACSII规定：一个字符由一个字节存储。范围：前32位（0x00 — 0x20）为控制码。第32位至127位（0x20 — 0x7f）为空格、标点符号、数字、字母。127位以后不用。</p>
-<p><code>扩展字符集</code></p>
-<p>原因： 由于其它国家的字符太多，ASCII标准已经不够用，所以他们启用了127位以后的全部空位。</p>
-<p><code>GB2312</code></p>
-<p>原因：由于其它国家制定的扩展字符集并不适用于中文，所以中国人重新制定了符合本国国情的编码方式：GB2312（GB2312是对ASCII码的中文扩展）。规定：小于127的字符意义同ASCII标准一样，但两个大于127的字符连在一起时，就表示一个汉字。范围：前一个字节（高字节）使用范围为：0xa1 — 0xf7后一个字节（低字节）使用范围为：0xa1 — oxfe</p>
-<p><code>GBK</code></p>
-<p>原因：后来由于汉字实在太多，GB2312已经不够使用了，于是又制定了新的编码:GBK，取消了GB2312中对汉字低字节的限制。规定: 小于127的字符意义同ASCII标准一样，如果遇到大于127位的字节则无论其后的一个字节是否是大于127都将这个两个字节视为一个汉字（GB2312要求两个字节都要大于127，但GBK取消了对低字节的要求）。范围：前一个字节（高字节）使用范围为：0x81 — 0xfe后一个字节（低字节）使用范围为：0x40 — 0xfe</p>
-<p><code>GB18030</code></p>
-<p>原因: 由于GBK并没有包含少数民族的文字字符，所以又再次对GBK进行扩展以包含少数名族字符，由此又制定了新的编码GB18030，从此该编码方式可以完全表示中华民族的所有字符了。</p>
-<p>小结：人们为了统一称呼这些【汉字】编码方式，于是把它们都叫做DBCS（Double Byte Charecter Set，双字节字符集），它们最大的特点就是两个字节长的汉字字符和一个字节长的英文字符并存在一套编码系统里。因此在处理这些编码时要时刻注意每一个字节的值是否是大于127，如果小于则取按照ASCII标准取值，如过大于则表示一个汉字开始了，这时就要和它和后面一个字节一起组合起来识别为一个汉字字符。</p>
-<p><code>Unicode</code></p>
-<p>原因： 由于每个国家都制定了自己的一套编码体系，造成各个国家之间的字符编码互不兼容，于是ISO组织统一制定了能包含全球所有文化、字符、符号的编码标准：Universal Multiple-Octet Coded Character Set”，简称 UCS, 俗称 “UNICODE”。规定： Unicode规定所有字符都统一使用两个字节编码，即使用16位来统一表示所有字符，对于ASCII标准的字符保持其值不变，但字节长度由一个字节变成两个字节，所以英文字符的Unicode编码的高字节永远都为0，因此也造成了存储空间的浪费。</p>
-<p><code>UTF-8</code></p>
-<p>定义： UTF即UCS Transfer Format（Unicode传输格式），utf-8是在网络上传输Unicode字符的一项标准，它是Unicode的主要实现方式之一。它每次传输8位数据，但它并不是直接对应Unicode的字节的值，而是为了传输的可靠性制定了一套从Unicode到utf-8的转换规则。转换规则：</p>
-<table>
-<thead>
-<tr>
-<th align="left">Unicode</th>
-<th align="left">UTF-8</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">0000 - 007F</td>
-<td align="left">0xxxxxxx</td>
-</tr>
-<tr>
-<td align="left">0080 - 07FF</td>
-<td align="left">110xxxxx 10xxxxxx</td>
-</tr>
-<tr>
-<td align="left">0800 - FFFF</td>
-<td align="left">1110xxxx 10xxxxxx 10xxxxxx</td>
-</tr>
-</tbody></table>
-<p>举例： ‘汉’字的Unicode编码是：6C49，通过上表可以得出，它在0x0800到0xffff之间，所以它需要使用3个字节来传输，将6C49转位二进制： 0110 1100 0100 1001，按照utf-8的格式转换，第一个字节为：[1110]0110，第二个字节为:[10]110001，第三个字节为：[10]001001，所以将‘汉’字的unicode转换为utf-8之后的二进制是：11100110 10110001 10001001 ，即16进制E6 B1 89</p>
-<p>单字节： 由一个字节构成一个字符的编码。如ASCII</p>
-<p>多字节： 由一个或多个字节构成一个字符的编码。如GB2312、GBK宽字节： 始终由两个字节构成一个字符的编码。如Unicode</p>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2383,7 +2408,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">154</span>
+                    <span class="site-state-item-count">155</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

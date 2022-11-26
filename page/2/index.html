@@ -360,6 +360,203 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Chrome扩展开发/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/Chrome扩展开发/" class="post-title-link" itemprop="url">Chrome扩展开发</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-10-26 17:10:17" itemprop="dateCreated datePublished" datetime="2020-10-26T17:10:17Z">2020-10-26</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作者发现很多PC页面都没有做移动端转发的功能，有时候想在移动端阅读都要先在电脑上登录微信或者QQ转发到手机上面，一次两次还好，多了就觉得很不方便了，尤其是开发调试的时候。于是作者想到了开发一款浏览器插件简化一下上面的操作。</p>
+<p>先上一下折腾出的成果 <a href="https://github.com/gouyuwang/chrome-qrcode" target="_blank" rel="noopener">Github传送门</a>:<br><img src="/articles/Chrome扩展开发/demo.png" alt> </p>
+<h2 id="正题"><a href="#正题" class="headerlink" title="正题"></a>正题</h2><p>浏览器插件是一种小型的用于定制浏览器体验的程序。通过插件，我们可以定制js爬虫、屏蔽网页广告，网页实时查词，修改http请求头，等等，能做的东西很多。只要你会HTML，JavaScript，CSS就可以动手开发浏览器插件了。 </p>
+<p>1、创建<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json" target="_blank" rel="noopener">manifest.json</a>。任何插件都必须要有这个文件，用来描述插件的元数据，插件的配置信息。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"name"</span>:<span class="string">"Qrcode"</span>,</span><br><span class="line">    <span class="attr">"description"</span>:<span class="string">"Url Qrcode Extension"</span>,</span><br><span class="line">    "version":"1.0",// 版本version在打包完插件的时候，判断插件是否需要更新</span><br><span class="line">    "manifest_version":2, </span><br><span class="line">	  "description":"当前页面的二维码",</span><br><span class="line">    "browser_action":&#123;// 浏览器右上角的图标</span><br><span class="line">        "default_popup":"popup.html", // 弹出后运行的页面，相当于index.html</span><br><span class="line">        "default_icon":"icon.png",</span><br><span class="line">		"default_title":"生成页面二维码"</span><br><span class="line">    &#125;,</span><br><span class="line">	"icons":&#123; </span><br><span class="line">		"16":"icon.png",</span><br><span class="line">		"48":"icon.png",</span><br><span class="line">		"128":"icon.png"</span><br><span class="line">    &#125;,</span><br><span class="line">    "commands":&#123;</span><br><span class="line">        "_execute_browser_action":&#123;</span><br><span class="line">            "suggested_key":&#123; // 快捷键</span><br><span class="line">                "default":"Ctrl+Shift+F",</span><br><span class="line">                "mac":"MacCtrl+Shift+F"</span><br><span class="line">            &#125;,</span><br><span class="line">            "description":"Opens popup.html"</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">	"permissions": [ // 授权</span><br><span class="line">        "background", </span><br><span class="line">        <span class="string">"tabs"</span></span><br><span class="line">    ], </span><br><span class="line">    "background":&#123; // 后台运行</span><br><span class="line">        "script":[</span><br><span class="line">             "js/background.js" // 当前项目没有用到，因为不存在久驻后台的需求</span><br><span class="line">         ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、编写业务</p>
+<p><img src="/articles/Chrome扩展开发/dir.png" alt="目录结构"></p>
+<p>里面内容比较简单，生成二维码和分享均用的三方插件。值得注意的是，html里面不能和js混写，这里涉及到一个权限问题。</p>
+<p><img src="/articles/Chrome扩展开发/jserror.png" alt="JS Error"></p>
+<p>3、运行调试</p>
+<ul>
+<li>进入浏览器扩展管理</li>
+</ul>
+<p><img src="/articles/Chrome扩展开发/dev.png" alt></p>
+<ul>
+<li>开发者模式打开，然后点击 “加载已解压的扩展程序” 将创建的插件目录导入进去，如果你只有crx文件，直接右键以压缩文件方式解压就可以看到全部代码。</li>
+</ul>
+<p><img src="/articles/Chrome扩展开发/opendev.png" alt></p>
+<ul>
+<li>成功后可以看到下面的画面</li>
+</ul>
+<p><img src="/articles/Chrome扩展开发/success.png" alt></p>
+<p>调试的跟普通网页调试差不多，右键点击弹出的扩展，点“审查元素”即可打开插件的开发工具，如图</p>
+<p><img src="/articles/Chrome扩展开发/debug.png" alt></p>
+<p>4、打包发布</p>
+<p><img src="/articles/Chrome扩展开发/prod.png" alt> </p>
+<p>打包后会生成.crx文件，将生成的.crx项目文件直接拖入浏览器，也可以在扩展程序里面添加，Google对这个审核还是比较严格的，禁止未上架的插件拖曳使用，但是可以以开发者模式安装。 亲测360浏览器是可以直接拖曳的使用的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>浏览器插件开发，具有很高的实用性，值得我们去学习和了解。本文是作者记录第一次学习制作插件开发的过程，内容只是作者所用到的部分，未能面面俱到，敬请谅解。 </p>
+<p>欢迎一起讨论与留言。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions" target="_blank" rel="noopener">Browser Extensions</a></li>
+<li><a href="http://open.chrome.360.cn/extension_dev/overview.html" target="_blank" rel="noopener">360浏览器应用开放平台</a></li>
+</ul>
+<style>.posts-expand .post-body img{margin:0 auto; max-height:100vh;}</style>
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/SSL双向认证/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1435,9 +1632,17 @@
         
           
             
-              <h3 id="方案一：-Mysql"><a href="#方案一：-Mysql" class="headerlink" title="方案一： Mysql"></a>方案一： Mysql</h3><h4 id="通过球面两点距离公式"><a href="#通过球面两点距离公式" class="headerlink" title="通过球面两点距离公式"></a>通过球面两点距离公式</h4><blockquote>
+              <style>
+.posts-expand .post-body img {
+    margin: 0 auto;
+}
+</style>
+
+
+<h3 id="方案一：-Mysql"><a href="#方案一：-Mysql" class="headerlink" title="方案一： Mysql"></a>方案一： Mysql</h3><h4 id="通过球面两点距离公式"><a href="#通过球面两点距离公式" class="headerlink" title="通过球面两点距离公式"></a>通过球面两点距离公式</h4><blockquote>
 <p>$ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$<br>其中 A（jA,wA）和B（jB，wB）,推导过程见<a href="http://www.360doc.com/content/14/0117/10/325430_345890919.shtml" target="_blank" rel="noopener">这里</a></p>
 </blockquote>
+<p><img src="/articles/两种简单方案实现LBS/1.png" alt="示意图"></p>
 <p>对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常大，性能将会是严重的问题。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> address (</span><br><span class="line">	<span class="keyword">id</span> <span class="built_in">INT</span> (<span class="number">11</span>) AUTO_INCREMENT,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">CHAR</span> (<span class="number">80</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	lat <span class="built_in">CHAR</span> (<span class="number">10</span>),</span><br><span class="line">	lng <span class="built_in">CHAR</span> (<span class="number">10</span>),</span><br><span class="line">	PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 插入测试数据</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> address(<span class="keyword">name</span>,lat,lng) <span class="keyword">VALUES</span></span><br><span class="line"> (<span class="string">'成都'</span>, <span class="number">30.659673</span>,<span class="number">104.068433</span>)</span><br><span class="line">,(<span class="string">'绵阳'</span>, <span class="number">31.473909</span>,<span class="number">104.680961</span>)</span><br><span class="line">,(<span class="string">'泸州'</span>, <span class="number">28.876403</span>,<span class="number">105.450251</span>) </span><br><span class="line">,(<span class="string">'德阳'</span>, <span class="number">31.134847</span>,<span class="number">104.408441</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">id</span>,<span class="keyword">name</span>, (</span><br><span class="line">      <span class="number">6371</span> * <span class="keyword">acos</span> (    <span class="comment"># 3959是地球半径的英里，6371是地球半径的千米</span></span><br><span class="line">      <span class="keyword">cos</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">      * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">      * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lng ) - <span class="keyword">radians</span>(<span class="number">106.644153</span>) )</span><br><span class="line">      + <span class="keyword">sin</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">      * <span class="keyword">sin</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">    )</span><br><span class="line">) <span class="keyword">AS</span> distance</span><br><span class="line"><span class="keyword">FROM</span> address</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> distance</span><br><span class="line"><span class="keyword">LIMIT</span> <span class="number">0</span> , <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或通过 st_distance_sphere 函数计算</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">  <span class="keyword">name</span>,</span><br><span class="line">	<span class="keyword">round</span>( st_distance_sphere ( point ( <span class="number">106.644153</span>, <span class="number">30.452034</span> ), point ( lng, lat ))/ <span class="number">1000</span>, <span class="number">2</span> ) <span class="keyword">AS</span> distance </span><br><span class="line"><span class="keyword">FROM</span> address </span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> distance <span class="keyword">ASC</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 查询结果</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> 3	泸州	209.7647687926011</span></span><br><span class="line"><span class="comment"> 2	绵阳	218.97099731812352</span></span><br><span class="line"><span class="comment"> 4	德阳	226.64161541779157</span></span><br><span class="line"><span class="comment"> 1	成都	247.70751793832144</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
 
@@ -2535,319 +2740,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/RESTful标准下的微信网页授权/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/RESTful标准下的微信网页授权/" class="post-title-link" itemprop="url">RESTful标准下的微信网页授权</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-05-25 11:35:06" itemprop="dateCreated datePublished" datetime="2020-05-25T11:35:06Z">2020-05-25</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <h2 id="微信网页授权流程"><a href="#微信网页授权流程" class="headerlink" title="微信网页授权流程"></a>微信网页授权流程</h2><p><img src="/articles/RESTful标准下的微信网页授权/1.png" alt="微信网页授权流程"></p>
-<p>具体而言，可分为两步：</p>
-<p>1、引导用户进入授权页面同意授权，获取code 【拉起授权页】 </p>
-<blockquote>
-<p>引导用户点击授权链接<br><a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=CODE&amp;scope=SCOPE&amp;state=STATE#wechat_redirect" target="_blank" rel="noopener">https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=CODE&amp;scope=SCOPE&amp;state=STATE#wechat_redirect</a></p>
-</blockquote>
-<p>这里有两个参数比较注意的是：redirect_uri 授权成功后的跳转地址，授权作用域scope参数有两个值：snsapi_base和snsapi_userinfo。如果只需要获取openid则前者就够了，后者还可获取微信用户信息，前者的静默授权（不显示授权页面）功能也挺棒的。</p>
-<p>若提示该链接无法访问，请检查参数是否填写错误，是否拥有scope参数对应的授权作用域权限。微信返回参数错误的原因一般有两种：一是在微信公众平台没有配置相应的参数；二是前端配置的接口参数与公众平台不一致。</p>
-<p>具体参数说明</p>
-<table>
-<thead>
-<tr>
-<th align="left">参数</th>
-<th align="left">是否必须</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">appid</td>
-<td align="left">是</td>
-<td align="left">公众号的唯一标识</td>
-</tr>
-<tr>
-<td align="left">redirect_uri</td>
-<td align="left">是</td>
-<td align="left">授权后重定向的回调链接地址， 需要使用 urlencode 对链接进行处理,<code>注意这个地址必须在公众号后台网页授权域名下</code></td>
-</tr>
-<tr>
-<td align="left">response_type</td>
-<td align="left">是</td>
-<td align="left">返回类型，填写code</td>
-</tr>
-<tr>
-<td align="left">scope</td>
-<td align="left">是</td>
-<td align="left">应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且， 即使在未关注的情况下，只要用户授权，也能获取其信息 ）</td>
-</tr>
-<tr>
-<td align="left">state</td>
-<td align="left">否</td>
-<td align="left">重定向后会带上state参数，传递什么返回什么, 可以作为参数传递</td>
-</tr>
-<tr>
-<td align="left">wechat_redirect</td>
-<td align="left">是</td>
-<td align="left">无论直接打开还是做页面302重定向时候，必须带此参数</td>
-</tr>
-</tbody></table>
-<p>2、通过code换取网页授权access_token进而获取用户openid和其他用户信息【获取用户信息】</p>
-<blockquote>
-<p>获取code后，请求以下链接获取access_token<br><a href="https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&amp;secret=SECRET&amp;code=CODE&amp;grant_type=authorization_code" target="_blank" rel="noopener">https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&amp;secret=SECRET&amp;code=CODE&amp;grant_type=authorization_code</a></p>
-</blockquote>
-<p>参数说明</p>
-<table>
-<thead>
-<tr>
-<th align="left">参数</th>
-<th align="left">是否必须</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">appid</td>
-<td align="left">是</td>
-<td align="left">公众号的唯一标识</td>
-</tr>
-<tr>
-<td align="left">secret</td>
-<td align="left">是</td>
-<td align="left">公众号的appsecret</td>
-</tr>
-<tr>
-<td align="left">code</td>
-<td align="left">是</td>
-<td align="left">填写第一步获取的code参数</td>
-</tr>
-<tr>
-<td align="left">grant_type</td>
-<td align="left">是</td>
-<td align="left">填写为authorization_code</td>
-</tr>
-</tbody></table>
-<p>正确时返回的JSON数据包如下：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"access_token"</span>:<span class="string">"ACCESS_TOKEN"</span>,</span><br><span class="line">  <span class="attr">"expires_in"</span>:<span class="number">7200</span>,</span><br><span class="line">  <span class="attr">"refresh_token"</span>:<span class="string">"REFRESH_TOKEN"</span>,</span><br><span class="line">  <span class="attr">"openid"</span>:<span class="string">"OPENID"</span>,</span><br><span class="line">  <span class="attr">"scope"</span>:<span class="string">"SCOPE"</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>拉取用户信息(需scope为 snsapi_userinfo)</p>
-<p>如果网页授权作用域为snsapi_userinfo，则此时开发者可以通过access_token和openid拉取用户信息了。</p>
-<blockquote>
-<p>http：GET（请使用https协议）<br><a href="https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN" target="_blank" rel="noopener">https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN</a></p>
-</blockquote>
-<p>参数说明</p>
-<table>
-<thead>
-<tr>
-<th align="left">参数</th>
-<th align="left">是否必须</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">access_token</td>
-<td align="left">是</td>
-<td align="left">网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同</td>
-</tr>
-<tr>
-<td align="left">openid</td>
-<td align="left">是</td>
-<td align="left">用户的唯一标识</td>
-</tr>
-<tr>
-<td align="left">lang</td>
-<td align="left">是</td>
-<td align="left">返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语</td>
-</tr>
-</tbody></table>
-<p>正确时返回的JSON数据包如下：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;   </span><br><span class="line">  <span class="attr">"openid"</span>:<span class="string">" OPENID"</span>,</span><br><span class="line">  <span class="attr">"nickname"</span>: NICKNAME,</span><br><span class="line">  <span class="attr">"sex"</span>:<span class="string">"1"</span>,</span><br><span class="line">  <span class="attr">"province"</span>:<span class="string">"PROVINCE"</span>,</span><br><span class="line">  <span class="attr">"city"</span>:<span class="string">"CITY"</span>,</span><br><span class="line">  <span class="attr">"country"</span>:<span class="string">"COUNTRY"</span>,</span><br><span class="line">  <span class="attr">"headimgurl"</span>: <span class="string">"http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46"</span>,</span><br><span class="line">  <span class="attr">"privilege"</span>:[ <span class="string">"PRIVILEGE1"</span> <span class="string">"PRIVILEGE2"</span>     ],</span><br><span class="line">  <span class="attr">"unionid"</span>: <span class="string">"o6_bmasdasdsad6_2sgVt7hMZOPfL"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：unionid 只有在开发者将公众号绑定到<a href="https://open.weixin.qq.com/" target="_blank" rel="noopener">微信开放平台帐号</a>后，才会出现该字段。</p>
-</blockquote>
-<p>到此，微信网页授权也就结束了，更多请查看<a href="https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html" target="_blank" rel="noopener">微信网页授权文档</a></p>
-<h2 id="针对RESTful规范修改"><a href="#针对RESTful规范修改" class="headerlink" title="针对RESTful规范修改"></a>针对RESTful规范修改</h2><p>现代项目开发基本上都是采用完全的前后端分离开发模式，后端采用统一规范返回json或者jsonp等给前端，而前端不再是伪静态页面，而是存粹的静态HTML,用户请求基本上都是通过ajax此类异步请求完成后端数据接收的。而在官方推荐的流程中，redirect_url被定向到后端处理接口，处理完成后使用header等强制跳转处理后的页面的方式在此处就行不通了，因为它打破了前期统一制定好的代码规范。那么 redirect_url 定向到前端页面，让前端来接收Code是否可行呢？ 答案是：可行。</p>
-<blockquote>
-<p>超文本标记语言（HyperText Markup Language，简称：HTML）是一种用于创建网页的标准标记语言。HTML是一种基础技术，常与CSS、JavaScript一起被众多网站用于设计网页、网页应用程序以及移动应用程序的用户界面[3]。网页浏览器可以读取HTML文件，并将其渲染成可视化网页。HTML描述了一个网站的结构语义随着线索的呈现，使之成为一种标记语言而非编程语言。       —–<a href="https://en.wikipedia.org/wiki/HTML" target="_blank" rel="noopener">wiki</a></p>
-</blockquote>
-<p>我们知道html不是编程语言，是不能如php、java等编程语言那样获取用户请求参数的，但是GET请求例外,因为<code>GET参数通过URL传递</code>, 使用<code>location.href</code>或<code>location.search</code>是可以从URL中提取到GET参数的，代码如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> getQueryVariable = <span class="function">(<span class="params">variable</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> query = <span class="built_in">window</span>.location.search.substring(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">var</span> vars = query.split(<span class="string">"&amp;"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; vars.length; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> pair = vars[i].split(<span class="string">"="</span>);</span><br><span class="line">        <span class="keyword">if</span> (pair[<span class="number">0</span>] === variable) &#123;</span><br><span class="line">            <span class="keyword">return</span> pair[<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>回到正题，我们知道用户同意授权后，微信重定向时将code和state作为参数加到redirect_url链接上，也就是如下形式：</p>
-<blockquote>
-<p>redirect_url?code=001EX7O42pPubS00IvO42KtjO42EX7O8&amp;state</p>
-</blockquote>
-<p>处理过程如下：</p>
-<p>1、我们将redirect_url定向到前端静态处理的页面A</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A.html</span><br><span class="line"><span class="comment">// 获取授权url</span></span><br><span class="line"><span class="built_in">window</span>.auth = <span class="function">(<span class="params">type</span>) =&gt;</span> &#123;</span><br><span class="line">    http(<span class="string">'wxAuthUrl'</span>, &#123;<span class="attr">type</span>: type, <span class="attr">callback</span>: location.href <span class="comment">//A.html&#125;, (response) =&gt; &#123;</span></span><br><span class="line">        location.href = response.data;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>对应的后端接口:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 获取授权地址</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@request</span>('/wxAuthUrl')</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> array $request</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">wxAuthUrl</span><span class="params">(array $request)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $callback = urlencode($request[<span class="string">'callback'</span>]);<span class="comment">// redirect_url</span></span><br><span class="line">    $state = @$request[<span class="string">'type'</span>]; <span class="comment">// 根据这个值判断授权范围scope</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">1</span> == $state) &#123;</span><br><span class="line">        $scope = <span class="string">"snsapi_userinfo"</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $scope = <span class="string">"snsapi_base"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    $url = <span class="string">"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx552593a8e7c4b0de&amp;redirect_uri=&#123;$callback&#125;&amp;response_type=code&amp;scope=&#123;$scope&#125;&amp;state=&#123;$state&#125;#wechat_redirect"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;response(<span class="number">0</span>, <span class="string">'success'</span>, $url);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2、页面A接收到code值以后，传递给后台</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">A.html</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> code = getQueryVariable(<span class="string">'code'</span>), state = getQueryVariable(<span class="string">'state'</span>); <span class="comment">// 获取到微信传递的code和state</span></span><br><span class="line">  <span class="keyword">if</span> (code) &#123;</span><br><span class="line">      http(<span class="string">'wxCall'</span>, &#123;<span class="attr">code</span>: code, <span class="attr">state</span>: state&#125;, (response) =&gt; &#123;<span class="comment">// 返回给后端处理</span></span><br><span class="line">          <span class="built_in">document</span>.getElementById(<span class="string">'content'</span>).innerHTML = <span class="built_in">JSON</span>.stringify(response.data);</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>3、后台通过code执行授权<a href="#微信网页授权流程">步骤2</a>。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 微信授权回调，原来是作为redirect_url使用的，现在修改下返回值即可满足新需求</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@request</span>('/wxCall')</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> array $request</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">wxCall</span><span class="params">(array $request)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// code-&gt;access_token</span></span><br><span class="line">        $ret = json_decode(file_get_contents(<span class="string">"https://api.weixin.qq.com/sns/oauth2/access_token?appid="</span> . <span class="keyword">self</span>::APPID . <span class="string">"&amp;secret="</span> . <span class="keyword">self</span>::SECRET . <span class="string">"&amp;code=&#123;$request['code']&#125;&amp;grant_type=authorization_code"</span>), <span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// access_token-&gt;profile</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="number">1</span> == $request[<span class="string">'state'</span>]) &#123;</span><br><span class="line">            $ret = json_decode(file_get_contents(<span class="string">"https://api.weixin.qq.com/sns/userinfo?access_token=&#123;$ret['access_token']&#125;&amp;openid=&#123;$ret['openid']&#125;&amp;lang=zh_CN"</span>), <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// header("location: success.html");</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;response(<span class="number">0</span>, <span class="string">'success'</span>, $ret);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (\<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">        <span class="comment">// header("location: fail.html");</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;response(<span class="number">4000</span>, $e-&gt;getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样一来，整个交互过程便统一了, 效果如下：</p>
-<p><img src="/articles/RESTful标准下的微信网页授权/3.png" alt></p>
-<p>演示地址：<a href="https://app.ya2.top/wxauth/" target="_blank" rel="noopener">https://app.ya2.top/wxauth/</a> (建议在微信环境打开)<br>源码地址：<a href="https://github.com/gouyuwang/wxauth/" target="_blank" rel="noopener">https://github.com/gouyuwang/wxauth/</a></p>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2896,7 +2788,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">154</span>
+                    <span class="site-state-item-count">155</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -3692,9 +3584,9 @@ setTimeout(showSoul,0);
       
     
       
-        
-      
     
+      
+        
       
     
       

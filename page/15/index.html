@@ -360,6 +360,191 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/字符编码基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/字符编码基础/" class="post-title-link" itemprop="url">字符编码基础</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-01-08 07:50:25" itemprop="dateCreated datePublished" datetime="2017-01-08T07:50:25Z">2017-01-08</time>
+            </span>
+          
+
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>ACSII规定：一个字符由一个字节存储。范围：前32位（0x00 — 0x20）为控制码。第32位至127位（0x20 — 0x7f）为空格、标点符号、数字、字母。127位以后不用。</p>
+<p><code>扩展字符集</code></p>
+<p>原因： 由于其它国家的字符太多，ASCII标准已经不够用，所以他们启用了127位以后的全部空位。</p>
+<p><code>GB2312</code></p>
+<p>原因：由于其它国家制定的扩展字符集并不适用于中文，所以中国人重新制定了符合本国国情的编码方式：GB2312（GB2312是对ASCII码的中文扩展）。规定：小于127的字符意义同ASCII标准一样，但两个大于127的字符连在一起时，就表示一个汉字。范围：前一个字节（高字节）使用范围为：0xa1 — 0xf7后一个字节（低字节）使用范围为：0xa1 — oxfe</p>
+<p><code>GBK</code></p>
+<p>原因：后来由于汉字实在太多，GB2312已经不够使用了，于是又制定了新的编码:GBK，取消了GB2312中对汉字低字节的限制。规定: 小于127的字符意义同ASCII标准一样，如果遇到大于127位的字节则无论其后的一个字节是否是大于127都将这个两个字节视为一个汉字（GB2312要求两个字节都要大于127，但GBK取消了对低字节的要求）。范围：前一个字节（高字节）使用范围为：0x81 — 0xfe后一个字节（低字节）使用范围为：0x40 — 0xfe</p>
+<p><code>GB18030</code></p>
+<p>原因: 由于GBK并没有包含少数民族的文字字符，所以又再次对GBK进行扩展以包含少数名族字符，由此又制定了新的编码GB18030，从此该编码方式可以完全表示中华民族的所有字符了。</p>
+<p>小结：人们为了统一称呼这些【汉字】编码方式，于是把它们都叫做DBCS（Double Byte Charecter Set，双字节字符集），它们最大的特点就是两个字节长的汉字字符和一个字节长的英文字符并存在一套编码系统里。因此在处理这些编码时要时刻注意每一个字节的值是否是大于127，如果小于则取按照ASCII标准取值，如过大于则表示一个汉字开始了，这时就要和它和后面一个字节一起组合起来识别为一个汉字字符。</p>
+<p><code>Unicode</code></p>
+<p>原因： 由于每个国家都制定了自己的一套编码体系，造成各个国家之间的字符编码互不兼容，于是ISO组织统一制定了能包含全球所有文化、字符、符号的编码标准：Universal Multiple-Octet Coded Character Set”，简称 UCS, 俗称 “UNICODE”。规定： Unicode规定所有字符都统一使用两个字节编码，即使用16位来统一表示所有字符，对于ASCII标准的字符保持其值不变，但字节长度由一个字节变成两个字节，所以英文字符的Unicode编码的高字节永远都为0，因此也造成了存储空间的浪费。</p>
+<p><code>UTF-8</code></p>
+<p>定义： UTF即UCS Transfer Format（Unicode传输格式），utf-8是在网络上传输Unicode字符的一项标准，它是Unicode的主要实现方式之一。它每次传输8位数据，但它并不是直接对应Unicode的字节的值，而是为了传输的可靠性制定了一套从Unicode到utf-8的转换规则。转换规则：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Unicode</th>
+<th align="left">UTF-8</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0000 - 007F</td>
+<td align="left">0xxxxxxx</td>
+</tr>
+<tr>
+<td align="left">0080 - 07FF</td>
+<td align="left">110xxxxx 10xxxxxx</td>
+</tr>
+<tr>
+<td align="left">0800 - FFFF</td>
+<td align="left">1110xxxx 10xxxxxx 10xxxxxx</td>
+</tr>
+</tbody></table>
+<p>举例： ‘汉’字的Unicode编码是：6C49，通过上表可以得出，它在0x0800到0xffff之间，所以它需要使用3个字节来传输，将6C49转位二进制： 0110 1100 0100 1001，按照utf-8的格式转换，第一个字节为：[1110]0110，第二个字节为:[10]110001，第三个字节为：[10]001001，所以将‘汉’字的unicode转换为utf-8之后的二进制是：11100110 10110001 10001001 ，即16进制E6 B1 89</p>
+<p>单字节： 由一个字节构成一个字符的编码。如ASCII</p>
+<p>多字节： 由一个或多个字节构成一个字符的编码。如GB2312、GBK宽字节： 始终由两个字节构成一个字符的编码。如Unicode</p>
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/渗透测试报告标准/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2485,192 +2670,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/退出vim/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/退出vim/" class="post-title-link" itemprop="url">退出vim</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-11-10 11:40:52" itemprop="dateCreated datePublished" datetime="2016-11-10T11:40:52Z">2016-11-10</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <p>命令</p>
-<p>简单说明</p>
-<p><code>:w</code></p>
-<p>保存编辑后的文件内容，但不退出vim编辑器。这个命令的作用是把内存缓冲区中的数据写到启动vim时指定的文件中。</p>
-<p><code>:w!</code></p>
-<p>强制写文件，即强制覆盖原有文件。如果原有文件的访问权限不允许写入文件，例如，原有的文件为只读文件，则可使用这个命令强制写入。但是，这种命令用法仅当用户是文件的属主时才适用，而超级用户则不受此限制。</p>
-<p><code>:wq</code></p>
-<p>保存文件内容后退出vim编辑器。这个命令的作用是把内存缓冲区中的数据写到启动vim时指定的文件中，然后退出vim编辑器。另外一种替代的方法是用ZZ命令。</p>
-<p><code>:wq!</code></p>
-<p>强制保存文件内容后退出vim编辑器。这个命令的作用是把内存缓冲区中的数据强制写到启动vim时指定的文件中，然后退出vim编辑器。</p>
-<p><code>ZZ</code></p>
-<p>使用ZZ命令时，如果文件已经做过编辑处理，则把内存缓冲区中的数据写到启动vim时指定的文件中，然后退出vim编辑器。否则只是退出vim而已。注意，ZZ命令前面无需加冒号“：”，也无需按Enter键。</p>
-<p><code>:q</code></p>
-<p>在未做任何编辑处理而准备退出vim时，可以使用此命令。如果已做过编辑处理，则vim不允许用户使用“:q”命令退出，同时还会输出下列警告信息：</p>
-<p>No write since last change (:quit!overrides)</p>
-<p><code>:q!</code></p>
-<p>强制退出vim编辑器，放弃编辑处理的结果。如果确实不需要保存修改后的文件内容，可输入“:q!”命令，强行退出vim编辑器。</p>
-<p><code>:w filename</code></p>
-<p>把编辑处理后的结果写到指定的文件中保存</p>
-<p><code>:w! filename</code></p>
-<p>把编辑处理后的结果强制保存到指定的文件中，如果文件已经存在，则覆盖现有的文件。</p>
-<p><code>:wq! filename</code></p>
-<p>把编辑处理后的结果强制保存到指定的文件中，如果文件已经存在，则覆盖现有文件，并退出vim编辑器。</p>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2719,7 +2718,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">154</span>
+                    <span class="site-state-item-count">155</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

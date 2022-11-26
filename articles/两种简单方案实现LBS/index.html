@@ -104,17 +104,19 @@
 
 
 
-  <meta name="description" content="方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里  对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常">
+  <meta name="description" content=".posts-expand .post-body img {     margin: 0 auto; }    方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里   对于大部分已经使用MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="两种简单方案实现LBS">
 <meta property="og:url" content="https://ya2.top/articles/两种简单方案实现LBS/index.html">
 <meta property="og:site_name" content="e攻城狮">
-<meta property="og:description" content="方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里  对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常">
+<meta property="og:description" content=".posts-expand .post-body img {     margin: 0 auto; }    方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里   对于大部分已经使用MySQL">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2022-07-27T16:11:49.944Z">
+<meta property="og:image" content="https://ya2.top/articles/两种简单方案实现LBS/1.png">
+<meta property="og:updated_time" content="2022-11-26T15:12:56.277Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="两种简单方案实现LBS">
-<meta name="twitter:description" content="方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里  对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常">
+<meta name="twitter:description" content=".posts-expand .post-body img {     margin: 0 auto; }    方案一： Mysql通过球面两点距离公式 $ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$其中 A（jA,wA）和B（jB，wB）,推导过程见这里   对于大部分已经使用MySQL">
+<meta name="twitter:image" content="https://ya2.top/articles/两种简单方案实现LBS/1.png">
 
 
 
@@ -473,9 +475,17 @@
 
      
         
-          <h3 id="方案一：-Mysql"><a href="#方案一：-Mysql" class="headerlink" title="方案一： Mysql"></a>方案一： Mysql</h3><h4 id="通过球面两点距离公式"><a href="#通过球面两点距离公式" class="headerlink" title="通过球面两点距离公式"></a>通过球面两点距离公式</h4><blockquote>
+          <style>
+.posts-expand .post-body img {
+    margin: 0 auto;
+}
+</style>
+
+
+<h3 id="方案一：-Mysql"><a href="#方案一：-Mysql" class="headerlink" title="方案一： Mysql"></a>方案一： Mysql</h3><h4 id="通过球面两点距离公式"><a href="#通过球面两点距离公式" class="headerlink" title="通过球面两点距离公式"></a>通过球面两点距离公式</h4><blockquote>
 <p>$ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$<br>其中 A（jA,wA）和B（jB，wB）,推导过程见<a href="http://www.360doc.com/content/14/0117/10/325430_345890919.shtml" target="_blank" rel="noopener">这里</a></p>
 </blockquote>
+<p><img src="/articles/两种简单方案实现LBS/1.png" alt="示意图"></p>
 <p>对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常大，性能将会是严重的问题。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> address (</span><br><span class="line">	<span class="keyword">id</span> <span class="built_in">INT</span> (<span class="number">11</span>) AUTO_INCREMENT,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">CHAR</span> (<span class="number">80</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	lat <span class="built_in">CHAR</span> (<span class="number">10</span>),</span><br><span class="line">	lng <span class="built_in">CHAR</span> (<span class="number">10</span>),</span><br><span class="line">	PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 插入测试数据</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> address(<span class="keyword">name</span>,lat,lng) <span class="keyword">VALUES</span></span><br><span class="line"> (<span class="string">'成都'</span>, <span class="number">30.659673</span>,<span class="number">104.068433</span>)</span><br><span class="line">,(<span class="string">'绵阳'</span>, <span class="number">31.473909</span>,<span class="number">104.680961</span>)</span><br><span class="line">,(<span class="string">'泸州'</span>, <span class="number">28.876403</span>,<span class="number">105.450251</span>) </span><br><span class="line">,(<span class="string">'德阳'</span>, <span class="number">31.134847</span>,<span class="number">104.408441</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">id</span>,<span class="keyword">name</span>, (</span><br><span class="line">      <span class="number">6371</span> * <span class="keyword">acos</span> (    <span class="comment"># 3959是地球半径的英里，6371是地球半径的千米</span></span><br><span class="line">      <span class="keyword">cos</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">      * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">      * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lng ) - <span class="keyword">radians</span>(<span class="number">106.644153</span>) )</span><br><span class="line">      + <span class="keyword">sin</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">      * <span class="keyword">sin</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">    )</span><br><span class="line">) <span class="keyword">AS</span> distance</span><br><span class="line"><span class="keyword">FROM</span> address</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> distance</span><br><span class="line"><span class="keyword">LIMIT</span> <span class="number">0</span> , <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或通过 st_distance_sphere 函数计算</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">  <span class="keyword">name</span>,</span><br><span class="line">	<span class="keyword">round</span>( st_distance_sphere ( point ( <span class="number">106.644153</span>, <span class="number">30.452034</span> ), point ( lng, lat ))/ <span class="number">1000</span>, <span class="number">2</span> ) <span class="keyword">AS</span> distance </span><br><span class="line"><span class="keyword">FROM</span> address </span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> distance <span class="keyword">ASC</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 查询结果</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> 3	泸州	209.7647687926011</span></span><br><span class="line"><span class="comment"> 2	绵阳	218.97099731812352</span></span><br><span class="line"><span class="comment"> 4	德阳	226.64161541779157</span></span><br><span class="line"><span class="comment"> 1	成都	247.70751793832144</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
 
@@ -686,7 +696,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">154</span>
+                    <span class="site-state-item-count">155</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

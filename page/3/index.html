@@ -360,6 +360,319 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/RESTful标准下的微信网页授权/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/RESTful标准下的微信网页授权/" class="post-title-link" itemprop="url">RESTful标准下的微信网页授权</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-05-25 11:35:06" itemprop="dateCreated datePublished" datetime="2020-05-25T11:35:06Z">2020-05-25</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <h2 id="微信网页授权流程"><a href="#微信网页授权流程" class="headerlink" title="微信网页授权流程"></a>微信网页授权流程</h2><p><img src="/articles/RESTful标准下的微信网页授权/1.png" alt="微信网页授权流程"></p>
+<p>具体而言，可分为两步：</p>
+<p>1、引导用户进入授权页面同意授权，获取code 【拉起授权页】 </p>
+<blockquote>
+<p>引导用户点击授权链接<br><a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=CODE&amp;scope=SCOPE&amp;state=STATE#wechat_redirect" target="_blank" rel="noopener">https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=CODE&amp;scope=SCOPE&amp;state=STATE#wechat_redirect</a></p>
+</blockquote>
+<p>这里有两个参数比较注意的是：redirect_uri 授权成功后的跳转地址，授权作用域scope参数有两个值：snsapi_base和snsapi_userinfo。如果只需要获取openid则前者就够了，后者还可获取微信用户信息，前者的静默授权（不显示授权页面）功能也挺棒的。</p>
+<p>若提示该链接无法访问，请检查参数是否填写错误，是否拥有scope参数对应的授权作用域权限。微信返回参数错误的原因一般有两种：一是在微信公众平台没有配置相应的参数；二是前端配置的接口参数与公众平台不一致。</p>
+<p>具体参数说明</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">是否必须</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">appid</td>
+<td align="left">是</td>
+<td align="left">公众号的唯一标识</td>
+</tr>
+<tr>
+<td align="left">redirect_uri</td>
+<td align="left">是</td>
+<td align="left">授权后重定向的回调链接地址， 需要使用 urlencode 对链接进行处理,<code>注意这个地址必须在公众号后台网页授权域名下</code></td>
+</tr>
+<tr>
+<td align="left">response_type</td>
+<td align="left">是</td>
+<td align="left">返回类型，填写code</td>
+</tr>
+<tr>
+<td align="left">scope</td>
+<td align="left">是</td>
+<td align="left">应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且， 即使在未关注的情况下，只要用户授权，也能获取其信息 ）</td>
+</tr>
+<tr>
+<td align="left">state</td>
+<td align="left">否</td>
+<td align="left">重定向后会带上state参数，传递什么返回什么, 可以作为参数传递</td>
+</tr>
+<tr>
+<td align="left">wechat_redirect</td>
+<td align="left">是</td>
+<td align="left">无论直接打开还是做页面302重定向时候，必须带此参数</td>
+</tr>
+</tbody></table>
+<p>2、通过code换取网页授权access_token进而获取用户openid和其他用户信息【获取用户信息】</p>
+<blockquote>
+<p>获取code后，请求以下链接获取access_token<br><a href="https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&amp;secret=SECRET&amp;code=CODE&amp;grant_type=authorization_code" target="_blank" rel="noopener">https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&amp;secret=SECRET&amp;code=CODE&amp;grant_type=authorization_code</a></p>
+</blockquote>
+<p>参数说明</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">是否必须</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">appid</td>
+<td align="left">是</td>
+<td align="left">公众号的唯一标识</td>
+</tr>
+<tr>
+<td align="left">secret</td>
+<td align="left">是</td>
+<td align="left">公众号的appsecret</td>
+</tr>
+<tr>
+<td align="left">code</td>
+<td align="left">是</td>
+<td align="left">填写第一步获取的code参数</td>
+</tr>
+<tr>
+<td align="left">grant_type</td>
+<td align="left">是</td>
+<td align="left">填写为authorization_code</td>
+</tr>
+</tbody></table>
+<p>正确时返回的JSON数据包如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"access_token"</span>:<span class="string">"ACCESS_TOKEN"</span>,</span><br><span class="line">  <span class="attr">"expires_in"</span>:<span class="number">7200</span>,</span><br><span class="line">  <span class="attr">"refresh_token"</span>:<span class="string">"REFRESH_TOKEN"</span>,</span><br><span class="line">  <span class="attr">"openid"</span>:<span class="string">"OPENID"</span>,</span><br><span class="line">  <span class="attr">"scope"</span>:<span class="string">"SCOPE"</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拉取用户信息(需scope为 snsapi_userinfo)</p>
+<p>如果网页授权作用域为snsapi_userinfo，则此时开发者可以通过access_token和openid拉取用户信息了。</p>
+<blockquote>
+<p>http：GET（请使用https协议）<br><a href="https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN" target="_blank" rel="noopener">https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN</a></p>
+</blockquote>
+<p>参数说明</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">是否必须</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">access_token</td>
+<td align="left">是</td>
+<td align="left">网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同</td>
+</tr>
+<tr>
+<td align="left">openid</td>
+<td align="left">是</td>
+<td align="left">用户的唯一标识</td>
+</tr>
+<tr>
+<td align="left">lang</td>
+<td align="left">是</td>
+<td align="left">返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语</td>
+</tr>
+</tbody></table>
+<p>正确时返回的JSON数据包如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;   </span><br><span class="line">  <span class="attr">"openid"</span>:<span class="string">" OPENID"</span>,</span><br><span class="line">  <span class="attr">"nickname"</span>: NICKNAME,</span><br><span class="line">  <span class="attr">"sex"</span>:<span class="string">"1"</span>,</span><br><span class="line">  <span class="attr">"province"</span>:<span class="string">"PROVINCE"</span>,</span><br><span class="line">  <span class="attr">"city"</span>:<span class="string">"CITY"</span>,</span><br><span class="line">  <span class="attr">"country"</span>:<span class="string">"COUNTRY"</span>,</span><br><span class="line">  <span class="attr">"headimgurl"</span>: <span class="string">"http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46"</span>,</span><br><span class="line">  <span class="attr">"privilege"</span>:[ <span class="string">"PRIVILEGE1"</span> <span class="string">"PRIVILEGE2"</span>     ],</span><br><span class="line">  <span class="attr">"unionid"</span>: <span class="string">"o6_bmasdasdsad6_2sgVt7hMZOPfL"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：unionid 只有在开发者将公众号绑定到<a href="https://open.weixin.qq.com/" target="_blank" rel="noopener">微信开放平台帐号</a>后，才会出现该字段。</p>
+</blockquote>
+<p>到此，微信网页授权也就结束了，更多请查看<a href="https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html" target="_blank" rel="noopener">微信网页授权文档</a></p>
+<h2 id="针对RESTful规范修改"><a href="#针对RESTful规范修改" class="headerlink" title="针对RESTful规范修改"></a>针对RESTful规范修改</h2><p>现代项目开发基本上都是采用完全的前后端分离开发模式，后端采用统一规范返回json或者jsonp等给前端，而前端不再是伪静态页面，而是存粹的静态HTML,用户请求基本上都是通过ajax此类异步请求完成后端数据接收的。而在官方推荐的流程中，redirect_url被定向到后端处理接口，处理完成后使用header等强制跳转处理后的页面的方式在此处就行不通了，因为它打破了前期统一制定好的代码规范。那么 redirect_url 定向到前端页面，让前端来接收Code是否可行呢？ 答案是：可行。</p>
+<blockquote>
+<p>超文本标记语言（HyperText Markup Language，简称：HTML）是一种用于创建网页的标准标记语言。HTML是一种基础技术，常与CSS、JavaScript一起被众多网站用于设计网页、网页应用程序以及移动应用程序的用户界面[3]。网页浏览器可以读取HTML文件，并将其渲染成可视化网页。HTML描述了一个网站的结构语义随着线索的呈现，使之成为一种标记语言而非编程语言。       —–<a href="https://en.wikipedia.org/wiki/HTML" target="_blank" rel="noopener">wiki</a></p>
+</blockquote>
+<p>我们知道html不是编程语言，是不能如php、java等编程语言那样获取用户请求参数的，但是GET请求例外,因为<code>GET参数通过URL传递</code>, 使用<code>location.href</code>或<code>location.search</code>是可以从URL中提取到GET参数的，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> getQueryVariable = <span class="function">(<span class="params">variable</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> query = <span class="built_in">window</span>.location.search.substring(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">var</span> vars = query.split(<span class="string">"&amp;"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; vars.length; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> pair = vars[i].split(<span class="string">"="</span>);</span><br><span class="line">        <span class="keyword">if</span> (pair[<span class="number">0</span>] === variable) &#123;</span><br><span class="line">            <span class="keyword">return</span> pair[<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回到正题，我们知道用户同意授权后，微信重定向时将code和state作为参数加到redirect_url链接上，也就是如下形式：</p>
+<blockquote>
+<p>redirect_url?code=001EX7O42pPubS00IvO42KtjO42EX7O8&amp;state</p>
+</blockquote>
+<p>处理过程如下：</p>
+<p>1、我们将redirect_url定向到前端静态处理的页面A</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A.html</span><br><span class="line"><span class="comment">// 获取授权url</span></span><br><span class="line"><span class="built_in">window</span>.auth = <span class="function">(<span class="params">type</span>) =&gt;</span> &#123;</span><br><span class="line">    http(<span class="string">'wxAuthUrl'</span>, &#123;<span class="attr">type</span>: type, <span class="attr">callback</span>: location.href <span class="comment">//A.html&#125;, (response) =&gt; &#123;</span></span><br><span class="line">        location.href = response.data;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的后端接口:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 获取授权地址</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@request</span>('/wxAuthUrl')</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> array $request</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">wxAuthUrl</span><span class="params">(array $request)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $callback = urlencode($request[<span class="string">'callback'</span>]);<span class="comment">// redirect_url</span></span><br><span class="line">    $state = @$request[<span class="string">'type'</span>]; <span class="comment">// 根据这个值判断授权范围scope</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">1</span> == $state) &#123;</span><br><span class="line">        $scope = <span class="string">"snsapi_userinfo"</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $scope = <span class="string">"snsapi_base"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    $url = <span class="string">"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx552593a8e7c4b0de&amp;redirect_uri=&#123;$callback&#125;&amp;response_type=code&amp;scope=&#123;$scope&#125;&amp;state=&#123;$state&#125;#wechat_redirect"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;response(<span class="number">0</span>, <span class="string">'success'</span>, $url);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、页面A接收到code值以后，传递给后台</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">A.html</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> code = getQueryVariable(<span class="string">'code'</span>), state = getQueryVariable(<span class="string">'state'</span>); <span class="comment">// 获取到微信传递的code和state</span></span><br><span class="line">  <span class="keyword">if</span> (code) &#123;</span><br><span class="line">      http(<span class="string">'wxCall'</span>, &#123;<span class="attr">code</span>: code, <span class="attr">state</span>: state&#125;, (response) =&gt; &#123;<span class="comment">// 返回给后端处理</span></span><br><span class="line">          <span class="built_in">document</span>.getElementById(<span class="string">'content'</span>).innerHTML = <span class="built_in">JSON</span>.stringify(response.data);</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>3、后台通过code执行授权<a href="#微信网页授权流程">步骤2</a>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 微信授权回调，原来是作为redirect_url使用的，现在修改下返回值即可满足新需求</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@request</span>('/wxCall')</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> array $request</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">wxCall</span><span class="params">(array $request)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// code-&gt;access_token</span></span><br><span class="line">        $ret = json_decode(file_get_contents(<span class="string">"https://api.weixin.qq.com/sns/oauth2/access_token?appid="</span> . <span class="keyword">self</span>::APPID . <span class="string">"&amp;secret="</span> . <span class="keyword">self</span>::SECRET . <span class="string">"&amp;code=&#123;$request['code']&#125;&amp;grant_type=authorization_code"</span>), <span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// access_token-&gt;profile</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="number">1</span> == $request[<span class="string">'state'</span>]) &#123;</span><br><span class="line">            $ret = json_decode(file_get_contents(<span class="string">"https://api.weixin.qq.com/sns/userinfo?access_token=&#123;$ret['access_token']&#125;&amp;openid=&#123;$ret['openid']&#125;&amp;lang=zh_CN"</span>), <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// header("location: success.html");</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;response(<span class="number">0</span>, <span class="string">'success'</span>, $ret);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (\<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">        <span class="comment">// header("location: fail.html");</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;response(<span class="number">4000</span>, $e-&gt;getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样一来，整个交互过程便统一了, 效果如下：</p>
+<p><img src="/articles/RESTful标准下的微信网页授权/3.png" alt></p>
+<p>演示地址：<a href="https://app.ya2.top/wxauth/" target="_blank" rel="noopener">https://app.ya2.top/wxauth/</a> (建议在微信环境打开)<br>源码地址：<a href="https://github.com/gouyuwang/wxauth/" target="_blank" rel="noopener">https://github.com/gouyuwang/wxauth/</a></p>
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/电商设计手册/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2658,516 +2971,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/layuiAdmin-专业版（单页面）开发者文档/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/layuiAdmin-专业版（单页面）开发者文档/" class="post-title-link" itemprop="url">layuiAdmin 专业版（单页面）开发者文档</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-03-12 10:36:45" itemprop="dateCreated datePublished" datetime="2020-03-12T10:36:45Z">2020-03-12</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <p style="text-align:center">
-    <a href="http://www.layui.com/admin/pro/" target="_blank" class="layui-btn">在线演示</a>
-    <a href="https://www.layui.com/admin/" target="_blank" class="layui-btn">正版授权</a>
-</p>
-
-<blockquote>
-<p>layuiAdmin pro （单页版）是完全基于 layui 架构而成的后台管理模板系统，可以更轻松地实现前后端分离，它是 mvc 的简化版，全面接管 视图 和 页面路由，并可自主完成数据渲染，服务端通常只负责数据接口，而前端只需专注视图和事件交互，所有的页面动作都是在一个宿主页面中完成，因此这赋予了 layuiAdmin 单页面应用开发的能力。</p>
-</blockquote>
-<h3 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h3><ul>
-<li>该文档适用于 layuiAdmin 专业版（单页面），阅读之前请务必确认是否与你使用的版本对应。</li>
-<li>熟练掌握 layuiAdmin 的前提是熟练掌握 layui，因此除了本篇文档， <a href="https://www.layui.com/doc/" target="_blank" rel="noopener">layui 的文档</a> 也是必不可少的存在。</li>
-</ul>
-<h3 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h3><h4 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h4><ul>
-<li>解压文件后，将 layuiAdmin 完整放置在任意目录</li>
-<li>通过本地 web 服务器去访问 ./start/index.html 即可运行 Demo</li>
-</ul>
-<blockquote>
-<p>由于 layuiAdmin 可采用前后端分离开发模式，因此你无需将其放置在你的服务端 MVC 框架中，你只需要给 layuiAdmin 主入口页面（我们也称之为：宿主页面）进行访问解析，它即可全权完成自身路由的跳转和视图的呈现，而数据层则完全通过服务端提供的异步接口来完成。</p>
-</blockquote>
-<h4 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h4><ul>
-<li><code>src/</code>: layuiAdmin 源代码，通常用于开发环境（如本地），推荐你在本地开发时，将 ./start/index.html 中的 layui.css 和 layui.js 的引入路径由 dist 改为 src 目录。<ul>
-<li><code>src/controller/</code>：存放 JS 业务模块，即对视图进行事件等交互性处理</li>
-<li><code>src/lib/</code>：layuiAdmin 的核心模块，一般不推荐修改</li>
-<li><code>src/style/</code>：存放样式，其中 admin.css是核心样式</li>
-<li><code>src/views/</code>：存放视图文件。其中 layout.html 是整个框架结构的承载，一般不推荐做大量改动。</li>
-<li><code>src/config.js</code>：layuiAdmin 的全局配置文件，可随意修改。</li>
-<li><code>src/index.js</code>：layuiAdmin 的入口模块，一般不推荐修改</li>
-</ul>
-</li>
-<li><code>dist/</code>: 通过 gulp 将 layuiAdmin src 目录的源代码进行构建后生成的目录（即：将 JS 和 CSS 文件进行了压缩等处理），通常用于线上环境。关于 gulp 的使用，下文也有介绍。</li>
-<li><code>start/</code>: 存放 layuiAdmin 的入口页面、模拟接口数据、layui</li>
-</ul>
-<h4 id="宿主页面"><a href="#宿主页面" class="headerlink" title="宿主页面"></a>宿主页面</h4><p>你所看到的 start/index.html 是我们提供好的宿主页面，它是整个单页面的承载，所有的界面都是在这一个页面中完成跳转和渲染的。事实上，宿主页面可以放在任何地方，但是要注意修改里面的 &lt;link&gt; &lt;script&gt; 的 src 和 layui.config 中 base 的路径。</p>
-<h4 id="全局配置"><a href="#全局配置" class="headerlink" title="全局配置"></a>全局配置</h4><p>当你已经顺利在本地预览了 layuiAdmin 后，你一定迫不及待关注更深层的结构。打开 src 目录，你将看到 config.js，里面存储着所有的默认配置。你可以按照实际需求选择性修改，下面是 layuiAdmin 默认提供的配置：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">layui.define([<span class="string">'laytpl'</span>, <span class="string">'layer'</span>, <span class="string">'element'</span>, <span class="string">'util'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">exports</span>)</span>&#123;</span><br><span class="line">  exports(<span class="string">'setter'</span>, &#123;</span><br><span class="line">    container: <span class="string">'LAY_app'</span> <span class="comment">//容器ID</span></span><br><span class="line">    ,<span class="attr">base</span>: layui.cache.base <span class="comment">//记录layuiAdmin文件夹所在路径</span></span><br><span class="line">    ,<span class="attr">views</span>: layui.cache.base + <span class="string">'views/'</span> <span class="comment">//视图所在目录</span></span><br><span class="line">    ,<span class="attr">entry</span>: <span class="string">'index'</span> <span class="comment">//默认视图文件名</span></span><br><span class="line">    ,<span class="attr">engine</span>: <span class="string">'.html'</span> <span class="comment">//视图文件后缀名</span></span><br><span class="line">    ,<span class="attr">pageTabs</span>: <span class="literal">false</span> <span class="comment">//是否开启页面选项卡功能。单页版不推荐开启</span></span><br><span class="line">    </span><br><span class="line">    ,<span class="attr">name</span>: <span class="string">'layuiAdmin Pro'</span></span><br><span class="line">    ,<span class="attr">tableName</span>: <span class="string">'layuiAdmin'</span> <span class="comment">//本地存储表名</span></span><br><span class="line">    ,<span class="attr">MOD_NAME</span>: <span class="string">'admin'</span> <span class="comment">//模块事件名</span></span><br><span class="line">    </span><br><span class="line">    ,<span class="attr">debug</span>: <span class="literal">true</span> <span class="comment">//是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息</span></span><br><span class="line">    </span><br><span class="line">    ,<span class="attr">interceptor</span>: <span class="literal">false</span> <span class="comment">//是否开启未登入拦截</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//自定义请求字段</span></span><br><span class="line">    ,<span class="attr">request</span>: &#123;</span><br><span class="line">      tokenName: <span class="string">'access_token'</span> <span class="comment">//自动携带 token 的字段名。可设置 false 不携带。</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//自定义响应字段</span></span><br><span class="line">    ,<span class="attr">response</span>: &#123;</span><br><span class="line">      statusName: <span class="string">'code'</span> <span class="comment">//数据状态的字段名称</span></span><br><span class="line">      ,<span class="attr">statusCode</span>: &#123;</span><br><span class="line">        ok: <span class="number">0</span> <span class="comment">//数据状态一切正常的状态码</span></span><br><span class="line">        ,<span class="attr">logout</span>: <span class="number">1001</span> <span class="comment">//登录状态失效的状态码</span></span><br><span class="line">      &#125;</span><br><span class="line">      ,<span class="attr">msgName</span>: <span class="string">'msg'</span> <span class="comment">//状态信息的字段名称</span></span><br><span class="line">      ,<span class="attr">dataName</span>: <span class="string">'data'</span> <span class="comment">//数据详情的字段名称</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//独立页面路由，可随意添加（无需写参数）</span></span><br><span class="line">    ,<span class="attr">indPage</span>: [</span><br><span class="line">      <span class="string">'/user/login'</span> <span class="comment">//登入页</span></span><br><span class="line">      ,<span class="string">'/user/reg'</span> <span class="comment">//注册页</span></span><br><span class="line">      ,<span class="string">'/user/forget'</span> <span class="comment">//找回密码</span></span><br><span class="line">      ,<span class="string">'/template/tips/test'</span> <span class="comment">//独立页的一个测试 demo</span></span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//扩展的第三方模块</span></span><br><span class="line">    ,<span class="attr">extend</span>: [</span><br><span class="line">      <span class="string">'echarts'</span>, <span class="comment">//echarts 核心包</span></span><br><span class="line">      <span class="string">'echartsTheme'</span> <span class="comment">//echarts 主题</span></span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//主题配置</span></span><br><span class="line">    ,<span class="attr">theme</span>: &#123;</span><br><span class="line">      <span class="comment">//配色方案，如果用户未设置主题，第一个将作为默认</span></span><br><span class="line">      color: [&#123;</span><br><span class="line">        main: <span class="string">'#20222A'</span> <span class="comment">//主题色</span></span><br><span class="line">        ,<span class="attr">selected</span>: <span class="string">'#009688'</span> <span class="comment">//选中色</span></span><br><span class="line">        ,<span class="attr">logo</span>: <span class="string">''</span> <span class="comment">//logo区域背景色</span></span><br><span class="line">        ,<span class="attr">header</span>: <span class="string">''</span> <span class="comment">//头部区域背景色</span></span><br><span class="line">        ,<span class="attr">alias</span>: <span class="string">'default'</span> <span class="comment">//默认别名</span></span><br><span class="line">      &#125;] <span class="comment">//为了减少篇幅，更多主题此处不做列举，可直接参考 config.js</span></span><br><span class="line"> </span><br><span class="line">      <span class="comment">//初始的颜色索引，对应上面的配色方案数组索引</span></span><br><span class="line">      <span class="comment">//如果本地已经有主题色记录，则以本地记录为优先，除非清除 localStorage（步骤：F12呼出调试工具→Aplication→Local Storage→选中页面地址→layuiAdmin→再点上面的X）</span></span><br><span class="line">      <span class="comment">// 1.0 正式版开始新增</span></span><br><span class="line">      ,<span class="attr">initColorIndex</span>: <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="侧边菜单"><a href="#侧边菜单" class="headerlink" title="侧边菜单"></a>侧边菜单</h4><ul>
-<li>在 start/json/menu.js 文件中，我们放置了默认的侧边菜单数据，你可以去随意改动它。</li>
-<li>如果你需要动态加载菜单，你需要将 views/layout.html 中的对应地址改成你的真实接口地址<br>侧边菜单最多可支持到三级。无论你采用静态的菜单还是动态的，菜单的数据格式都必须是一段合法的 JSON，且必须符合以下规范： </li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"code"</span>: <span class="number">0</span>, <span class="comment">//状态码，key 名可以通过 config.js 去重新配置</span></span><br><span class="line">  <span class="string">"msg"</span>:<span class="string">""</span>, <span class="comment">//提示信息</span></span><br><span class="line">  <span class="string">"data"</span>: [&#123; <span class="comment">//菜单数据，key名可以通过 config.js 去重新配置</span></span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"component"</span>, <span class="comment">//一级菜单名称（与视图的文件夹名称和路由路径对应）</span></span><br><span class="line">    <span class="string">"title"</span>: <span class="string">"组件"</span>, <span class="comment">//一级菜单标题</span></span><br><span class="line">    <span class="string">"icon"</span>: <span class="string">"layui-icon-component"</span>, <span class="comment">//一级菜单图标样式</span></span><br><span class="line">    <span class="string">"jump"</span>: <span class="string">''</span> ,<span class="comment">//自定义一级菜单路由地址，默认按照 name 解析。一旦设置，将优先按照 jump 设定的路由跳转</span></span><br><span class="line">    <span class="string">"spread"</span>: <span class="literal">true</span> ,<span class="comment">//是否默认展子菜单（1.0.0-beta9 新增）</span></span><br><span class="line">    <span class="string">"list"</span>: [&#123; <span class="comment">//二级菜单</span></span><br><span class="line">      <span class="string">"name"</span>: <span class="string">"grid"</span>, <span class="comment">//二级菜单名称（与视图的文件夹名称和路由路径对应）</span></span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"栅格"</span>, <span class="comment">//二级菜单标题</span></span><br><span class="line">      <span class="string">"jump"</span>: <span class="string">''</span>,  <span class="comment">//自定义二级菜单路由地址</span></span><br><span class="line">      <span class="string">"spread"</span>: <span class="literal">true</span>, <span class="comment">//是否默认展子菜单（1.0.0-beta9 新增）</span></span><br><span class="line">      <span class="string">"list"</span>: [&#123; <span class="comment">//三级菜单</span></span><br><span class="line">         <span class="string">"name"</span>: <span class="string">"list"</span>, <span class="comment">//三级菜单名（与视图中最终的文件名和路由对应），如：component/grid/list</span></span><br><span class="line">         <span class="string">"title"</span>: <span class="string">"等比例列表排列"</span> <span class="comment">//三级菜单标题</span></span><br><span class="line">        &#125;,&#123;</span><br><span class="line">         <span class="string">"name"</span>: <span class="string">"mobile"</span>,</span><br><span class="line">         <span class="string">"title"</span>: <span class="string">"按移动端排列"</span></span><br><span class="line">       &#125;</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>TIPS：实际运用时，切勿出现上述中的注释，否则将不是合法的 JSON ，会出现解析错误。</p>
-</blockquote>
-<p>需要注意的是以下几点：</p>
-<ol>
-<li>当任意级菜单有子菜单，点击该菜单都只是收缩和展开操作，而并不会跳转，只有没有子菜单的菜单才被允许跳转。</li>
-<li>菜单的路由地址默认是按照菜单层级的 name 来设定的。<br>我们假设一级菜单的 name 是：a，二级菜单的是：b，三级菜单的 name 是 c，那么：<ul>
-<li>三级菜单最终的路由地址就是：/a/b/c</li>
-<li>如果二级菜单没有三级菜单，那么二级菜单就是最终路由，地址就是：/a/b/</li>
-<li>如果一级菜单没有二级菜单，那么一级菜单就是最终路由，地址就是：/a/</li>
-</ul>
-</li>
-<li>但如果你设置了 参数 jump，那么就会优先读取 jump 设定的路由地址，如：”jump”: “/user/set” </li>
-</ol>
-<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><p>layuiAdmin 的路由是采用 <em>location.hash</em> 的机制，即路由地址是放在 <code>./#/</code> 后面，并通过 layui 自带的方法： <code>layui.router()</code> 来进行解析。每一个路由都对应一个真实存在的视图文件，且路由地址和视图文件的路径是一致的（相对 <em>views</em> 目录）。因此，你不再需要通过配置服务端的路由去访问一个页面，也无需在 layuiAdmin 内部代码中去定义路由，而是直接通过 layuiAdmin 的前端路由去访问，即可匹配相应目录的视图，从而呈现出页面结果。</p>
-<h4 id="路由规则"><a href="#路由规则" class="headerlink" title="路由规则"></a>路由规则</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./#/path1/path2/path3/key1=value1/key2=value2…</span><br></pre></td></tr></table></figure>
-
-<p>一个实际的示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./#/user/set</span><br><span class="line">./#/user/set/uid=123/type=1#xxx（下面将以这个为例继续讲解）</span><br></pre></td></tr></table></figure>
-
-<p>当你需要对路由结构进行解析时，你只需要通过 layui 内置的方法 <code>layui.router()</code> 即可完成。如上面的路由解析出来的结果是：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    path: [<span class="string">'user'</span>,<span class="string">'set'</span>]</span><br><span class="line">    ,<span class="attr">search</span>: &#123;<span class="attr">uid</span>: <span class="number">123</span>, <span class="attr">type</span>: <span class="number">1</span>&#125;</span><br><span class="line">    ,<span class="attr">href</span>: <span class="string">'user/set/uid=123/type=1'</span></span><br><span class="line">    ,<span class="attr">hash</span>: <span class="string">'xxx'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，不同的结构会自动归纳到相应的参数中，其中：</p>
-<blockquote>
-<ul>
-<li>path：存储的是路由的目录结构</li>
-<li>search：存储的是路由的参数部分</li>
-<li>href：存储的是 layuiAdmin 的完整路由地址</li>
-<li>hash：存储的是 layuiAdmin 自身的锚记，跟系统自带的 <code>location.hash</code> 有点类似</li>
-</ul>
-</blockquote>
-<p>通过 <code>layui.router()</code> 得到路由对象后，你就可以对页面进行个性化操作、异步参数传值等等。如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在 JS 中获取路由参数</span></span><br><span class="line"><span class="keyword">var</span> router = layui.router();</span><br><span class="line">admin.req(&#123;</span><br><span class="line">url: <span class="string">'xxx'</span></span><br><span class="line">,<span class="attr">data</span>: &#123;</span><br><span class="line">    uid: router.search.uid</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--  在动态模板中获取路由参数 --&gt;</span><br><span class="line">&lt;script type=<span class="string">"text/html"</span> template lay-url=<span class="string">"./xxx/?uid=&#123;&#123; layui.router().search.uid &#125;&#125;"</span>&gt;</span><br><span class="line">…</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;!-- 或 --&gt;</span></span><br><span class="line"><span class="regexp">&lt;script type="text/</span>html<span class="string">" template lay-url="</span>./xxx/<span class="string">" lay-data="</span>&#123;<span class="attr">uid</span>:<span class="string">'&#123;&#123; layui.router().search.uid &#125;&#125;'</span>&#125;<span class="string">"&gt;</span></span><br><span class="line"><span class="string">…</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="路由跳转"><a href="#路由跳转" class="headerlink" title="路由跳转"></a>路由跳转</h4><p>通过上文的路由规则，你已经大致清楚了 layuiAdmin 路由的基本原理和解析方法。那么如何完成路由的跳转呢？</p>
-<ol>
-<li>在视图文件的 HTML 代码中，通过对任意元素设定 <code>lay-href=&quot;/user/set/uid=123/type=1&quot;</code> ，<strong>好处是</strong>：任意元素都可以触发跳转。<strong>缺点是</strong>：只能在浏览器当前选项卡完成跳转（注意：不是 layuiAdmin 的选项卡）</li>
-<li>直接对 a 标签设定 href，如： <code>&lt;a href=&quot;#/user/set&quot;&gt;text&lt;/a&gt;</code> 。<strong>好处是</strong>：你可以通过设定 <code>target=&quot;_blank&quot;</code> 来打开一个浏览器新选项卡。<strong>缺点是</strong>：只能设置 <code>a</code> 标签，且前面必须加 <code>/#/</code></li>
-<li>在 JS 代码中，还可通过 <code>location.hash = &#39;/user/set&#39;;</code> 来跳转。前面无需加 <code>#</code>，它会自动追加。</li>
-</ol>
-<h4 id="路由结尾"><a href="#路由结尾" class="headerlink" title="路由结尾"></a>路由结尾</h4><p>在路由结尾部分出现的 <code>/</code> 与不出现，是两个完全不同的路由。比如下面这个：</p>
-<ol>
-<li>user/set<br>读取的视图文件是：.views/user/set.html</li>
-<li>user/set/<br>读取的视图文件是：./views/user/set/index.html （TIPS：这里的  index.html 即是目录下的默认主视图，下文会有讲解）</li>
-</ol>
-<p>因此一定要注意结尾处的 <code>/</code>，避免视图读取错误。</p>
-<h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><p>这或许是你应用 layuiAdmin 时的主要焦点，在开发过程中，你的大部分精力都可能会聚焦在这里。它取代了服务端 MVC 架构中的 <em>view</em> 层，使得应用开发变得更具扩展性。因此如果你采用 layuiAdmin 的 SPA（单页应用）模式，请务必要抛弃服务端渲染视图的思想，让页面的控制权限重新回归到前端吧！</p>
-<blockquote>
-<p><strong>views</strong> 目录存放的正是视图文件，你可以在该目录添加任意的新目录和新文件，通过对应的路由即可访问。</p>
-</blockquote>
-<p>注意：如果是单页面模式，视图文件通常是一段 HTML 碎片，而不能是一个完整的 html 代码结构。</p>
-<h4 id="视图与路由的关系"><a href="#视图与路由的关系" class="headerlink" title="视图与路由的关系"></a>视图与路由的关系</h4><p>每一个视图文件，都对应一个路由。其中 <code>index.html</code> 是默认文件（你也可以通过 config.js 去重新定义）。视图文件的所在目录决定了路由的访问地址，如：</p>
-<table>
-<thead>
-<tr>
-<th align="left">视图路径</th>
-<th align="left">对应的路由地址</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">./views/user/index.html</td>
-<td align="left">/user/</td>
-</tr>
-<tr>
-<td align="left">./views/user.html</td>
-<td align="left">/user</td>
-</tr>
-<tr>
-<td align="left">./views/user/set/index.html</td>
-<td align="left">/user/set/</td>
-</tr>
-<tr>
-<td align="left">./views/user/set.html</td>
-<td align="left">/user/set</td>
-</tr>
-<tr>
-<td align="left">./views/user/set/base.html</td>
-<td align="left">/user/set/base</td>
-</tr>
-</tbody></table>
-<p>通过上述的表格列举的对应关系，可以总结出：</p>
-<ul>
-<li>当视图文件是 index.html，那么路由地址就是它的上级目录（相对 _views_），以 <code>/</code> 结尾</li>
-<li>当视图文件不是 index.html，那么路由地址就是它的上级目录+视图文件名，不以 <code>/</code> 结尾</li>
-</ul>
-<blockquote>
-<p>值得注意的是：路由路径并非最多只能三级，它可以无限极。但对应的视图也必须存放在相应的层级目录下</p>
-</blockquote>
-<h4 id="视图中加载-JS-模块"><a href="#视图中加载-JS-模块" class="headerlink" title="视图中加载 JS 模块"></a>视图中加载 JS 模块</h4><p>在视图文件中，除了写 HTML，也可以写 JavaScript 代码。如：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">“LAY-demo-hello”</span>&gt;</span>Hello layuiAdmin<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">layui.use(<span class="string">'admin'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> $ = layui.jquery;</span></span><br><span class="line">    admin.popup(&#123;</span><br><span class="line"><span class="javascript">        content: $(<span class="string">'#LAY-demo-hello'</span>).html()</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果该视图对应的 JS 代码量太大，我们更推荐你在  controller  目录下新增一个业务模块，并在视图中直接 layui.use 去加载该模块。下面以控制台主页 <code>index.html</code> 为例：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>html区域<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="comment">//加载 controller 目录下的对应模块</span></span></span><br><span class="line">/*</span><br><span class="line">小贴士：</span><br><span class="line"><span class="javascript">    这里 <span class="built_in">console</span> 模块对应 的 <span class="built_in">console</span>.js 并不会重复加载，</span></span><br><span class="line">    然而该页面的视图可能会重新插入到容器，那如何保证脚本能重新控制视图呢？有两种方式：</span><br><span class="line"><span class="javascript">    <span class="number">1</span>): 借助 layui.factory 方法获取 <span class="built_in">console</span> 模块的工厂（回调函数）给 layui.use</span></span><br><span class="line">    2): 直接在 layui.use 方法的回调中书写业务代码，即:</span><br><span class="line"><span class="javascript">        layui.use(<span class="string">'console'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; </span></span><br><span class="line"><span class="javascript">            <span class="comment">//同 console.js 中的 layui.define 回调中的代码 </span></span></span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">这里我们采用的是方式1。其它很多视图中采用的其实都是方式2，因为更简单些，也减少了一个请求数。</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line"><span class="javascript">layui.use(<span class="string">'console'</span>, layui.factory(<span class="string">'console'</span>));</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>当视图被渲染后，layui.factory 返回的函数也会被执行，从而保证在不重复加载 JS 模块文件的前提下，保证脚本能重复执行。</p>
-<h3 id="动态模板"><a href="#动态模板" class="headerlink" title="动态模板"></a>动态模板</h3><p>layuiAdmin 的视图是一个“动静结合”的载体，除了常规的静态模板，你当然还可以在视图中存放动态模板，因此它可谓是焦点中的焦点。</p>
-<h4 id="定义模板"><a href="#定义模板" class="headerlink" title="定义模板"></a>定义模板</h4><p>在视图文件中，通过下述规则定义模板：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/html"</span> template&gt;</span><br><span class="line">&lt;!-- 动态模板碎片 --&gt;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>下面是一个简单的例子：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/html"</span> template&gt;</span><br><span class="line">当前 layuiAdmin 的版本是：&#123;&#123; layui.admin.v &#125;&#125;</span><br><span class="line">路由地址：&#123;&#123; layui.router().href &#125;&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在不对动态模板设定数据接口地址的情况下，它能读取到全局对象。但更多时候，一个动态模板应该是对应一个接口地址，如下所示：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/html"</span> template lay-url=<span class="string">"接口地址"</span>&gt;</span><br><span class="line">    我叫：&#123;&#123; d.data.username &#125;&#125;</span><br><span class="line">    &#123;&#123;# if(d.data.sex === '男')&#123; &#125;&#125;</span><br><span class="line">        公的</span><br><span class="line">    &#123;&#123;# &#125; else &#123; &#125;&#125;</span><br><span class="line">        母的</span><br><span class="line">    &#123;&#123;# &#125; &#125;&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>模板中的 <code>d</code> 对应的是你接口返回的 json 转化后的一维对象，如：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"code"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">      <span class="attr">"username"</span>: <span class="string">"贤心"</span>,</span><br><span class="line">      <span class="attr">"sex"</span>: <span class="string">"男"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>那么，上述动态模板最终输出的结果就是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">我叫：贤心</span><br><span class="line">公的</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="模板基础属性"><a href="#模板基础属性" class="headerlink" title="模板基础属性"></a>模板基础属性</h4><p>动态模板支持以下基础属性</p>
-<ul>
-<li><strong>lay-url</strong><br>用于绑定模板的数据接口地址，支持动态模板解析，如：</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-url</span>=<span class="string">"https://api.xxx.com?id=&#123;&#123; layui.router().search.id &#125;&#125;"</span>&gt;</span></span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- 动态模板碎片 --&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>lay-data</strong><br>用于定义接口请求的参数，其值是一个 JavaScript object 对象，同样支持动态模板解析，如：</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-url</span>=<span class="string">""</span> <span class="attr">lay-data</span>=<span class="string">"&#123;id: '&#123;&#123; layui.router().search.id &#125;&#125;', type: 1&#125;"</span>&gt;</span></span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- 动态模板碎片 --&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>lay-headers</strong><br>用户定义接口请求的 Request Headers 参数，用法与 lay-data 的完全类似，支持动态模板解析。</p>
-</li>
-<li><p><strong>lay-done</strong><br>接口请求完毕并完成视图渲染的回调脚本，里面支持写任意的 JavaScript 语句。事实上它是一个封闭的函数作用域，通过给 Function 实例返回的函数传递一个参数 <code>d</code>，用于得到接口返回的数据：</p>
-</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-url</span>=<span class="string">""</span> <span class="attr">lay-done</span>=<span class="string">"console.log(d);"</span>&gt;</span></span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- 动态模板碎片 --&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>很多时候，你在动态模板中可能会放入一些类似于 layui 的 form 元素，而有些控件需要执行 <code>form.render()</code> 才会显示，这时，你可以对 lay-done 赋值一个全局函数，如：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-url</span>=<span class="string">""</span> <span class="attr">lay-done</span>=<span class="string">"layui.data.done(d);"</span>&gt;</span></span><br><span class="line"><span class="javascript">  &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"layui-form"</span> lay-filter=<span class="string">"LAY-filter-demo-form"</span>&gt;</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">title</span>=<span class="string">"复选框"</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--  注意：别看眼花了，下面可不是动态模板，而是 JS 脚本区域 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">layui.data.done = <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    layui.use([<span class="string">'form'</span>], <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> form = layui.form;</span></span><br><span class="line"><span class="javascript">        form.render(<span class="literal">null</span>, <span class="string">'LAY-filter-demo-form'</span>); <span class="comment">//渲染该模板下的动态表单</span></span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>TIPS：</p>
-<blockquote>
-<ul>
-<li>如果模板渲染完毕需要处理过多的交互，我们强烈推荐你采用上述的方式定义一个全局函数赋值给 lay-done，会极大地减少维护成本。</li>
-<li>无需担心该全局函数的冲突问题，该函数是一次性的。其它页面即便声明了一个同样的函数，也只是用于新的视图，丝毫不会对之前的视图造成任何影响。</li>
-<li>layui.data.done 中的 <em>done</em> 可以随意命名，但需与 lay-done 的赋值对应上。</li>
-</ul>
-</blockquote>
-<h4 id="模板语法"><a href="#模板语法" class="headerlink" title="模板语法"></a>模板语法</h4><p>动态模板基于 layui 的 laytpl 模块，详细语法可见：  <a href="http://www.layui.com/doc/modules/laytpl.html#syntax" target="_blank" rel="noopener">传送门</a></p>
-<h3 id="登录与接口鉴权"><a href="#登录与接口鉴权" class="headerlink" title="登录与接口鉴权"></a>登录与接口鉴权</h3><p>由于 layuiAdmin 接管了视图层，所以不必避免可能会与服务端分开部署，这时你有必要了解一下 layuiAdmin 默认提供的：从 <em>登录</em> 到 <em>接口鉴权</em> ，再到 <em>注销</em> 的整个流程。</p>
-<h4 id="登录拦截器"><a href="#登录拦截器" class="headerlink" title="登录拦截器"></a>登录拦截器</h4><p>进入登入页面登入成功后，会在 localStorage 的本地表中写入一个字段。如： access_token （名称可以在 config.js 自定义）。拦截器判断没有 access_token 时，则会跳转到登入页。尽管可以通过伪造一个假的 access_token 绕过视图层的拦截，但在请求接口时，会自动带上 access_token，服务端应再次做一层校验。</p>
-<h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><ol>
-<li>打开 <code>config.js</code> ，将 <code>interceptor</code> 参数设置为 <code>true</code>（该参数为 1.0.0-beta6 开始新增）。那么，当其未检查到 <code>access_token</code> 值时，会强制跳转到登录页面，以获取 access_token。</li>
-<li>打开登录对应的视图文件 <code>views/user/login.html</code>，在代码最下面，你将看到一段已经写好的代码，你需要的是将接口地址改为服务端的真实接口，并返回 <code>access_token</code> 值。</li>
-<li>layuiAdmin 会将服务端返回的 <code>access_token</code> 值进行本地存储，这时你会发现 layuiAdmin 不再强制跳转到登录页面。并在后面每次请求服务端接口时，都会自动在参数和 Request Headers 中带上 <code>access_token</code>，以便服务端进行鉴权。</li>
-<li>若鉴权成功，顺利返回数据；若鉴权失败，服务端的 <code>code</code> 应返回 <code>1001</code>（可在 config.js 自定义） ， layuiAdmin 将会自动清空本地无效 token 并跳转到登入页。</li>
-<li>退出登录：重新打开 <code>controller/common.js</code>，搜索 <code>logout</code>，配上注销接口即可。</li>
-</ol>
-<blockquote>
-<p>如果是在其它场景请求的接口（如：table.render()），那么你需要获取本地存储的 token 复制给接口参数，如：</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">table.render(&#123;</span><br><span class="line">    elem: <span class="string">'#xxxx'</span></span><br><span class="line">    ,<span class="attr">url</span>: <span class="string">'url'</span></span><br><span class="line">    ,<span class="attr">where</span>: &#123;</span><br><span class="line">        access_token: layui.data(<span class="string">'layuiAdmin'</span>).access_token</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-
-<p>事实上，layuiAdmin 的所有 Ajax 请求都是采用 <code>admin.req(options)</code>，它会自动传递 <code>access_token</code>，因此推荐你在 JS 执行 Ajax 请求时直接使用它。其中参数 <em>options</em> 和 <code>$.ajax(options)</code> 的参数完全一样。</p>
-<h4 id="接口鉴权"><a href="#接口鉴权" class="headerlink" title="接口鉴权"></a>接口鉴权</h4><p>我们推荐服务端遵循 <strong>JWT</strong>（JSON Web Token） 标准进行鉴权。对 JWT 不甚了解的同学，可以去搜索一些相关资料，会极大地增加应用的可扩展性。当然，你也可以直接采用传统的 cookie / session 机制。</p>
-<h3 id="基础方法"><a href="#基础方法" class="headerlink" title="基础方法"></a>基础方法</h3><ul>
-<li><strong>config 模块</strong></li>
-</ul>
-<blockquote>
-<p>你可以在任何地方通过 <code>layui.setter</code> 得到 <em>config.js</em> 中的配置信息</p>
-</blockquote>
-<ul>
-<li><strong>admin 模块</strong></li>
-</ul>
-<blockquote>
-<p>var admin = layui.admin;</p>
-</blockquote>
-<ul>
-<li><p><strong>admin.req(options)</strong><br>Ajax 请求，用法同 $.ajax(options)，只是该方法会进行错误处理和 token 的自动传递</p>
-</li>
-<li><p><strong>admin.screen()</strong><br>获取屏幕类型，根据当前屏幕大小，返回 0 - 3 的值<br>0: 低于768px的屏幕<br>1：768px到992px之间的屏幕<br>2：992px到1200px之间的屏幕<br>3：高于1200px的屏幕</p>
-</li>
-<li><p><strong>admin.exit()</strong><br>清除本地 token，并跳转到登入页</p>
-</li>
-<li><p><strong>admin.sideFlexible(status)</strong><br>侧边伸缩。status 为 null：收缩；status为 “spread”：展开</p>
-</li>
-<li><p><strong>admin.on(eventName, callback)</strong><br>事件监听，下文会有讲解</p>
-</li>
-<li><p><strong>admin.popup(options)</strong><br>弹出一个 layuiAdmin 主题风格的 layer 层，参数 options 跟 layer.open(options) 完全相同</p>
-</li>
-<li><p><strong>admin.popupRight(options)</strong><br>在屏幕右侧呼出一个面板层。options 同上。</p>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">admin.popupRight(&#123;</span><br><span class="line">    id: <span class="string">'LAY-popup-right-new1'</span> <span class="comment">//定义唯一ID，防止重复弹出</span></span><br><span class="line">    ,<span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//将 views 目录下的某视图文件内容渲染给该面板</span></span><br><span class="line">    layui.view(<span class="keyword">this</span>.id).render(<span class="string">'视图文件所在路径'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>admin.resize(callback)</strong><br>窗口 resize 事件处理，我们推荐你使用该方法取代 jQuery 的 resize 事件，以避免多页面标签下可能存在的冲突。</p>
-</li>
-<li><p><strong>admin.events</strong></p>
-<ul>
-<li><p>admin.events.refresh()<br>刷新当前右侧区域</p>
-</li>
-<li><p>admin.events.closeThisTabs()<br>关闭当前标签页</p>
-</li>
-<li><p>admin.events.closeOtherTabs()<br>关闭其它标签页</p>
-</li>
-<li><p>admin.events.closeAllTabs()<br>关闭全部标签页</p>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><strong>view 模块</strong></li>
-</ul>
-<blockquote>
-<p>var view = layui.view;</p>
-</blockquote>
-<ul>
-<li><strong>view(id)</strong><br>获取指定容器，并返回一些视图渲染的方法，如：</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//渲染视图，viewPath 即为视图路径</span></span><br><span class="line">view(<span class="string">'#id'</span>).render(viewPath).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">//视图文件请求完毕，视图内容渲染前的回调</span></span><br><span class="line">&#125;).done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">//视图文件请求完毕和内容渲染完毕的回调</span></span><br><span class="line">&#125;); </span><br><span class="line"></span><br><span class="line"><span class="comment">//直接向容器插入 html，tpl 为 模板字符；data 是传入的数据。该方法会自动完成动态模板解析</span></span><br><span class="line">view(<span class="string">'#id'</span>).send(tpl, data);</span><br></pre></td></tr></table></figure>
-
-<p>另外，<code>render</code> 方法支持动态传参，以用于视图内容接受。如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">admin.popup(&#123;</span><br><span class="line">    id: <span class="string">'LAY-popup-test1'</span></span><br><span class="line">    ,<span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    view(<span class="keyword">this</span>.id).render(<span class="string">'视图文件所在路径'</span>, &#123;</span><br><span class="line">            id: <span class="number">123</span> <span class="comment">//这里的 id 值你可以在一些事件中动态获取（如 table 模块的编辑）</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>那么，在视图文件中，你可以在动态模板中通过 <code>\{\{ d.params.xxx \}\}</code> 得到传入的参数，如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/html"</span> template lay-url=<span class="string">"http://api.com?id=&#123;&#123; d.params.id &#125;&#125;"</span>&gt;</span><br><span class="line">配置了接口的动态模板，且接口动态获取了 render 传入的参数：&#123;&#123; d.params.id &#125;&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script type="text/</span>html<span class="string">" template&gt;</span></span><br><span class="line"><span class="string">也可以直接获取：&lt;input type="</span>hidden<span class="string">" name="</span>id<span class="string">" value="</span>&#123;&#123; d.params.id &#125;&#125;<span class="string">"&gt;</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>而如果是在 JS 语句中去获取模板传递过来的变量，可以借助动态模板的 lay-done 属性去实现，如：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/html"</span> <span class="attr">template</span> <span class="attr">lay-done</span>=<span class="string">"layui.data.sendParams(d.params)"</span>&gt;</span></span><br><span class="line">  </span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后在 JS 语句中通过执行动态模板 lay-done 中对应的方法得到对应的参数值：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="comment">//定义一个 lay-done 对应的全局方法，以供动态模板执行</span></span></span><br><span class="line"><span class="javascript">layui.data.sendParams = <span class="function"><span class="keyword">function</span>(<span class="params">params</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">console</span>.log(params.id) <span class="comment">//得到传递过来的 id 参数（或其他参数）值</span></span></span><br><span class="line">  </span><br><span class="line"><span class="javascript">  <span class="comment">//通过得到的参数值，做一些你想做的事</span></span></span><br><span class="line"><span class="javascript">  <span class="comment">//…</span></span></span><br><span class="line"> </span><br><span class="line"><span class="javascript">  <span class="comment">//若需用到 layui 组件，layui.use 需写在该全局方法里面，如：</span></span></span><br><span class="line"><span class="javascript">  layui.use([<span class="string">'table'</span>], <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> table = layui.table;</span></span><br><span class="line">    table.render(&#123;</span><br><span class="line"><span class="javascript">      elem: <span class="string">''</span></span></span><br><span class="line"><span class="javascript">      ,<span class="attr">url</span>: <span class="string">'url?id='</span>+ params.id</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：上述实现需保证 layuiAdmin 为 1.2.0+`</p>
-</blockquote>
-<p>总之，驾驭好 <code>view().render().done(callback)</code> 对您的项目开发至关重要。</p>
-<h3 id="ID唯一性"><a href="#ID唯一性" class="headerlink" title="ID唯一性"></a>ID唯一性</h3><p>如果你开启了标签页功能，请务必注意 ID 的冲突，尤其是在你自己绑定事件的情况。ID 的命令可以遵循以下规则来规避冲突：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LAY-路由-任意名</span><br></pre></td></tr></table></figure>
-
-<p>以_消息中心_页面为例，假设它的路由为：<code>/app/message/</code>，那么 ID 应该命名为：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"layui-btn"</span> <span class="attr">id</span>=<span class="string">"LAY-app-message-del"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="实用组件"><a href="#实用组件" class="headerlink" title="实用组件"></a>实用组件</h3><h4 id="Hover-提示层"><a href="#Hover-提示层" class="headerlink" title="Hover 提示层"></a>Hover 提示层</h4><p>通过对元素设置 <code>lay-tips=&quot;提示内容&quot;</code> 来开启一个 hover 提示，如：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"layui-icon layui-icon-tips"</span> <span class="attr">lay-tips</span>=<span class="string">"要支持的噢"</span> <span class="attr">lay-offset</span>=<span class="string">"5"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>其中 <code>lay-offset</code> 用于定于水平偏移距离（单位px），以调整箭头让其对准元素</p>
-<h3 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h3><ul>
-<li><strong>hash</strong><br>监听路由地址改变</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下述中的 xxx 可随意定义，不可与已经定义的 hash 事件同名，否则会覆盖上一事件</span></span><br><span class="line">admin.on(<span class="string">'hash(xxx)'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">router</span>)</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(router); <span class="comment">//得到路由信息</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>side</strong><br>监听侧边伸缩</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下述中的 xxx 可随意定义，不可与已经定义的 side 事件同名，否则会覆盖上一事件</span></span><br><span class="line">admin.on(<span class="string">'side(xxx)'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(obj.status); <span class="comment">//得到伸缩状态：spread 为展开状态，其它值为收缩状态</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p>layuiAdmin 使用到了 layui 的栅格系统，而栅格则是基于浏览器的媒体查询。ie8、9不支持。  所以要在宿主页面（如 start/index.html ）加上下面这段保证兼容：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 让IE8/9支持媒体查询，从而兼容栅格 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">&lt;script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">&lt;script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>由于单页面版本的视图文件和静态资源模块都是动态加载的，所以可能存在浏览器的本地缓存问题，事实上我们也考虑到这个，因此，为了避免改动后的文件未及时生效，你只需在入口页面（默认为start/index.html）中，找到 layui.config，修改其 version 的值即可。</p>
-<p>我们推荐你分场景来更新缓存：</p>
-<ul>
-<li>场景一：如果项目是在本地开发。你可以设置 version 为动态毫秒数，如：</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="keyword">new</span> <span class="built_in">Date</span>().getTime() <span class="comment">//这样你每次刷新页面，都会更新一次缓存</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>场景二：如果项目是在线上运行。建议你手工更新 version，如：</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">'1.0.0'</span> <span class="comment">//每次发布项目时，跟着改动下该属性值即可更新静态资源的缓存</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="升级事项"><a href="#升级事项" class="headerlink" title="升级事项"></a>升级事项</h3><p>从官网更新资源包后，除了 src 和 dist 目录需要注意一下，其它目录和文件均可覆盖，下面以 src 为例（dist 由于是 src 构建后生成的目录，所以本质是和 src 一样的）  </p>
-<p><strong>src 目录下可以直接覆盖的有</strong>：</p>
-<blockquote>
-<ul>
-<li>src/lib/</li>
-<li>src/style/</li>
-<li>src/index.js</li>
-</ul>
-</blockquote>
-<p><strong>需要灵活调配的有</strong>：</p>
-<blockquote>
-<ul>
-<li>src/controller/</li>
-<li>src/views/</li>
-<li>src/config.js<br>如果没有改动默认配置，事实上 config.js 也可以覆盖升级</li>
-</ul>
-</blockquote>
-<p>开发过程中，建议同时运行两个 layuiAdmin 。一个是已经实际运用的，一个是 layuiAdmin 本身的 Demo。以便从 Demo 中获取参考和提取示例。</p>
-<h3 id="源码构建"><a href="#源码构建" class="headerlink" title="源码构建"></a>源码构建</h3><p>当你在 src 目录完成开发后，你可通过 gulp 对 src 源码进行自动化构建，以生成用于线上环境的 dist 目录。<br>其中，gulpfile.js 是 layuiAdmin 写好的任务脚本，package.json 是任务配置文件，你只需按照以下步骤：</p>
-<ul>
-<li>step1：确保你的电脑已经安装好了 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>，如果未安装，可去官网下载安装<a href="https://nodejs.org/en/" target="_blank" rel="noopener">传送门</a></li>
-<li>step2: 命令行安装 gulp：npm install gulp -g</li>
-<li>step3：切换到 layuiAdmin 项目根目录（即 gulpfile.js 所在目录），命令行安装任务所依赖的包：npm install</li>
-</ul>
-<p>安装完成后，后续只需直接执行命令：<code>gulp</code> 即可完成 src 到 dist 目录的构建</p>
-<h3 id="关于版权"><a href="#关于版权" class="headerlink" title="关于版权"></a>关于版权</h3><blockquote>
-<p>layuiAdmin 受国家计算机软件著作权保护，未经官网正规渠道授权擅自公开产品源文件、以及直接对产品二次出售的，我们将追究相应的法律责任。</p>
-</blockquote>
-<p>获取官方正版授权： <a href="https://www.layui.com/admin/" target="_blank" rel="noopener">传送门</a></p>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3216,7 +3019,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">154</span>
+                    <span class="site-state-item-count">155</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -4014,9 +3817,9 @@ setTimeout(showSoul,0);
       
     
       
-        
-      
     
+      
+        
       
     
       

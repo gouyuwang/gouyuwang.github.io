@@ -360,6 +360,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/MySQL中trim-函数的用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/MySQL中trim-函数的用法/" class="post-title-link" itemprop="url">MySQL中trim()函数的用法</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-11 07:52:37" itemprop="dateCreated datePublished" datetime="2018-07-11T07:52:37Z">2018-07-11</time>
+            </span>
+          
+
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>trim函数可以过滤指定的字符串：</p>
+<p>完整格式：TRIM([{BOTH | LEADING | TRAILING} [remstr] FROM] str)</p>
+<p>简化格式：TRIM([remstr FROM] str)</p>
+<p>返回字符串 str ， 其中所有remstr前缀和/或后缀都已被删除。若分类符BOTH、LEADIN或TRAILING中没有一个是给定的,则假设为BOTH。remstr为可选项，在未指定情况下，可删除空格。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT TRIM(&apos;  bar   &apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;bar&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(LEADING &apos;x&apos; FROM &apos;xxxbarxxx&apos;);   --删除指定的首字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barxxx&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(BOTH &apos;x&apos; FROM &apos;xxxbarxxx&apos;);      --删除指定的首尾字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;bar&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(TRAILING &apos;xyz&apos; FROM &apos;barxxyz&apos;);  --删除指定的尾字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barx&apos;</span><br></pre></td></tr></table></figure>
+
+<p>mysql中的去除左空格函数:</p>
+<p>LTRIM(str);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT LTRIM(&apos;  barbar&apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barbar&apos;</span><br></pre></td></tr></table></figure>
+
+<p>mysql中的去除右空格函数：</p>
+<p>RTRIM(str):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT RTRIM(&apos;barbar   &apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barbar&apos;</span><br></pre></td></tr></table></figure>
+
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/php 读取中文目录报错/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1916,190 +2078,6 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Linux安装redis及Php扩展/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/Linux安装redis及Php扩展/" class="post-title-link" itemprop="url">Linux安装redis及Php扩展</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-04-26 15:29:02" itemprop="dateCreated datePublished" datetime="2018-04-26T15:29:02Z">2018-04-26</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <h3 id="一-安装redis"><a href="#一-安装redis" class="headerlink" title="一 安装redis"></a>一 安装redis</h3><h4 id="1-下载redis包：wget-http-download-redis-io-releases-redis-2-8-9-tar-gz"><a href="#1-下载redis包：wget-http-download-redis-io-releases-redis-2-8-9-tar-gz" class="headerlink" title="1. 下载redis包：wget http://download.redis.io/releases/redis-2.8.9.tar.gz"></a>1. 下载redis包：<code>wget http://download.redis.io/releases/redis-2.8.9.tar.gz</code></h4><h4 id="2-解压redis包后，进入redis-2-8-9目录中，进行编译"><a href="#2-解压redis包后，进入redis-2-8-9目录中，进行编译" class="headerlink" title="2. 解压redis包后，进入redis-2.8.9目录中，进行编译"></a>2. 解压redis包后，进入redis-2.8.9目录中，进行编译</h4><p>先 <code>make</code></p>
-<p>然后 <code>make  install</code></p>
-<p>测试一下 <code>make test</code></p>
-<p>最后运行redis服务端 <code>/usr/local/bin/redis-server</code>        (服务端redis-cli)</p>
-<h4 id="3-到此为止，就算安装完成了redis了"><a href="#3-到此为止，就算安装完成了redis了" class="headerlink" title="3. 到此为止，就算安装完成了redis了"></a>3. 到此为止，就算安装完成了redis了</h4><blockquote>
-<p>Q: 此时报错：Fatal error: Class ‘Redis’ not found in xxx.php on line 9.<br>A: 因为没有安装php的redis扩展，所有php无法直接操作redis</p>
-</blockquote>
-<h3 id="二-现在是安装php的redis的扩展"><a href="#二-现在是安装php的redis的扩展" class="headerlink" title="二 现在是安装php的redis的扩展"></a>二 现在是安装php的redis的扩展</h3><h4 id="1，下载地址：-http-pecl-php-net-package-redis"><a href="#1，下载地址：-http-pecl-php-net-package-redis" class="headerlink" title="1，下载地址： http://pecl.php.net/package/redis"></a>1，下载地址： <a href="http://pecl.php.net/package/redis" target="_blank" rel="noopener">http://pecl.php.net/package/redis</a></h4><h4 id="2-选择需要的版本"><a href="#2-选择需要的版本" class="headerlink" title="2. 选择需要的版本:"></a>2. 选择需要的版本:</h4><blockquote>
-<p>Available ReleasesVersionStateRelease DateDownloads</p>
-</blockquote>
-<p>需要注意两个字段</p>
-<p>系统架构： Architecture    x86  <code>x86</code></p>
-<p>Zend版本：Zend Extension Build    API320151012,TS,VC14  <code>TS VC14</code></p>
-<h4 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#加压文件到当前目录</span><br><span class="line">tar  -zxvf  redis-2.2.8.tgz</span><br><span class="line"></span><br><span class="line">#进入解压后的文件目录</span><br><span class="line">cd  redis-2.2.8</span><br><span class="line"></span><br><span class="line">#用phpize生成configure</span><br><span class="line">/usr/local/php/bin/phpize </span><br><span class="line"></span><br><span class="line">#编译配置</span><br><span class="line">./configure --with-php-config=/usr/local/php/bin/php-config</span><br><span class="line"></span><br><span class="line">#编译</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">#安装</span><br><span class="line">make  install</span><br></pre></td></tr></table></figure>
-
-<h4 id="4，配置php-ini文件，使得php可以支持redis扩展"><a href="#4，配置php-ini文件，使得php可以支持redis扩展" class="headerlink" title="4，配置php.ini文件，使得php可以支持redis扩展"></a>4，配置php.ini文件，使得php可以支持redis扩展</h4><p>编辑  /etc/php.ini 添加:  <code>extension=redis.so</code></p>
-<p>重启服务；</p>
-<p>测试下 <code>php -i|grep redis</code>  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis</span><br><span class="line">Registered save handlers =&gt; files user redis rediscluster redis rediscluster</span><br></pre></td></tr></table></figure>
-
-<p>到此Redis扩展安装完成</p>
-
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2148,7 +2126,7 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">154</span>
+                    <span class="site-state-item-count">155</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

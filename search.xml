@@ -3258,25 +3258,6 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
       </categories>
   </entry>
   <entry>
-    <title>MySQL中trim()函数的用法</title>
-    <url>/articles/MySQL%E4%B8%ADtrim-%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<p>trim函数可以过滤指定的字符串：</p>
-<p>完整格式：TRIM([{BOTH | LEADING | TRAILING} [remstr] FROM] str)</p>
-<p>简化格式：TRIM([remstr FROM] str)</p>
-<p>返回字符串 str ， 其中所有remstr前缀和/或后缀都已被删除。若分类符BOTH、LEADIN或TRAILING中没有一个是给定的,则假设为BOTH。remstr为可选项，在未指定情况下，可删除空格。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SELECT TRIM(&apos;  bar   &apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;bar&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(LEADING &apos;x&apos; FROM &apos;xxxbarxxx&apos;);   --删除指定的首字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barxxx&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(BOTH &apos;x&apos; FROM &apos;xxxbarxxx&apos;);      --删除指定的首尾字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;bar&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(TRAILING &apos;xyz&apos; FROM &apos;barxxyz&apos;);  --删除指定的尾字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barx&apos;</span><br></pre></td></tr></table></figure>
-
-<p>mysql中的去除左空格函数:</p>
-<p>LTRIM(str);</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SELECT LTRIM(&apos;  barbar&apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barbar&apos;</span><br></pre></td></tr></table></figure>
-
-<p>mysql中的去除右空格函数：</p>
-<p>RTRIM(str):</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SELECT RTRIM(&apos;barbar   &apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barbar&apos;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
     <title>MySQL MERGE存储引擎</title>
     <url>/articles/MySQL-MERGE%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/</url>
     <content><![CDATA[<p>MERGE存储引擎把一组MyISAM数据表当做一个逻辑单元来对待，让我们可以同时对他们进行查询，是一种简单的分表方案。</p>
@@ -3371,6 +3352,25 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
       <tags>
         <tag>mysql merge引擎</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>MySQL中trim()函数的用法</title>
+    <url>/articles/MySQL%E4%B8%ADtrim-%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<p>trim函数可以过滤指定的字符串：</p>
+<p>完整格式：TRIM([{BOTH | LEADING | TRAILING} [remstr] FROM] str)</p>
+<p>简化格式：TRIM([remstr FROM] str)</p>
+<p>返回字符串 str ， 其中所有remstr前缀和/或后缀都已被删除。若分类符BOTH、LEADIN或TRAILING中没有一个是给定的,则假设为BOTH。remstr为可选项，在未指定情况下，可删除空格。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SELECT TRIM(&apos;  bar   &apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;bar&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(LEADING &apos;x&apos; FROM &apos;xxxbarxxx&apos;);   --删除指定的首字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barxxx&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(BOTH &apos;x&apos; FROM &apos;xxxbarxxx&apos;);      --删除指定的首尾字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;bar&apos;</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT TRIM(TRAILING &apos;xyz&apos; FROM &apos;barxxyz&apos;);  --删除指定的尾字符 x</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barx&apos;</span><br></pre></td></tr></table></figure>
+
+<p>mysql中的去除左空格函数:</p>
+<p>LTRIM(str);</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SELECT LTRIM(&apos;  barbar&apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barbar&apos;</span><br></pre></td></tr></table></figure>
+
+<p>mysql中的去除右空格函数：</p>
+<p>RTRIM(str):</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SELECT RTRIM(&apos;barbar   &apos;);</span><br><span class="line"></span><br><span class="line">-&gt; &apos;barbar&apos;</span><br></pre></td></tr></table></figure>
+
+]]></content>
   </entry>
   <entry>
     <title>MySQL修改root密码的4种方法(以windows为例)</title>
@@ -8018,9 +8018,17 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
   <entry>
     <title>两种简单方案实现LBS</title>
     <url>/articles/%E4%B8%A4%E7%A7%8D%E7%AE%80%E5%8D%95%E6%96%B9%E6%A1%88%E5%AE%9E%E7%8E%B0LBS/</url>
-    <content><![CDATA[<h3 id="方案一：-Mysql"><a href="#方案一：-Mysql" class="headerlink" title="方案一： Mysql"></a>方案一： Mysql</h3><h4 id="通过球面两点距离公式"><a href="#通过球面两点距离公式" class="headerlink" title="通过球面两点距离公式"></a>通过球面两点距离公式</h4><blockquote>
+    <content><![CDATA[<style>
+.posts-expand .post-body img {
+    margin: 0 auto;
+}
+</style>
+
+
+<h3 id="方案一：-Mysql"><a href="#方案一：-Mysql" class="headerlink" title="方案一： Mysql"></a>方案一： Mysql</h3><h4 id="通过球面两点距离公式"><a href="#通过球面两点距离公式" class="headerlink" title="通过球面两点距离公式"></a>通过球面两点距离公式</h4><blockquote>
 <p>$ AB = R * \arccos{( \cos{wA} * \cos{wB} * \cos{jB-jA} + \sin{wA}*\sin{wB})}$<br>其中 A（jA,wA）和B（jB，wB）,推导过程见<a href="http://www.360doc.com/content/14/0117/10/325430_345890919.shtml" target="_blank" rel="noopener">这里</a></p>
 </blockquote>
+<p><img src="/articles/两种简单方案实现LBS/1.png" alt="示意图"></p>
 <p>对于大部分已经使用MySQL的应用来说，使用这种方案没有任何迁移和部署成本，但使用SQL语句进行查询的缺点也显而易见，每条SQL的计算量都会非常大，性能将会是严重的问题。</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> address (</span><br><span class="line">	<span class="keyword">id</span> <span class="built_in">INT</span> (<span class="number">11</span>) AUTO_INCREMENT,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">CHAR</span> (<span class="number">80</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	lat <span class="built_in">CHAR</span> (<span class="number">10</span>),</span><br><span class="line">	lng <span class="built_in">CHAR</span> (<span class="number">10</span>),</span><br><span class="line">	PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 插入测试数据</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> address(<span class="keyword">name</span>,lat,lng) <span class="keyword">VALUES</span></span><br><span class="line"> (<span class="string">'成都'</span>, <span class="number">30.659673</span>,<span class="number">104.068433</span>)</span><br><span class="line">,(<span class="string">'绵阳'</span>, <span class="number">31.473909</span>,<span class="number">104.680961</span>)</span><br><span class="line">,(<span class="string">'泸州'</span>, <span class="number">28.876403</span>,<span class="number">105.450251</span>) </span><br><span class="line">,(<span class="string">'德阳'</span>, <span class="number">31.134847</span>,<span class="number">104.408441</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">id</span>,<span class="keyword">name</span>, (</span><br><span class="line">      <span class="number">6371</span> * <span class="keyword">acos</span> (    <span class="comment"># 3959是地球半径的英里，6371是地球半径的千米</span></span><br><span class="line">      <span class="keyword">cos</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">      * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">      * <span class="keyword">cos</span>( <span class="keyword">radians</span>( lng ) - <span class="keyword">radians</span>(<span class="number">106.644153</span>) )</span><br><span class="line">      + <span class="keyword">sin</span> ( <span class="keyword">radians</span>(<span class="number">30.452034</span>) )</span><br><span class="line">      * <span class="keyword">sin</span>( <span class="keyword">radians</span>( lat ) )</span><br><span class="line">    )</span><br><span class="line">) <span class="keyword">AS</span> distance</span><br><span class="line"><span class="keyword">FROM</span> address</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> distance</span><br><span class="line"><span class="keyword">LIMIT</span> <span class="number">0</span> , <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或通过 st_distance_sphere 函数计算</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">  <span class="keyword">name</span>,</span><br><span class="line">	<span class="keyword">round</span>( st_distance_sphere ( point ( <span class="number">106.644153</span>, <span class="number">30.452034</span> ), point ( lng, lat ))/ <span class="number">1000</span>, <span class="number">2</span> ) <span class="keyword">AS</span> distance </span><br><span class="line"><span class="keyword">FROM</span> address </span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> distance <span class="keyword">ASC</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 查询结果</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> 3	泸州	209.7647687926011</span></span><br><span class="line"><span class="comment"> 2	绵阳	218.97099731812352</span></span><br><span class="line"><span class="comment"> 4	德阳	226.64161541779157</span></span><br><span class="line"><span class="comment"> 1	成都	247.70751793832144</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
 
@@ -11536,6 +11544,26 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
       </categories>
   </entry>
   <entry>
+    <title>解决U盘启动“Failed to load ldlinux.c32”</title>
+    <url>/articles/%E8%A7%A3%E5%86%B3%20U%E7%9B%98%E5%90%AF%E5%8A%A8-Failed%20to%20load%20ldlinux-c32-/</url>
+    <content><![CDATA[<p>利用UltraISO制作了Fedora 23的U盘启动，开机F12键USB启动时出现</p>
+<p>Failed to load ldlinux.c32</p>
+<p>Boot failed: please change disks and press a key to continue</p>
+<p>在网上查询很多，进行了多次尝试：</p>
+<p>换一个其他软件制作U盘启动，尝试失败</p>
+<p>认为下载系统软件有问题，下载了其他版本的Fedora 21/25，顺利安装</p>
+<p>猜测是不是制作启动时写入方式有问题，尝试了多个写入方式（USB-HDD、USB-HDD+、USB-ZIP），均失败</p>
+<p><img src="/articles/解决 U盘启动-Failed to load ldlinux-c32-/0.png" alt></p>
+<p>最后选择写入方式“RAW”，Success，问题解决，安装系统时可以顺利启动。</p>
+<p>因此，最后解决办法是：</p>
+<p>UltraISO制作启动盘时，换写入方式为“RAW”，即可解决</p>
+<p><img src="/articles/解决 U盘启动-Failed to load ldlinux-c32-/1.png" alt></p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>解决类似 /usr/lib64/libstdc++.so.6:version `GLIBCXX_3.4.21&#39; not found 的问题</title>
     <url>/articles/%E8%A7%A3%E5%86%B3%E7%B1%BB%E4%BC%BC%20-usr-lib64-libstdc-so-6-%20version%20-GLIBCXX-3-4-21-%20not%20found%20%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p>源码编译升级安装了gcc后，编译程序或运行其它程序时，有时会出现类似/usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21’ not found的问题。这是因为升级gcc时，生成的动态库没有替换老版本gcc的动态库导致的，将gcc最新版本的动态库替换系统中老版本的动态库即可解决。</p>
@@ -11580,26 +11608,6 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
       <categories>
         <category>服务器运维</category>
       </categories>
-  </entry>
-  <entry>
-    <title>解决U盘启动“Failed to load ldlinux.c32”</title>
-    <url>/articles/%E8%A7%A3%E5%86%B3%20U%E7%9B%98%E5%90%AF%E5%8A%A8-Failed%20to%20load%20ldlinux-c32-/</url>
-    <content><![CDATA[<p>利用UltraISO制作了Fedora 23的U盘启动，开机F12键USB启动时出现</p>
-<p>Failed to load ldlinux.c32</p>
-<p>Boot failed: please change disks and press a key to continue</p>
-<p>在网上查询很多，进行了多次尝试：</p>
-<p>换一个其他软件制作U盘启动，尝试失败</p>
-<p>认为下载系统软件有问题，下载了其他版本的Fedora 21/25，顺利安装</p>
-<p>猜测是不是制作启动时写入方式有问题，尝试了多个写入方式（USB-HDD、USB-HDD+、USB-ZIP），均失败</p>
-<p><img src="/articles/解决 U盘启动-Failed to load ldlinux-c32-/0.png" alt></p>
-<p>最后选择写入方式“RAW”，Success，问题解决，安装系统时可以顺利启动。</p>
-<p>因此，最后解决办法是：</p>
-<p>UltraISO制作启动盘时，换写入方式为“RAW”，即可解决</p>
-<p><img src="/articles/解决 U盘启动-Failed to load ldlinux-c32-/1.png" alt></p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
   </entry>
   <entry>
     <title>记一次spl_autoload_register踩坑</title>
@@ -11684,6 +11692,29 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
 <p>把编辑处理后的结果强制保存到指定的文件中，如果文件已经存在，则覆盖现有的文件。</p>
 <p><code>:wq! filename</code></p>
 <p>把编辑处理后的结果强制保存到指定的文件中，如果文件已经存在，则覆盖现有文件，并退出vim编辑器。</p>
+]]></content>
+      <categories>
+        <category>服务器运维</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>通过webhook自动部署git项目</title>
+    <url>/articles/%E9%80%9A%E8%BF%87webhook%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2git%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<p>部署脚本 ci.sh: </p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">cd</span> /www/project/  <span class="comment">#项目目录</span></span><br><span class="line">sudo <span class="built_in">unset</span> GIT_DIR</span><br><span class="line">sudo git pull</span><br></pre></td></tr></table></figure>
+
+<p>webhook(以php为例):</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/* check you auth */</span></span><br><span class="line">system(<span class="string">"sudo /xxx/ci.sh 2&gt;&amp;1"</span>); <span class="comment"># xxx表示你ci.sh文件所在目录</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意 1 ：git公钥归属的问题会导致你的 <code>git pull</code> 命令无法执行失败，需要把当前web服务器的用户权限提高</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">su - <span class="comment"># 进入超级用户模式</span></span><br><span class="line">chmod u+w /etc/sudoers  <span class="comment">#添加文件的写权限</span></span><br><span class="line">vim /etc/sudoers <span class="comment"># 编辑文件, 找到这一 行："root ALL=(ALL) ALL"在起下面添加"xxx ALL=(ALL) NOPASSWD:/usr/bin/git"(这里的xxx是你的web服务器的用户,如nginx默认的www)，然后保存退出。</span></span><br><span class="line">chmod u-w /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意 2 ： 出现<code>.git/FETCH_HEAD没有权限</code> 需要提升.git目录权限</p>
+</blockquote>
+<pre><code class="sh">chmod -R 777  .git</code></pre>
 ]]></content>
       <categories>
         <category>服务器运维</category>

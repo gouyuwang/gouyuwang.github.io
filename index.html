@@ -360,6 +360,184 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/通过webhook自动部署git项目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Gou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="e攻城狮">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/articles/通过webhook自动部署git项目/" class="post-title-link" itemprop="url">通过webhook自动部署git项目</a>
+              
+            
+      
+          <!-- reprint icon -->
+          
+
+          </h2>
+        
+ 
+       
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-11-26 23:16:01" itemprop="dateCreated datePublished" datetime="2022-11-26T23:16:01Z">2022-11-26</time>
+            </span>
+          
+
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器运维/" itemprop="url" rel="index"><span itemprop="name">服务器运维</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+     
+        
+          
+            
+              <p>部署脚本 ci.sh: </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">cd</span> /www/project/  <span class="comment">#项目目录</span></span><br><span class="line">sudo <span class="built_in">unset</span> GIT_DIR</span><br><span class="line">sudo git pull</span><br></pre></td></tr></table></figure>
+
+<p>webhook(以php为例):</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/* check you auth */</span></span><br><span class="line">system(<span class="string">"sudo /xxx/ci.sh 2&gt;&amp;1"</span>); <span class="comment"># xxx表示你ci.sh文件所在目录</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意 1 ：git公钥归属的问题会导致你的 <code>git pull</code> 命令无法执行失败，需要把当前web服务器的用户权限提高</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">su - <span class="comment"># 进入超级用户模式</span></span><br><span class="line">chmod u+w /etc/sudoers  <span class="comment">#添加文件的写权限</span></span><br><span class="line">vim /etc/sudoers <span class="comment"># 编辑文件, 找到这一 行："root ALL=(ALL) ALL"在起下面添加"xxx ALL=(ALL) NOPASSWD:/usr/bin/git"(这里的xxx是你的web服务器的用户,如nginx默认的www)，然后保存退出。</span></span><br><span class="line">chmod u-w /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意 2 ： 出现<code>.git/FETCH_HEAD没有权限</code> 需要提升.git目录权限</p>
+</blockquote>
+<pre><code class="sh">chmod -R 777  .git</code></pre>
+
+            
+          
+        
+        
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/MySQL-MERGE存储引擎/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2443,203 +2621,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ya2.top/articles/Chrome扩展开发/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Gou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://img.sqydt.darongshutech.com/image_201907090032257276.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="e攻城狮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/articles/Chrome扩展开发/" class="post-title-link" itemprop="url">Chrome扩展开发</a>
-              
-            
-      
-          <!-- reprint icon -->
-          
-
-          </h2>
-        
- 
-       
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-10-26 17:10:17" itemprop="dateCreated datePublished" datetime="2020-10-26T17:10:17Z">2020-10-26</time>
-            </span>
-          
-
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端开发/" itemprop="url" rel="index"><span itemprop="name">前端开发</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-     
-        
-          
-            
-              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作者发现很多PC页面都没有做移动端转发的功能，有时候想在移动端阅读都要先在电脑上登录微信或者QQ转发到手机上面，一次两次还好，多了就觉得很不方便了，尤其是开发调试的时候。于是作者想到了开发一款浏览器插件简化一下上面的操作。</p>
-<p>先上一下折腾出的成果 <a href="https://github.com/gouyuwang/chrome-qrcode" target="_blank" rel="noopener">Github传送门</a>:<br><img src="/articles/Chrome扩展开发/demo.png" alt> </p>
-<h2 id="正题"><a href="#正题" class="headerlink" title="正题"></a>正题</h2><p>浏览器插件是一种小型的用于定制浏览器体验的程序。通过插件，我们可以定制js爬虫、屏蔽网页广告，网页实时查词，修改http请求头，等等，能做的东西很多。只要你会HTML，JavaScript，CSS就可以动手开发浏览器插件了。 </p>
-<p>1、创建<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json" target="_blank" rel="noopener">manifest.json</a>。任何插件都必须要有这个文件，用来描述插件的元数据，插件的配置信息。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"name"</span>:<span class="string">"Qrcode"</span>,</span><br><span class="line">    <span class="attr">"description"</span>:<span class="string">"Url Qrcode Extension"</span>,</span><br><span class="line">    "version":"1.0",// 版本version在打包完插件的时候，判断插件是否需要更新</span><br><span class="line">    "manifest_version":2, </span><br><span class="line">	  "description":"当前页面的二维码",</span><br><span class="line">    "browser_action":&#123;// 浏览器右上角的图标</span><br><span class="line">        "default_popup":"popup.html", // 弹出后运行的页面，相当于index.html</span><br><span class="line">        "default_icon":"icon.png",</span><br><span class="line">		"default_title":"生成页面二维码"</span><br><span class="line">    &#125;,</span><br><span class="line">	"icons":&#123; </span><br><span class="line">		"16":"icon.png",</span><br><span class="line">		"48":"icon.png",</span><br><span class="line">		"128":"icon.png"</span><br><span class="line">    &#125;,</span><br><span class="line">    "commands":&#123;</span><br><span class="line">        "_execute_browser_action":&#123;</span><br><span class="line">            "suggested_key":&#123; // 快捷键</span><br><span class="line">                "default":"Ctrl+Shift+F",</span><br><span class="line">                "mac":"MacCtrl+Shift+F"</span><br><span class="line">            &#125;,</span><br><span class="line">            "description":"Opens popup.html"</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">	"permissions": [ // 授权</span><br><span class="line">        "background", </span><br><span class="line">        <span class="string">"tabs"</span></span><br><span class="line">    ], </span><br><span class="line">    "background":&#123; // 后台运行</span><br><span class="line">        "script":[</span><br><span class="line">             "js/background.js" // 当前项目没有用到，因为不存在久驻后台的需求</span><br><span class="line">         ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2、编写业务</p>
-<p><img src="/articles/Chrome扩展开发/dir.png" alt="目录结构"></p>
-<p>里面内容比较简单，生成二维码和分享均用的三方插件。值得注意的是，html里面不能和js混写，这里涉及到一个权限问题。</p>
-<p><img src="/articles/Chrome扩展开发/jserror.png" alt="JS Error"></p>
-<p>3、运行调试</p>
-<ul>
-<li>进入浏览器扩展管理</li>
-</ul>
-<p><img src="/articles/Chrome扩展开发/dev.png" alt></p>
-<ul>
-<li>开发者模式打开，然后点击 “加载已解压的扩展程序” 将创建的插件目录导入进去，如果你只有crx文件，直接右键以压缩文件方式解压就可以看到全部代码。</li>
-</ul>
-<p><img src="/articles/Chrome扩展开发/opendev.png" alt></p>
-<ul>
-<li>成功后可以看到下面的画面</li>
-</ul>
-<p><img src="/articles/Chrome扩展开发/success.png" alt></p>
-<p>调试的跟普通网页调试差不多，右键点击弹出的扩展，点“审查元素”即可打开插件的开发工具，如图</p>
-<p><img src="/articles/Chrome扩展开发/debug.png" alt></p>
-<p>4、打包发布</p>
-<p><img src="/articles/Chrome扩展开发/prod.png" alt> </p>
-<p>打包后会生成.crx文件，将生成的.crx项目文件直接拖入浏览器，也可以在扩展程序里面添加，Google对这个审核还是比较严格的，禁止未上架的插件拖曳使用，但是可以以开发者模式安装。 亲测360浏览器是可以直接拖曳的使用的。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>浏览器插件开发，具有很高的实用性，值得我们去学习和了解。本文是作者记录第一次学习制作插件开发的过程，内容只是作者所用到的部分，未能面面俱到，敬请谅解。 </p>
-<p>欢迎一起讨论与留言。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions" target="_blank" rel="noopener">Browser Extensions</a></li>
-<li><a href="http://open.chrome.360.cn/extension_dev/overview.html" target="_blank" rel="noopener">360浏览器应用开放平台</a></li>
-</ul>
-<style>.posts-expand .post-body img{margin:0 auto; max-height:100vh;}</style>
-            
-          
-        
-        
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2688,7 +2669,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">154</span>
+                    <span class="site-state-item-count">155</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
