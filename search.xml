@@ -695,6 +695,53 @@
       </categories>
   </entry>
   <entry>
+    <title>Centos7   安装PHP</title>
+    <url>/articles/Centos7%20%20%20%E5%AE%89%E8%A3%85PHP/</url>
+    <content><![CDATA[<p>1、首先官网下载<a href="http://php.net/downloads.php" target="_blank" rel="noopener">php</a></p>
+<blockquote>
+<p>wget <a href="http://cn2.php.net/distributions/php-7.1.27.tar.gz" target="_blank" rel="noopener">http://cn2.php.net/distributions/php-7.1.27.tar.gz</a></p>
+</blockquote>
+<p>下载后，解压到服务器<code>/usr/src</code>目录 : <code>tar -zxvf php-7.1.27.tar.gz</code></p>
+<p>2、 添加www用户</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># groupadd www</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># useradd -g www www</span></span><br></pre></td></tr></table></figure>
+
+<p>3、完了后，configure编译，如下：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ./configure \</span></span><br><span class="line"></span><br><span class="line">--prefix=/usr/<span class="built_in">local</span>/php \</span><br><span class="line"></span><br><span class="line">--with-config-file-path=/usr/<span class="built_in">local</span>/php/etc \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-inline-optimization \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">disable</span>-debug \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">disable</span>-rpath \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-shared \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-opcache \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-fpm \</span><br><span class="line"></span><br><span class="line">--with-fpm-user=www \</span><br><span class="line"></span><br><span class="line">--with-fpm-group=www \</span><br><span class="line"></span><br><span class="line">--with-mysql=mysqlnd \</span><br><span class="line"></span><br><span class="line">--with-mysqli=mysqlnd \</span><br><span class="line"></span><br><span class="line">--with-pdo-mysql=mysqlnd \</span><br><span class="line"></span><br><span class="line">--with-gettext \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-mbstring \</span><br><span class="line"></span><br><span class="line">--with-iconv \</span><br><span class="line"></span><br><span class="line">--with-mcrypt \</span><br><span class="line"></span><br><span class="line">--with-mhash \</span><br><span class="line"></span><br><span class="line">--with-openssl \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-bcmath \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-soap \</span><br><span class="line"></span><br><span class="line">--with-libxml-dir \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-pcntl \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-shmop \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-sysvmsg \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-sysvsem \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-sysvshm \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-sockets \</span><br><span class="line"></span><br><span class="line">--with-curl \</span><br><span class="line"></span><br><span class="line">--with-zlib \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-zip \</span><br><span class="line"></span><br><span class="line">--with-bz2 \</span><br><span class="line"></span><br><span class="line">--with-readline</span><br></pre></td></tr></table></figure>
+
+<p>不好粘贴就复制下面的：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/php --with-config-file-path=/usr/<span class="built_in">local</span>/php/etc --<span class="built_in">enable</span>-inline-optimization --<span class="built_in">disable</span>-debug --<span class="built_in">disable</span>-rpath --<span class="built_in">enable</span>-shared --<span class="built_in">enable</span>-opcache --<span class="built_in">enable</span>-fpm --with-fpm-user=www --with-fpm-group=www --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gettext --<span class="built_in">enable</span>-mbstring --with-iconv --with-mcrypt --with-mhash --with-openssl --<span class="built_in">enable</span>-bcmath --<span class="built_in">enable</span>-soap --with-libxml-dir --<span class="built_in">enable</span>-pcntl --<span class="built_in">enable</span>-shmop --<span class="built_in">enable</span>-sysvmsg --<span class="built_in">enable</span>-sysvsem --<span class="built_in">enable</span>-sysvshm --<span class="built_in">enable</span>-sockets --with-curl --with-zlib --<span class="built_in">enable</span>-zip --with-bz2 --with-readline --with-gd --<span class="built_in">enable</span>-gd-native-ttf --<span class="built_in">enable</span>-gd-jis-conv</span><br></pre></td></tr></table></figure>
+
+<p>这个命令出现的错误直接<a href="https://www.baidu.com/" target="_blank" rel="noopener">百度</a>就能解决。</p>
+<p>4、安装</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">make</span><br><span class="line"></span><br><span class="line">make <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>出现以下表示安装成功</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[root@xxx bin]<span class="comment"># ./php -version</span></span><br><span class="line"></span><br><span class="line">PHP 7.1.27 (cli) (built: Mar 11 2019 14:55:23) ( NTS )</span><br><span class="line"></span><br><span class="line">Copyright (c) 1997-2018 The PHP Group</span><br><span class="line"></span><br><span class="line">Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies</span><br></pre></td></tr></table></figure>
+
+<p>5、 配置php-fpm 服务，自启动</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">cp php.ini-development /usr/<span class="built_in">local</span>/php/etc/php.ini</span><br></pre></td></tr></table></figure>
+
+<p>设置开机启动项的步骤和原理都是一样的，这里不再累赘太多，我直接上重点。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vi /etc/init.d/php-fpm</span><br></pre></td></tr></table></figure>
+
+<p>然后加入下面的脚本：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># nginx - this script starts and stops the nginx daemon</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># chkconfig:   - 85 15</span></span><br><span class="line"><span class="comment"># description:  NGINX is an HTTP(S) server, HTTP(S) reverse \</span></span><br><span class="line"><span class="comment">#               proxy and IMAP/POP3 proxy server</span></span><br><span class="line"><span class="comment"># processname: nginx</span></span><br><span class="line"><span class="comment"># config:      /etc/nginx/nginx.conf</span></span><br><span class="line"><span class="comment"># config:      /etc/sysconfig/nginx</span></span><br><span class="line"><span class="comment"># pidfile:     /var/run/nginx.pid</span></span><br><span class="line"><span class="comment"># Source function library.</span></span><br><span class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span></span><br><span class="line"><span class="comment"># Source networking configuration.</span></span><br><span class="line">. /etc/sysconfig/network</span><br><span class="line"><span class="comment"># Check that networking is up.</span></span><br><span class="line">[ <span class="string">"<span class="variable">$NETWORKING</span>"</span> = <span class="string">"no"</span> ] &amp;&amp; <span class="built_in">exit</span> 0</span><br><span class="line">nginx=<span class="string">"/usr/sbin/nginx"</span></span><br><span class="line">prog=$(basename <span class="variable">$nginx</span>)</span><br><span class="line">NGINX_CONF_FILE=<span class="string">"/etc/nginx/nginx.conf"</span></span><br><span class="line">[ -f /etc/sysconfig/nginx ] &amp;&amp; . /etc/sysconfig/nginx</span><br><span class="line">lockfile=/var/lock/subsys/nginx</span><br><span class="line"><span class="function"><span class="title">make_dirs</span></span>() &#123;</span><br><span class="line">   <span class="comment"># make required directories</span></span><br><span class="line">   user=`<span class="variable">$nginx</span> -V 2&gt;&amp;1 | grep <span class="string">"configure arguments:"</span> | sed <span class="string">'s/[^*]*--user=\([^ ]*\).*/\1/g'</span> -`</span><br><span class="line">   <span class="keyword">if</span> [ -z <span class="string">"`grep <span class="variable">$user</span> /etc/passwd`"</span> ]; <span class="keyword">then</span></span><br><span class="line">       useradd -M -s /bin/nologin <span class="variable">$user</span></span><br><span class="line">   <span class="keyword">fi</span></span><br><span class="line">   options=`<span class="variable">$nginx</span> -V 2&gt;&amp;1 | grep <span class="string">'configure arguments:'</span>`</span><br><span class="line">   <span class="keyword">for</span> opt <span class="keyword">in</span> <span class="variable">$options</span>; <span class="keyword">do</span></span><br><span class="line">       <span class="keyword">if</span> [ `<span class="built_in">echo</span> <span class="variable">$opt</span> | grep <span class="string">'.*-temp-path'</span>` ]; <span class="keyword">then</span></span><br><span class="line">           value=`<span class="built_in">echo</span> <span class="variable">$opt</span> | cut -d <span class="string">"="</span> -f 2`</span><br><span class="line">           <span class="keyword">if</span> [ ! -d <span class="string">"<span class="variable">$value</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">               <span class="comment"># echo "creating" $value</span></span><br><span class="line">               mkdir -p <span class="variable">$value</span> &amp;&amp; chown -R <span class="variable">$user</span> <span class="variable">$value</span></span><br><span class="line">           <span class="keyword">fi</span></span><br><span class="line">       <span class="keyword">fi</span></span><br><span class="line">   <span class="keyword">done</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123;</span><br><span class="line">    [ -x <span class="variable">$nginx</span> ] || <span class="built_in">exit</span> 5</span><br><span class="line">    [ -f <span class="variable">$NGINX_CONF_FILE</span> ] || <span class="built_in">exit</span> 6</span><br><span class="line">    make_dirs</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span>: "</span></span><br><span class="line">    daemon <span class="variable">$nginx</span> -c <span class="variable">$NGINX_CONF_FILE</span></span><br><span class="line">    retval=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">    [ <span class="variable">$retval</span> -eq 0 ] &amp;&amp; touch <span class="variable">$lockfile</span></span><br><span class="line">    <span class="built_in">return</span> <span class="variable">$retval</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span>: "</span></span><br><span class="line">    killproc <span class="variable">$prog</span> -QUIT</span><br><span class="line">    retval=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">    [ <span class="variable">$retval</span> -eq 0 ] &amp;&amp; rm -f <span class="variable">$lockfile</span></span><br><span class="line">    <span class="built_in">return</span> <span class="variable">$retval</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">restart</span></span>() &#123;</span><br><span class="line">    configtest || <span class="built_in">return</span> $?</span><br><span class="line">    stop</span><br><span class="line">    sleep 1</span><br><span class="line">    start</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">reload</span></span>() &#123;</span><br><span class="line">    configtest || <span class="built_in">return</span> $?</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Reloading <span class="variable">$prog</span>: "</span></span><br><span class="line">    killproc <span class="variable">$nginx</span> -HUP</span><br><span class="line">    RETVAL=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">force_reload</span></span>() &#123;</span><br><span class="line">    restart</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">configtest</span></span>() &#123;</span><br><span class="line">  <span class="variable">$nginx</span> -t -c <span class="variable">$NGINX_CONF_FILE</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">rh_status</span></span>() &#123;</span><br><span class="line">    status <span class="variable">$prog</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">rh_status_q</span></span>() &#123;</span><br><span class="line">    rh_status &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">    start)</span><br><span class="line">        rh_status_q &amp;&amp; <span class="built_in">exit</span> 0</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    stop)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 0</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    restart|configtest)</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    reload)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 7</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    force-reload)</span><br><span class="line">        force_reload</span><br><span class="line">        ;;</span><br><span class="line">    status)</span><br><span class="line">        rh_status</span><br><span class="line">        ;;</span><br><span class="line">    condrestart|try-restart)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 0</span><br><span class="line">            ;;</span><br><span class="line">    *)</span><br><span class="line">        <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest&#125;"</span></span><br><span class="line">        <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+
+<p>设置可执行权限</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod +x php-fpm</span><br></pre></td></tr></table></figure>
+
+<p>再就是加到开机启动项里面去</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chkconfig --add php-fpm</span><br></pre></td></tr></table></figure>
+
+<p>然后测试指令</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">service php-fpm start <span class="comment">#开启</span></span><br><span class="line"></span><br><span class="line">service php-fpm stop  <span class="comment">#停止</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>PHP</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Centos7  Redis自启动报错</title>
     <url>/articles/Centos7%20%20Redis%E8%87%AA%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99/</url>
     <content><![CDATA[<p>错误日志如下</p>
@@ -757,53 +804,6 @@
 <style>.posts-expand .post-body img{margin:0 auto; max-height:100vh;}</style>]]></content>
       <categories>
         <category>前端开发</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Centos7   安装PHP</title>
-    <url>/articles/Centos7%20%20%20%E5%AE%89%E8%A3%85PHP/</url>
-    <content><![CDATA[<p>1、首先官网下载<a href="http://php.net/downloads.php" target="_blank" rel="noopener">php</a></p>
-<blockquote>
-<p>wget <a href="http://cn2.php.net/distributions/php-7.1.27.tar.gz" target="_blank" rel="noopener">http://cn2.php.net/distributions/php-7.1.27.tar.gz</a></p>
-</blockquote>
-<p>下载后，解压到服务器<code>/usr/src</code>目录 : <code>tar -zxvf php-7.1.27.tar.gz</code></p>
-<p>2、 添加www用户</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># groupadd www</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># useradd -g www www</span></span><br></pre></td></tr></table></figure>
-
-<p>3、完了后，configure编译，如下：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ./configure \</span></span><br><span class="line"></span><br><span class="line">--prefix=/usr/<span class="built_in">local</span>/php \</span><br><span class="line"></span><br><span class="line">--with-config-file-path=/usr/<span class="built_in">local</span>/php/etc \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-inline-optimization \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">disable</span>-debug \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">disable</span>-rpath \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-shared \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-opcache \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-fpm \</span><br><span class="line"></span><br><span class="line">--with-fpm-user=www \</span><br><span class="line"></span><br><span class="line">--with-fpm-group=www \</span><br><span class="line"></span><br><span class="line">--with-mysql=mysqlnd \</span><br><span class="line"></span><br><span class="line">--with-mysqli=mysqlnd \</span><br><span class="line"></span><br><span class="line">--with-pdo-mysql=mysqlnd \</span><br><span class="line"></span><br><span class="line">--with-gettext \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-mbstring \</span><br><span class="line"></span><br><span class="line">--with-iconv \</span><br><span class="line"></span><br><span class="line">--with-mcrypt \</span><br><span class="line"></span><br><span class="line">--with-mhash \</span><br><span class="line"></span><br><span class="line">--with-openssl \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-bcmath \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-soap \</span><br><span class="line"></span><br><span class="line">--with-libxml-dir \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-pcntl \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-shmop \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-sysvmsg \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-sysvsem \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-sysvshm \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-sockets \</span><br><span class="line"></span><br><span class="line">--with-curl \</span><br><span class="line"></span><br><span class="line">--with-zlib \</span><br><span class="line"></span><br><span class="line">--<span class="built_in">enable</span>-zip \</span><br><span class="line"></span><br><span class="line">--with-bz2 \</span><br><span class="line"></span><br><span class="line">--with-readline</span><br></pre></td></tr></table></figure>
-
-<p>不好粘贴就复制下面的：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/php --with-config-file-path=/usr/<span class="built_in">local</span>/php/etc --<span class="built_in">enable</span>-inline-optimization --<span class="built_in">disable</span>-debug --<span class="built_in">disable</span>-rpath --<span class="built_in">enable</span>-shared --<span class="built_in">enable</span>-opcache --<span class="built_in">enable</span>-fpm --with-fpm-user=www --with-fpm-group=www --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gettext --<span class="built_in">enable</span>-mbstring --with-iconv --with-mcrypt --with-mhash --with-openssl --<span class="built_in">enable</span>-bcmath --<span class="built_in">enable</span>-soap --with-libxml-dir --<span class="built_in">enable</span>-pcntl --<span class="built_in">enable</span>-shmop --<span class="built_in">enable</span>-sysvmsg --<span class="built_in">enable</span>-sysvsem --<span class="built_in">enable</span>-sysvshm --<span class="built_in">enable</span>-sockets --with-curl --with-zlib --<span class="built_in">enable</span>-zip --with-bz2 --with-readline --with-gd --<span class="built_in">enable</span>-gd-native-ttf --<span class="built_in">enable</span>-gd-jis-conv</span><br></pre></td></tr></table></figure>
-
-<p>这个命令出现的错误直接<a href="https://www.baidu.com/" target="_blank" rel="noopener">百度</a>就能解决。</p>
-<p>4、安装</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">make</span><br><span class="line"></span><br><span class="line">make <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-
-<p>出现以下表示安装成功</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[root@xxx bin]<span class="comment"># ./php -version</span></span><br><span class="line"></span><br><span class="line">PHP 7.1.27 (cli) (built: Mar 11 2019 14:55:23) ( NTS )</span><br><span class="line"></span><br><span class="line">Copyright (c) 1997-2018 The PHP Group</span><br><span class="line"></span><br><span class="line">Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies</span><br></pre></td></tr></table></figure>
-
-<p>5、 配置php-fpm 服务，自启动</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">cp php.ini-development /usr/<span class="built_in">local</span>/php/etc/php.ini</span><br></pre></td></tr></table></figure>
-
-<p>设置开机启动项的步骤和原理都是一样的，这里不再累赘太多，我直接上重点。</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vi /etc/init.d/php-fpm</span><br></pre></td></tr></table></figure>
-
-<p>然后加入下面的脚本：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># nginx - this script starts and stops the nginx daemon</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># chkconfig:   - 85 15</span></span><br><span class="line"><span class="comment"># description:  NGINX is an HTTP(S) server, HTTP(S) reverse \</span></span><br><span class="line"><span class="comment">#               proxy and IMAP/POP3 proxy server</span></span><br><span class="line"><span class="comment"># processname: nginx</span></span><br><span class="line"><span class="comment"># config:      /etc/nginx/nginx.conf</span></span><br><span class="line"><span class="comment"># config:      /etc/sysconfig/nginx</span></span><br><span class="line"><span class="comment"># pidfile:     /var/run/nginx.pid</span></span><br><span class="line"><span class="comment"># Source function library.</span></span><br><span class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span></span><br><span class="line"><span class="comment"># Source networking configuration.</span></span><br><span class="line">. /etc/sysconfig/network</span><br><span class="line"><span class="comment"># Check that networking is up.</span></span><br><span class="line">[ <span class="string">"<span class="variable">$NETWORKING</span>"</span> = <span class="string">"no"</span> ] &amp;&amp; <span class="built_in">exit</span> 0</span><br><span class="line">nginx=<span class="string">"/usr/sbin/nginx"</span></span><br><span class="line">prog=$(basename <span class="variable">$nginx</span>)</span><br><span class="line">NGINX_CONF_FILE=<span class="string">"/etc/nginx/nginx.conf"</span></span><br><span class="line">[ -f /etc/sysconfig/nginx ] &amp;&amp; . /etc/sysconfig/nginx</span><br><span class="line">lockfile=/var/lock/subsys/nginx</span><br><span class="line"><span class="function"><span class="title">make_dirs</span></span>() &#123;</span><br><span class="line">   <span class="comment"># make required directories</span></span><br><span class="line">   user=`<span class="variable">$nginx</span> -V 2&gt;&amp;1 | grep <span class="string">"configure arguments:"</span> | sed <span class="string">'s/[^*]*--user=\([^ ]*\).*/\1/g'</span> -`</span><br><span class="line">   <span class="keyword">if</span> [ -z <span class="string">"`grep <span class="variable">$user</span> /etc/passwd`"</span> ]; <span class="keyword">then</span></span><br><span class="line">       useradd -M -s /bin/nologin <span class="variable">$user</span></span><br><span class="line">   <span class="keyword">fi</span></span><br><span class="line">   options=`<span class="variable">$nginx</span> -V 2&gt;&amp;1 | grep <span class="string">'configure arguments:'</span>`</span><br><span class="line">   <span class="keyword">for</span> opt <span class="keyword">in</span> <span class="variable">$options</span>; <span class="keyword">do</span></span><br><span class="line">       <span class="keyword">if</span> [ `<span class="built_in">echo</span> <span class="variable">$opt</span> | grep <span class="string">'.*-temp-path'</span>` ]; <span class="keyword">then</span></span><br><span class="line">           value=`<span class="built_in">echo</span> <span class="variable">$opt</span> | cut -d <span class="string">"="</span> -f 2`</span><br><span class="line">           <span class="keyword">if</span> [ ! -d <span class="string">"<span class="variable">$value</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">               <span class="comment"># echo "creating" $value</span></span><br><span class="line">               mkdir -p <span class="variable">$value</span> &amp;&amp; chown -R <span class="variable">$user</span> <span class="variable">$value</span></span><br><span class="line">           <span class="keyword">fi</span></span><br><span class="line">       <span class="keyword">fi</span></span><br><span class="line">   <span class="keyword">done</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123;</span><br><span class="line">    [ -x <span class="variable">$nginx</span> ] || <span class="built_in">exit</span> 5</span><br><span class="line">    [ -f <span class="variable">$NGINX_CONF_FILE</span> ] || <span class="built_in">exit</span> 6</span><br><span class="line">    make_dirs</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span>: "</span></span><br><span class="line">    daemon <span class="variable">$nginx</span> -c <span class="variable">$NGINX_CONF_FILE</span></span><br><span class="line">    retval=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">    [ <span class="variable">$retval</span> -eq 0 ] &amp;&amp; touch <span class="variable">$lockfile</span></span><br><span class="line">    <span class="built_in">return</span> <span class="variable">$retval</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span>: "</span></span><br><span class="line">    killproc <span class="variable">$prog</span> -QUIT</span><br><span class="line">    retval=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">    [ <span class="variable">$retval</span> -eq 0 ] &amp;&amp; rm -f <span class="variable">$lockfile</span></span><br><span class="line">    <span class="built_in">return</span> <span class="variable">$retval</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">restart</span></span>() &#123;</span><br><span class="line">    configtest || <span class="built_in">return</span> $?</span><br><span class="line">    stop</span><br><span class="line">    sleep 1</span><br><span class="line">    start</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">reload</span></span>() &#123;</span><br><span class="line">    configtest || <span class="built_in">return</span> $?</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Reloading <span class="variable">$prog</span>: "</span></span><br><span class="line">    killproc <span class="variable">$nginx</span> -HUP</span><br><span class="line">    RETVAL=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">force_reload</span></span>() &#123;</span><br><span class="line">    restart</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">configtest</span></span>() &#123;</span><br><span class="line">  <span class="variable">$nginx</span> -t -c <span class="variable">$NGINX_CONF_FILE</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">rh_status</span></span>() &#123;</span><br><span class="line">    status <span class="variable">$prog</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">rh_status_q</span></span>() &#123;</span><br><span class="line">    rh_status &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">    start)</span><br><span class="line">        rh_status_q &amp;&amp; <span class="built_in">exit</span> 0</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    stop)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 0</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    restart|configtest)</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    reload)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 7</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    force-reload)</span><br><span class="line">        force_reload</span><br><span class="line">        ;;</span><br><span class="line">    status)</span><br><span class="line">        rh_status</span><br><span class="line">        ;;</span><br><span class="line">    condrestart|try-restart)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 0</span><br><span class="line">            ;;</span><br><span class="line">    *)</span><br><span class="line">        <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest&#125;"</span></span><br><span class="line">        <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
-
-<p>设置可执行权限</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod +x php-fpm</span><br></pre></td></tr></table></figure>
-
-<p>再就是加到开机启动项里面去</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chkconfig --add php-fpm</span><br></pre></td></tr></table></figure>
-
-<p>然后测试指令</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">service php-fpm start <span class="comment">#开启</span></span><br><span class="line"></span><br><span class="line">service php-fpm stop  <span class="comment">#停止</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>PHP</category>
       </categories>
   </entry>
   <entry>
@@ -1219,6 +1219,63 @@
       </tags>
   </entry>
   <entry>
+    <title>GET和POST的区别</title>
+    <url>/articles/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p>GET 和 POST 是 HTTP 请求的两种基本方法，要说它们的区别，接触过 WEB 开发的人都能说出一二。<br>最直观的区别就是 GET 把参数包含在 URL 中，POST 通过 request body 传递参数。<br>你可能自己写过无数个 GET 和 POST 请求，或者已经看过很多权威网站总结出的他们的区别，你非常清楚知道什么时候该用什么。<br>当你在面试中被问到这个问题，你的内心充满了自信和喜悦。</p>
+<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/aME3sRsNPs.png!large" alt></p>
+<p>你轻轻松松的给出了一个 “标准答案”：</p>
+<ul>
+<li>GET在浏览器回退时是无害的，而POST会再次提交请求。</li>
+<li>GET产生的URL地址可以被Bookmark，而POST不可以。</li>
+<li>GET请求会被浏览器主动cache，而POST不会，除非手动设置。</li>
+<li>GET请求只能进行url编码，而POST支持多种编码方式。</li>
+<li>GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会被保留。</li>
+<li>GET请求在URL中传送的参数是有长度限制的，而POST么有。</li>
+<li>对参数的数据类型，GET只接受ASCII字符，而POST没有限制。</li>
+<li>GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。</li>
+<li>GET参数通过URL传递，POST放在Request body中。</li>
+</ul>
+<p>“很遗憾，这不是我们要的回答！”</p>
+<p>如果我告诉你 GET 和 POST 本质上没有区别你信吗？<br>让我们扒下 GET 和 POST 的外衣，坦诚相见吧！</p>
+<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/1mGrHgo38l.png!large" alt></p>
+<p>GET 和 POST 是什么？HTTP 协议中的两种发送请求的方法。</p>
+<p>HTTP 是什么？HTTP 是基于 TCP/IP 的关于数据如何在万维网中如何通信的协议。</p>
+<p>HTTP 的底层是 TCP/IP。所以 GET 和 POST 的底层也是 TCP/IP，也就是说，GET/POST 都是 TCP 链接。GET 和 POST 能做的事情是一样一样的。你要给 GET 加上 request body，给 POST 带上 url 参数，技术上是完全行的通的。</p>
+<p>“标准答案” 里的那些区别是怎么回事？</p>
+<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/dScx42N8xa.png!large" alt></p>
+<p>在我大万维网世界中，TCP 就像汽车，我们用 TCP 来运输数据，它很可靠，从来不会发生丢件少件的现象。但是如果路上跑的全是看起来一模一样的汽车，那这个世界看起来是一团混乱，送急件的汽车可能被前面满载货物的汽车拦堵在路上，整个交通系统一定会瘫痪。为了避免这种情况发生，交通规则 HTTP 诞生了。HTTP 给汽车运输设定了好几个服务类别，有 GET, POST, PUT, DELETE 等等，HTTP 规定，当执行 GET 请求的时候，要给汽车贴上 GET 的标签（设置 method 为 GET），而且要求把传送的数据放在车顶上（url 中）以方便记录。如果是 POST 请求，就要在车上贴上 POST 的标签，并把货物放在车厢里。当然，你也可以在 GET 的时候往车厢内偷偷藏点货物，但是这是很不光彩；也可以在 POST 的时候在车顶上也放一些数据，让人觉得傻乎乎的。HTTP 只是个行为准则，而 TCP 才是 GET 和 POST 怎么实现的基本。</p>
+<p>但是，我们只看到 HTTP 对 GET 和 POST 参数的传送渠道（url 还是 requrest body）提出了要求。“标准答案” 里关于参数大小的限制又是从哪来的呢？</p>
+<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/ji7JzxVZgt.png!large" alt></p>
+<p>在我大万维网世界中，还有另一个重要的角色：运输公司。不同的浏览器（发起 http 请求）和服务器（接受 http 请求）就是不同的运输公司。 虽然理论上，你可以在车顶上无限的堆货物（url 中无限加参数）。但是运输公司可不傻，装货和卸货也是有很大成本的，他们会限制单次运输量来控制风险，数据量太大对浏览器和服务器都是很大负担。业界不成文的规定是，（大多数）浏览器通常都会限制 url 长度在 2K 个字节，而（大多数）服务器最多处理 64K 大小的 url。超过的部分，恕不处理。如果你用 GET 服务，在 request body 偷偷藏了数据，不同服务器的处理方式也是不同的，有些服务器会帮你卸货，读出数据，有些服务器直接忽略，所以，虽然 GET 可以带 request body，也不能保证一定能被接收到哦。</p>
+<p>好了，现在你知道，GET 和 POST 本质上就是 TCP 链接，并无差别。但是由于 HTTP 的规定和浏览器 / 服务器的限制，导致他们在应用过程中体现出一些不同。</p>
+<p>你以为本文就这么结束了？</p>
+<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/Kb6RMB5DXU.png!large" alt></p>
+<p>我们的大 BOSS 还等着出场呢。。。</p>
+<p>这位 BOSS 有多神秘？当你试图在网上找 “GET 和 POST 的区别” 的时候，那些你会看到的搜索结果里，从没有提到他。他究竟是什么呢。。。</p>
+<p>GET 和 POST 还有一个重大区别，简单的说：</p>
+<p>GET产生一个TCP数据包；POST产生两个TCP数据包。<br>长的说：</p>
+<blockquote>
+<p>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；</p>
+<p>而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。</p>
+<p>也就是说，GET只需要汽车跑一趟就把货送到了，而POST得跑两趟，第一趟，先去和服务器打个招呼“嗨，我等下要送一批货来，你们打开门迎接我”，然后再回头把货送过去。</p>
+<p>因为POST需要两步，时间上消耗的要多一点，看起来GET比POST更有效。因此Yahoo团队有推荐用GET替换POST来优化网站性能。但这是一个坑！跳入需谨慎。为什么？</p>
+<ol>
+<li><p>GET与POST都有自己的语义，不能随便混用。</p>
+</li>
+<li><p>据研究，在网络环境好的情况下，发一次包的时间和发两次包的时间差别基本可以无视。而在网络环境差的情况下，两次包的TCP在验证数据包完整性上，有非常大的优点。</p>
+</li>
+<li><p>并不是所有浏览器都会在POST中发送两次包，Firefox就只发送一次。</p>
+</li>
+</ol>
+</blockquote>
+<p>现在，当面试官再问你 “GET 与 POST 的区别” 的时候，你的内心是不是这样的？</p>
+<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/MDjzqK9B9Q.png!large" alt></p>
+]]></content>
+      <categories>
+        <category>PHP</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Grid布局</title>
     <url>/articles/Grid%E5%B8%83%E5%B1%80/</url>
     <content><![CDATA[<h3 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h3><p>网格布局（Grid）是最强大的 CSS 布局方案。</p>
@@ -1542,63 +1599,6 @@
 ]]></content>
       <categories>
         <category>前端开发</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>GET和POST的区别</title>
-    <url>/articles/GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p>GET 和 POST 是 HTTP 请求的两种基本方法，要说它们的区别，接触过 WEB 开发的人都能说出一二。<br>最直观的区别就是 GET 把参数包含在 URL 中，POST 通过 request body 传递参数。<br>你可能自己写过无数个 GET 和 POST 请求，或者已经看过很多权威网站总结出的他们的区别，你非常清楚知道什么时候该用什么。<br>当你在面试中被问到这个问题，你的内心充满了自信和喜悦。</p>
-<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/aME3sRsNPs.png!large" alt></p>
-<p>你轻轻松松的给出了一个 “标准答案”：</p>
-<ul>
-<li>GET在浏览器回退时是无害的，而POST会再次提交请求。</li>
-<li>GET产生的URL地址可以被Bookmark，而POST不可以。</li>
-<li>GET请求会被浏览器主动cache，而POST不会，除非手动设置。</li>
-<li>GET请求只能进行url编码，而POST支持多种编码方式。</li>
-<li>GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会被保留。</li>
-<li>GET请求在URL中传送的参数是有长度限制的，而POST么有。</li>
-<li>对参数的数据类型，GET只接受ASCII字符，而POST没有限制。</li>
-<li>GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。</li>
-<li>GET参数通过URL传递，POST放在Request body中。</li>
-</ul>
-<p>“很遗憾，这不是我们要的回答！”</p>
-<p>如果我告诉你 GET 和 POST 本质上没有区别你信吗？<br>让我们扒下 GET 和 POST 的外衣，坦诚相见吧！</p>
-<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/1mGrHgo38l.png!large" alt></p>
-<p>GET 和 POST 是什么？HTTP 协议中的两种发送请求的方法。</p>
-<p>HTTP 是什么？HTTP 是基于 TCP/IP 的关于数据如何在万维网中如何通信的协议。</p>
-<p>HTTP 的底层是 TCP/IP。所以 GET 和 POST 的底层也是 TCP/IP，也就是说，GET/POST 都是 TCP 链接。GET 和 POST 能做的事情是一样一样的。你要给 GET 加上 request body，给 POST 带上 url 参数，技术上是完全行的通的。</p>
-<p>“标准答案” 里的那些区别是怎么回事？</p>
-<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/dScx42N8xa.png!large" alt></p>
-<p>在我大万维网世界中，TCP 就像汽车，我们用 TCP 来运输数据，它很可靠，从来不会发生丢件少件的现象。但是如果路上跑的全是看起来一模一样的汽车，那这个世界看起来是一团混乱，送急件的汽车可能被前面满载货物的汽车拦堵在路上，整个交通系统一定会瘫痪。为了避免这种情况发生，交通规则 HTTP 诞生了。HTTP 给汽车运输设定了好几个服务类别，有 GET, POST, PUT, DELETE 等等，HTTP 规定，当执行 GET 请求的时候，要给汽车贴上 GET 的标签（设置 method 为 GET），而且要求把传送的数据放在车顶上（url 中）以方便记录。如果是 POST 请求，就要在车上贴上 POST 的标签，并把货物放在车厢里。当然，你也可以在 GET 的时候往车厢内偷偷藏点货物，但是这是很不光彩；也可以在 POST 的时候在车顶上也放一些数据，让人觉得傻乎乎的。HTTP 只是个行为准则，而 TCP 才是 GET 和 POST 怎么实现的基本。</p>
-<p>但是，我们只看到 HTTP 对 GET 和 POST 参数的传送渠道（url 还是 requrest body）提出了要求。“标准答案” 里关于参数大小的限制又是从哪来的呢？</p>
-<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/ji7JzxVZgt.png!large" alt></p>
-<p>在我大万维网世界中，还有另一个重要的角色：运输公司。不同的浏览器（发起 http 请求）和服务器（接受 http 请求）就是不同的运输公司。 虽然理论上，你可以在车顶上无限的堆货物（url 中无限加参数）。但是运输公司可不傻，装货和卸货也是有很大成本的，他们会限制单次运输量来控制风险，数据量太大对浏览器和服务器都是很大负担。业界不成文的规定是，（大多数）浏览器通常都会限制 url 长度在 2K 个字节，而（大多数）服务器最多处理 64K 大小的 url。超过的部分，恕不处理。如果你用 GET 服务，在 request body 偷偷藏了数据，不同服务器的处理方式也是不同的，有些服务器会帮你卸货，读出数据，有些服务器直接忽略，所以，虽然 GET 可以带 request body，也不能保证一定能被接收到哦。</p>
-<p>好了，现在你知道，GET 和 POST 本质上就是 TCP 链接，并无差别。但是由于 HTTP 的规定和浏览器 / 服务器的限制，导致他们在应用过程中体现出一些不同。</p>
-<p>你以为本文就这么结束了？</p>
-<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/Kb6RMB5DXU.png!large" alt></p>
-<p>我们的大 BOSS 还等着出场呢。。。</p>
-<p>这位 BOSS 有多神秘？当你试图在网上找 “GET 和 POST 的区别” 的时候，那些你会看到的搜索结果里，从没有提到他。他究竟是什么呢。。。</p>
-<p>GET 和 POST 还有一个重大区别，简单的说：</p>
-<p>GET产生一个TCP数据包；POST产生两个TCP数据包。<br>长的说：</p>
-<blockquote>
-<p>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；</p>
-<p>而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。</p>
-<p>也就是说，GET只需要汽车跑一趟就把货送到了，而POST得跑两趟，第一趟，先去和服务器打个招呼“嗨，我等下要送一批货来，你们打开门迎接我”，然后再回头把货送过去。</p>
-<p>因为POST需要两步，时间上消耗的要多一点，看起来GET比POST更有效。因此Yahoo团队有推荐用GET替换POST来优化网站性能。但这是一个坑！跳入需谨慎。为什么？</p>
-<ol>
-<li><p>GET与POST都有自己的语义，不能随便混用。</p>
-</li>
-<li><p>据研究，在网络环境好的情况下，发一次包的时间和发两次包的时间差别基本可以无视。而在网络环境差的情况下，两次包的TCP在验证数据包完整性上，有非常大的优点。</p>
-</li>
-<li><p>并不是所有浏览器都会在POST中发送两次包，Firefox就只发送一次。</p>
-</li>
-</ol>
-</blockquote>
-<p>现在，当面试官再问你 “GET 与 POST 的区别” 的时候，你的内心是不是这样的？</p>
-<p><img src="https://cdn.learnku.com/uploads/images/201903/21/28524/MDjzqK9B9Q.png!large" alt></p>
-]]></content>
-      <categories>
-        <category>PHP</category>
       </categories>
   </entry>
   <entry>
@@ -6236,23 +6236,23 @@ Photo - 指向人物照片的 URL。URL - 属于个人的网站。</code></pre><
       </categories>
   </entry>
   <entry>
-    <title>linux端口检测</title>
-    <url>/articles/linux%E7%AB%AF%E5%8F%A3%E6%A3%80%E6%B5%8B/</url>
-    <content><![CDATA[<h4 id="永久开启端口"><a href="#永久开启端口" class="headerlink" title="永久开启端口"></a>永久开启端口</h4><p><code>firewall-cmd --add-port=3128/tcp --permanent</code></p>
-<h4 id="查询端口是否开启"><a href="#查询端口是否开启" class="headerlink" title="查询端口是否开启"></a>查询端口是否开启</h4><p><code>firewall-cmd --query-port=3128/tcp</code></p>
-<h4 id="启动firewall"><a href="#启动firewall" class="headerlink" title="启动firewall"></a>启动firewall</h4><p><code>systemctl start firewalld.service</code></p>
-<h4 id="停止firewall"><a href="#停止firewall" class="headerlink" title="停止firewall"></a>停止firewall</h4><p><code>systemctl stop firewalld.service</code></p>
+    <title>linux代理</title>
+    <url>/articles/linux%E4%BB%A3%E7%90%86/</url>
+    <content><![CDATA[<p>nginx.conf 文件：</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">server_name</span>  job.easysq.cn;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Nginx-Proxy <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> Connection <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:3003/;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>服务器运维</category>
       </categories>
   </entry>
   <entry>
-    <title>linux代理</title>
-    <url>/articles/linux%E4%BB%A3%E7%90%86/</url>
-    <content><![CDATA[<p>nginx.conf 文件：</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">server_name</span>  job.easysq.cn;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Nginx-Proxy <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_set_header</span> Connection <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:3003/;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+    <title>linux端口检测</title>
+    <url>/articles/linux%E7%AB%AF%E5%8F%A3%E6%A3%80%E6%B5%8B/</url>
+    <content><![CDATA[<h4 id="永久开启端口"><a href="#永久开启端口" class="headerlink" title="永久开启端口"></a>永久开启端口</h4><p><code>firewall-cmd --add-port=3128/tcp --permanent</code></p>
+<h4 id="查询端口是否开启"><a href="#查询端口是否开启" class="headerlink" title="查询端口是否开启"></a>查询端口是否开启</h4><p><code>firewall-cmd --query-port=3128/tcp</code></p>
+<h4 id="启动firewall"><a href="#启动firewall" class="headerlink" title="启动firewall"></a>启动firewall</h4><p><code>systemctl start firewalld.service</code></p>
+<h4 id="停止firewall"><a href="#停止firewall" class="headerlink" title="停止firewall"></a>停止firewall</h4><p><code>systemctl stop firewalld.service</code></p>
 ]]></content>
       <categories>
         <category>服务器运维</category>
@@ -9975,19 +9975,6 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
       </categories>
   </entry>
   <entry>
-    <title>如何创建泛域名</title>
-    <url>/articles/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E6%B3%9B%E5%9F%9F%E5%90%8D/</url>
-    <content><![CDATA[<p>在域名管理处做一个泛解析 <em>.domain.com 指向服务器的ip, 然后在Nginx配置文件里面增加配置,这个配置还可以制作多级域名,例如</em>.demo.domain.com.</p>
-<p>例子:  web主目录下创建一个test的文件夹自动生成一个叫test.domain.com 的网址.</p>
-<p>WEB_ROOT : /data/www</p>
-<p>HOST:  domain.com</p>
-<p>*NGINX配置代码:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line"></span><br><span class="line">    listen      80;</span><br><span class="line"></span><br><span class="line">    server_name  ~^(?&lt;subdomain&gt;.+)\.domain\.com$;</span><br><span class="line"></span><br><span class="line">    root   /web/data/www/<span class="variable">$subdomain</span>;</span><br><span class="line"></span><br><span class="line">    index  index.php index.html index.htm;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line"></span><br><span class="line">        fastcgi_param SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>) &#123;</span><br><span class="line"></span><br><span class="line">            rewrite  ^(.*)$  /index.php?s=<span class="variable">$1</span>/  last;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ .*\.php(\/.*)*$ &#123;</span><br><span class="line"></span><br><span class="line">        fastcgi_pass  unix:/tmp/php-cgi.sock;</span><br><span class="line"></span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line"></span><br><span class="line">        include fastcgi.conf;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>服务器运维</category>
-      </categories>
-  </entry>
-  <entry>
     <title>如何修改PHP的memory_limit限制</title>
     <url>/articles/%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9PHP%E7%9A%84memory-limit%E9%99%90%E5%88%B6/</url>
     <content><![CDATA[<p>在运行PHP程序，通常会遇到“Fatal Error: Allowed memory size of xxxxxx bytes exhausted”的错误, 这个意味着PHP脚本使用了过多的内存，并超出了系统对其设置的允许最大内存。解决这个问题，首先需要查看你的程序是否分配了过多的内存，在程序没有问题的情况下，你可以通过一下方法来增加PHP的内存限制（memory_limit)。</p>
@@ -10038,6 +10025,19 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
 ]]></content>
       <categories>
         <category>PHP</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>如何创建泛域名</title>
+    <url>/articles/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E6%B3%9B%E5%9F%9F%E5%90%8D/</url>
+    <content><![CDATA[<p>在域名管理处做一个泛解析 <em>.domain.com 指向服务器的ip, 然后在Nginx配置文件里面增加配置,这个配置还可以制作多级域名,例如</em>.demo.domain.com.</p>
+<p>例子:  web主目录下创建一个test的文件夹自动生成一个叫test.domain.com 的网址.</p>
+<p>WEB_ROOT : /data/www</p>
+<p>HOST:  domain.com</p>
+<p>*NGINX配置代码:</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line"></span><br><span class="line">    listen      80;</span><br><span class="line"></span><br><span class="line">    server_name  ~^(?&lt;subdomain&gt;.+)\.domain\.com$;</span><br><span class="line"></span><br><span class="line">    root   /web/data/www/<span class="variable">$subdomain</span>;</span><br><span class="line"></span><br><span class="line">    index  index.php index.html index.htm;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line"></span><br><span class="line">        fastcgi_param SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>) &#123;</span><br><span class="line"></span><br><span class="line">            rewrite  ^(.*)$  /index.php?s=<span class="variable">$1</span>/  last;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ .*\.php(\/.*)*$ &#123;</span><br><span class="line"></span><br><span class="line">        fastcgi_pass  unix:/tmp/php-cgi.sock;</span><br><span class="line"></span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line"></span><br><span class="line">        include fastcgi.conf;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>服务器运维</category>
       </categories>
   </entry>
   <entry>
@@ -11625,32 +11625,6 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
       </categories>
   </entry>
   <entry>
-    <title>超级终端玩法</title>
-    <url>/articles/%E8%B6%85%E7%BA%A7%E7%BB%88%E7%AB%AF%E7%8E%A9%E6%B3%95/</url>
-    <content><![CDATA[<p>颜色特效控制：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">printf(&quot;\033[1;33m Hello World. \033[0m \n&quot;);</span><br></pre></td></tr></table></figure>
-
-<p>颜色如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">none         = &quot;\033[0m&quot;</span><br><span class="line"></span><br><span class="line">black        = &quot;\033[0;30m&quot;</span><br><span class="line"></span><br><span class="line">dark_gray    = &quot;\033[1;30m&quot;</span><br><span class="line"></span><br><span class="line">blue         = &quot;\033[0;34m&quot;</span><br><span class="line"></span><br><span class="line">light_blue   = &quot;\033[1;34m&quot;</span><br><span class="line"></span><br><span class="line">green        = &quot;\033[0;32m&quot;</span><br><span class="line"></span><br><span class="line">light_green -= &quot;\033[1;32m&quot;</span><br><span class="line"></span><br><span class="line">cyan         = &quot;\033[0;36m&quot;</span><br><span class="line"></span><br><span class="line">light_cyan   = &quot;\033[1;36m&quot;</span><br><span class="line"></span><br><span class="line">red          = &quot;\033[0;31m&quot;</span><br><span class="line"></span><br><span class="line">light_red    = &quot;\033[1;31m&quot;</span><br><span class="line"></span><br><span class="line">purple       = &quot;\033[0;35m&quot;</span><br><span class="line"></span><br><span class="line">light_purple = &quot;\033[1;35m&quot;</span><br><span class="line"></span><br><span class="line">brown        = &quot;\033[0;33m&quot;</span><br><span class="line"></span><br><span class="line">yellow       = &quot;\033[1;33m&quot;</span><br><span class="line"></span><br><span class="line">light_gray   = &quot;\033[0;37m&quot;</span><br><span class="line"></span><br><span class="line">white        = &quot;\033[1;37m&quot;</span><br></pre></td></tr></table></figure>
-
-<p>字背景颜色范围:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">40--49                   字颜色: 30--39</span><br><span class="line"></span><br><span class="line">40: 黑                          30: 黑</span><br><span class="line"></span><br><span class="line">41:红                          31: 红</span><br><span class="line"></span><br><span class="line">42:绿                          32: 绿</span><br><span class="line"></span><br><span class="line">43:黄                          33: 黄</span><br><span class="line"></span><br><span class="line">44:蓝                          34: 蓝</span><br><span class="line"></span><br><span class="line">45:紫                          35: 紫</span><br><span class="line"></span><br><span class="line">46:深绿                        36: 深绿</span><br><span class="line"></span><br><span class="line">47:白色                        37: 白色</span><br></pre></td></tr></table></figure>
-
-<p>输出特效格式控制：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\033[0m  关闭所有属性</span><br><span class="line"></span><br><span class="line">\033[1m   设置高亮度</span><br><span class="line"></span><br><span class="line">\03[4m   下划线</span><br><span class="line"></span><br><span class="line">\033[5m   闪烁</span><br><span class="line"></span><br><span class="line">\033[7m   反显</span><br><span class="line"></span><br><span class="line">\033[8m   消隐</span><br><span class="line"></span><br><span class="line">\033[30m   --   \033[37m   设置前景色</span><br><span class="line"></span><br><span class="line">\033[40m   --   \033[47m   设置背景色</span><br></pre></td></tr></table></figure>
-
-<p>光标位置等的格式控制：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\033[nA  光标上移n行</span><br><span class="line"></span><br><span class="line">\03[nB   光标下移n行</span><br><span class="line"></span><br><span class="line">\033[nC   光标右移n行</span><br><span class="line"></span><br><span class="line">\033[nD   光标左移n行</span><br><span class="line"></span><br><span class="line">\033[y;xH设置光标位置</span><br><span class="line"></span><br><span class="line">\033[2J   清屏</span><br><span class="line"></span><br><span class="line">\033[K   清除从光标到行尾的内容</span><br><span class="line"></span><br><span class="line">\033[s   保存光标位置</span><br><span class="line"></span><br><span class="line">\033[u   恢复光标位置</span><br><span class="line"></span><br><span class="line">\033[?25l   隐藏光标</span><br><span class="line"></span><br><span class="line">\33[?25h   显示光标</span><br></pre></td></tr></table></figure>
-
-<p>DEMO</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">foreach</span> ([<span class="string">"&#123;chr&#125;foo_bar"</span>, <span class="string">"foo&#123;chr&#125;bar"</span>, <span class="string">"foo_bar&#123;chr&#125;"</span>] <span class="keyword">as</span> $k =&gt; $arg) &#123;</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt;= <span class="number">255</span>; $i++) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"\33[999D\33[K\r"</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"["</span> . $arg . <span class="string">"] check "</span> . bin2hex(chr($i)) . <span class="string">""</span>;</span><br><span class="line">        parse_str(str_replace(<span class="string">"&#123;chr&#125;"</span>, chr($i), $arg) . <span class="string">"=bla"</span>, $o);</span><br><span class="line">        usleep(<span class="number">5000</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>($o[<span class="string">"foo_bar"</span>])) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"\33[999D\33[K\r"</span>;</span><br><span class="line">            <span class="keyword">echo</span> $arg . <span class="string">" -&gt; "</span> . bin2hex(chr($i)) . <span class="string">" ("</span> . chr($i) . <span class="string">")\n"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"\33[999D\33[K\r"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记一次spl_autoload_register踩坑</title>
     <url>/articles/%E8%AE%B0%E4%B8%80%E6%AC%A1spl-autoload-register%E8%B8%A9%E5%9D%91/</url>
     <content><![CDATA[<blockquote>
@@ -11680,6 +11654,32 @@ mysql&gt;</code></pre><p>表明存储引擎从索引的起始处开始，获取�
       <categories>
         <category>PHP</category>
       </categories>
+  </entry>
+  <entry>
+    <title>超级终端玩法</title>
+    <url>/articles/%E8%B6%85%E7%BA%A7%E7%BB%88%E7%AB%AF%E7%8E%A9%E6%B3%95/</url>
+    <content><![CDATA[<p>颜色特效控制：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">printf(&quot;\033[1;33m Hello World. \033[0m \n&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>颜色如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">none         = &quot;\033[0m&quot;</span><br><span class="line"></span><br><span class="line">black        = &quot;\033[0;30m&quot;</span><br><span class="line"></span><br><span class="line">dark_gray    = &quot;\033[1;30m&quot;</span><br><span class="line"></span><br><span class="line">blue         = &quot;\033[0;34m&quot;</span><br><span class="line"></span><br><span class="line">light_blue   = &quot;\033[1;34m&quot;</span><br><span class="line"></span><br><span class="line">green        = &quot;\033[0;32m&quot;</span><br><span class="line"></span><br><span class="line">light_green -= &quot;\033[1;32m&quot;</span><br><span class="line"></span><br><span class="line">cyan         = &quot;\033[0;36m&quot;</span><br><span class="line"></span><br><span class="line">light_cyan   = &quot;\033[1;36m&quot;</span><br><span class="line"></span><br><span class="line">red          = &quot;\033[0;31m&quot;</span><br><span class="line"></span><br><span class="line">light_red    = &quot;\033[1;31m&quot;</span><br><span class="line"></span><br><span class="line">purple       = &quot;\033[0;35m&quot;</span><br><span class="line"></span><br><span class="line">light_purple = &quot;\033[1;35m&quot;</span><br><span class="line"></span><br><span class="line">brown        = &quot;\033[0;33m&quot;</span><br><span class="line"></span><br><span class="line">yellow       = &quot;\033[1;33m&quot;</span><br><span class="line"></span><br><span class="line">light_gray   = &quot;\033[0;37m&quot;</span><br><span class="line"></span><br><span class="line">white        = &quot;\033[1;37m&quot;</span><br></pre></td></tr></table></figure>
+
+<p>字背景颜色范围:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">40--49                   字颜色: 30--39</span><br><span class="line"></span><br><span class="line">40: 黑                          30: 黑</span><br><span class="line"></span><br><span class="line">41:红                          31: 红</span><br><span class="line"></span><br><span class="line">42:绿                          32: 绿</span><br><span class="line"></span><br><span class="line">43:黄                          33: 黄</span><br><span class="line"></span><br><span class="line">44:蓝                          34: 蓝</span><br><span class="line"></span><br><span class="line">45:紫                          35: 紫</span><br><span class="line"></span><br><span class="line">46:深绿                        36: 深绿</span><br><span class="line"></span><br><span class="line">47:白色                        37: 白色</span><br></pre></td></tr></table></figure>
+
+<p>输出特效格式控制：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\033[0m  关闭所有属性</span><br><span class="line"></span><br><span class="line">\033[1m   设置高亮度</span><br><span class="line"></span><br><span class="line">\03[4m   下划线</span><br><span class="line"></span><br><span class="line">\033[5m   闪烁</span><br><span class="line"></span><br><span class="line">\033[7m   反显</span><br><span class="line"></span><br><span class="line">\033[8m   消隐</span><br><span class="line"></span><br><span class="line">\033[30m   --   \033[37m   设置前景色</span><br><span class="line"></span><br><span class="line">\033[40m   --   \033[47m   设置背景色</span><br></pre></td></tr></table></figure>
+
+<p>光标位置等的格式控制：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\033[nA  光标上移n行</span><br><span class="line"></span><br><span class="line">\03[nB   光标下移n行</span><br><span class="line"></span><br><span class="line">\033[nC   光标右移n行</span><br><span class="line"></span><br><span class="line">\033[nD   光标左移n行</span><br><span class="line"></span><br><span class="line">\033[y;xH设置光标位置</span><br><span class="line"></span><br><span class="line">\033[2J   清屏</span><br><span class="line"></span><br><span class="line">\033[K   清除从光标到行尾的内容</span><br><span class="line"></span><br><span class="line">\033[s   保存光标位置</span><br><span class="line"></span><br><span class="line">\033[u   恢复光标位置</span><br><span class="line"></span><br><span class="line">\033[?25l   隐藏光标</span><br><span class="line"></span><br><span class="line">\33[?25h   显示光标</span><br></pre></td></tr></table></figure>
+
+<p>DEMO</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">foreach</span> ([<span class="string">"&#123;chr&#125;foo_bar"</span>, <span class="string">"foo&#123;chr&#125;bar"</span>, <span class="string">"foo_bar&#123;chr&#125;"</span>] <span class="keyword">as</span> $k =&gt; $arg) &#123;</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt;= <span class="number">255</span>; $i++) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"\33[999D\33[K\r"</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"["</span> . $arg . <span class="string">"] check "</span> . bin2hex(chr($i)) . <span class="string">""</span>;</span><br><span class="line">        parse_str(str_replace(<span class="string">"&#123;chr&#125;"</span>, chr($i), $arg) . <span class="string">"=bla"</span>, $o);</span><br><span class="line">        usleep(<span class="number">5000</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>($o[<span class="string">"foo_bar"</span>])) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"\33[999D\33[K\r"</span>;</span><br><span class="line">            <span class="keyword">echo</span> $arg . <span class="string">" -&gt; "</span> . bin2hex(chr($i)) . <span class="string">" ("</span> . chr($i) . <span class="string">")\n"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"\33[999D\33[K\r"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
   </entry>
   <entry>
     <title>退出vim</title>
